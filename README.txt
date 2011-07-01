@@ -1,0 +1,5 @@
+In order to make this project work, you need to:
+- put directories graphics and levels (which are located in resources) in
+  directory where your executable file is located
+- (on Windows) put dlls from libs/bin in directory where your executable file
+  is located

@@ -1,0 +1,8 @@
+1.01
+* Wy³¹czanie widocznoœci obszaru bonusów
+* Pytanie o niezapisane mapy przy zamykaniu aplikacji
+* WINDOWS ONLY: Przeci¹ganie tak¿e chwytaj¹c pasek narzêdzi
+* drag & drop
+
+1.0
+- Pierwsze wydanie

@@ -1,0 +1,1 @@
+In order to make translations work, you need to build them with lrelease tool (it's included in Qt SDK) and put your .qm files into {APPLICATION_PATH}/translations directory.

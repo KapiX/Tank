@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/block0.bmp</file>
+        <file>images/block1.bmp</file>
+        <file>images/block2.bmp</file>
+        <file>images/block3.bmp</file>
+        <file>images/block4.bmp</file>
+        <file>images/block5.bmp</file>
+        <file>images/block6.bmp</file>
+        <file>images/block7.bmp</file>
+        <file>images/spawn_e.bmp</file>
+        <file>images/spawn_p1.bmp</file>
+        <file>images/spawn_p2.bmp</file>
+        <file>images/blocks.png</file>
+        <file>images/icon.ico</file>
+        <file>images/about.png</file>
+        <file>images/grid.png</file>
+        <file>images/new.png</file>
+        <file>images/open.png</file>
+        <file>images/quit.png</file>
+        <file>images/save.png</file>
+        <file>images/skyscraper.png</file>
+        <file>templates/13x13.tlv</file>
+        <file>templates/19x13.tlv</file>
+    </qresource>
+</RCC>

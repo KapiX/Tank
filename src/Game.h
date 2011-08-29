@@ -60,8 +60,12 @@ private:
 	Menu *m_pInGameMenu;
 
     f32 m_fTimer;
+	f32 m_fOldTimer;
 
 	Map *m_pMap;
+
+	char *m_apLevels[2];
+	u32 m_iCurrentLevel;
 
 	GAMESTATE m_GameState;
 
@@ -77,7 +81,6 @@ private:
     // GAMEOVER
     f32 m_iGameOverY;
 
-    f32 m_fOldTime;
     f32 m_fOldTimer;
 
 public:

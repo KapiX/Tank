@@ -25,6 +25,9 @@ void Game::LoadResources(Texture *pFont)
 
     m_bPlayer2 = false;
 
+	m_apLevels[0] = "levels/template.tlv";
+	m_apLevels[1] = "levels/template1.tlv";
+
 	m_pMenuPointerAnim = new Animation();
 	m_pMenuPointerAnim->SetFrameRate(0.1f);
 	m_pMenuPointerAnim->SetMaxFrames(2);
@@ -46,7 +49,7 @@ void Game::LoadResources(Texture *pFont)
 	m_pMainMenu->AddItem("2 PLAYERS");
 	//m_pMainMenu->AddItem("CONTROLS");
 	//m_pMainMenu->AddItem("EDITOR");
-	m_pMainMenu->AddItem("WYJŒCIE");
+	m_pMainMenu->AddItem("EXIT");
 
     m_pInGameMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pInGameMenuPointer);
     m_pInGameMenu->SetOrientation(MO_HORIZONTAL);
@@ -132,7 +135,7 @@ void Game::UpdateSplash(float fDelta)
 			m_GameState = GS_MAINMENU;
 		} 
 	}
-    if(Keyboard::GetInstance()->IsKeyDown(SDLK_RETURN))
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_RETURN))
     {
         m_iSplashLogoY = 80.0f;
         m_fTimer = 0;
@@ -142,24 +145,21 @@ void Game::UpdateSplash(float fDelta)
 
 void Game::UpdateMainMenu(float fDelta)
 {
-    static f32 fOldTime = 0;
 	m_pMenuPointerAnim->Animate();
-    if(Keyboard::GetInstance()->IsKeyDown(SDLK_UP) && m_fTimer - fOldTime > 0.2f)
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_UP))
     {
         m_pMainMenu->PrevItem();
-        fOldTime = m_fTimer;
     }
-    if(Keyboard::GetInstance()->IsKeyDown(SDLK_DOWN) && m_fTimer - fOldTime > 0.2f)
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_DOWN))
     {
         m_pMainMenu->NextItem();
-        fOldTime = m_fTimer;
     }
-    if(Keyboard::GetInstance()->IsKeyDown(SDLK_RETURN) && m_fTimer - fOldTime > 0.2f)
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_RETURN))
     {
         m_fTimer = 0;
-        fOldTime = 0;
         if(m_pMainMenu->GetCurrentItem() == MM_1PLAYER || m_pMainMenu->GetCurrentItem() == MM_2PLAYERS)
         {
+			m_iCurrentLevel = 0;
             if(m_pMainMenu->GetCurrentItem() == MM_2PLAYERS)
             {
                 m_bPlayer2 = true;
@@ -170,7 +170,7 @@ void Game::UpdateMainMenu(float fDelta)
                 m_bPlayer2 = false;
                 m_pMap->Set2PlayerMode(m_bPlayer2);
             }
-            m_pMap->LoadMap("levels/template.tlv");
+            m_pMap->LoadMap(m_apLevels[m_iCurrentLevel++]);
             m_pMap->UpdateBlocks();
             m_iLevelStartOpeningY = 300;
             m_pInGameMenu->SetCurrentItem(0);
@@ -203,9 +203,8 @@ void Game::UpdateLevelPlaying(float fDelta)
 {
 	m_pMap->Update(fDelta);
 
-    if(Keyboard::GetInstance()->IsKeyDown(SDLK_ESCAPE) && m_fTimer - m_fOldTime > 0.2f)
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_ESCAPE))
     {
-        m_fOldTime = m_fTimer;
         m_GameState = GS_LEVELPAUSE;
     }
 
@@ -222,33 +221,32 @@ void Game::UpdateLevelPlaying(float fDelta)
             m_GameState = GS_GAMEOVER;
         }
     }
+
+	if(Enemy::GetEnemiesLeft() == 0 && !m_pMap->GetEnemy(0)->IsAlive() && !m_pMap->GetEnemy(0)->IsSpawning() && !m_pMap->GetEnemy(0)->IsExploding() && !m_pMap->GetEnemy(1)->IsAlive() && !m_pMap->GetEnemy(1)->IsSpawning() && !m_pMap->GetEnemy(1)->IsExploding() && !m_pMap->GetEnemy(2)->IsAlive() && !m_pMap->GetEnemy(2)->IsSpawning() && !m_pMap->GetEnemy(2)->IsExploding() && !m_pMap->GetEnemy(3)->IsAlive() && !m_pMap->GetEnemy(3)->IsSpawning() && !m_pMap->GetEnemy(3)->IsExploding())
+	{
+		m_fOldTimer = m_fTimer;
+		m_GameState = GS_LEVELCOMPLETED;
+	}
 }
 
 void Game::UpdateLevelPause(float fDelta)
 {
-    static f32 fOldTime = 0;
-    if(Keyboard::GetInstance()->IsKeyDown(SDLK_LEFT) && m_fTimer - fOldTime > 0.2f)
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_LEFT))
     {
         m_pInGameMenu->PrevItem();
-        fOldTime = m_fTimer;
     }
-    if(Keyboard::GetInstance()->IsKeyDown(SDLK_RIGHT) && m_fTimer - fOldTime > 0.2f)
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_RIGHT))
     {
         m_pInGameMenu->NextItem();
-        fOldTime = m_fTimer;
     }
-    // zeby nie przechodzilo miedzy dwoma stanami za duzo razy potrzebna jest zmienna miedzyfunkcyjna m_fOldTime
-    if(Keyboard::GetInstance()->IsKeyDown(SDLK_ESCAPE) && m_fTimer - m_fOldTime > 0.2f)
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_ESCAPE))
     {
-        m_fOldTime = m_fTimer;
-        fOldTime = 0;
         m_GameState = GS_LEVELPLAYING;
     }
-    if(Keyboard::GetInstance()->IsKeyDown(SDLK_RETURN) && m_fTimer - fOldTime > 0.2f)
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_RETURN))
     {
         if(m_pInGameMenu->GetCurrentItem() == IM_BACK_TO_GAME)
         {
-            m_fOldTime = m_fTimer;
             m_GameState = GS_LEVELPLAYING;
         }
         else if(m_pInGameMenu->GetCurrentItem() == IM_EXIT_TO_MENU)
@@ -268,6 +266,21 @@ void Game::UpdateLevelPause(float fDelta)
 
 void Game::UpdateLevelCompleted(f32 fDelta)
 {
+	m_pMap->Update(fDelta);
+
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_ESCAPE))
+    {
+        m_GameState = GS_LEVELPAUSE;
+    }
+
+	if(m_fTimer - m_fOldTimer > 3.0f)
+	{
+		m_pMap->LoadMap(m_apLevels[m_iCurrentLevel++]);
+        m_pMap->UpdateBlocks();
+        m_iLevelStartOpeningY = 300;
+		m_fTimer = 0;
+		m_GameState = GS_LEVELSTARTING;
+	}
 }
 
 void Game::UpdateGameOver(f32 fDelta)
@@ -406,6 +419,15 @@ void Game::RenderHUD()
 
 void Game::RenderLevelCompleted()
 {
+	VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
+	
+    m_pMap->Render();
+
+    // górna belka
+    pVD->FillRectangle(0, 0, 800, 24, 1, 255, 255, 255, 255);
+    pVD->PrintText(m_pGameFont, 6, 6, 2, m_pMap->GetMapInfo()->strName, 1.0f, 0, 0, 0);
+    // dolna belka
+	RenderHUD();
 }
 
 void Game::RenderGameOver()

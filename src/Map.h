@@ -94,6 +94,8 @@ private:
     f32 m_fDigTime;
     bool m_bDigged;
 
+	bool m_bEagleDestroyed;
+
 	MapInfo *m_pMapInfo;
 	Texture *m_pBlockTexture;
     Texture *m_pPlayer1Texture;
@@ -137,6 +139,7 @@ public:
 	MapInfo *GetMapInfo() { return m_pMapInfo; }
     Player *GetPlayer1() { return m_pkPlayer1; }
     Player *GetPlayer2() { return m_pkPlayer2; }
+	Enemy *GetEnemy(int iEnemy) { return m_apkEnemy[iEnemy]; }
     bool Is2PlayerMode() { return m_b2PlayerMode; }
 
     static Animation *SetupAnimation();

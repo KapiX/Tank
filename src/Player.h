@@ -30,6 +30,8 @@ public:
 
     void ActivateShield(f32 iTime);
 
+	inline void ResetAnimations() { Tank::ResetAnimations(); m_pkShieldAnim->Reset(); }
+
     inline void SetLifes(u32 iLifes) { m_iLifes = iLifes; }
 	inline void AddLifes(s32 iLifes) { m_iLifes += iLifes; }
 	inline void SetScore(u32 iScore) { m_iScore = iScore; }

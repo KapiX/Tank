@@ -167,6 +167,31 @@ bool Map::LoadMap(const char *szLevelName)
     m_pkPlayer1->SetIsMoving(false);
     m_pkPlayer2->SetIsMoving(false);
 
+	m_pkPlayer1->ResetAnimations();
+	m_pkPlayer2->ResetAnimations();
+
+	Bonus::GetInstance()->SetBonusType(BONUS_NONE);
+	Bonus::GetInstance()->GetAnimation()->Reset();
+
+	m_pAnimation->Reset(); // woda
+
+	delete m_apkEnemy[0];
+    m_apkEnemy[0] = NULL;
+    delete m_apkEnemy[1];
+    m_apkEnemy[1] = NULL;
+    delete m_apkEnemy[2];
+    m_apkEnemy[2] = NULL;
+    delete m_apkEnemy[3];
+    m_apkEnemy[3] = NULL;
+
+	// -g_cfSpawnInterval powoduje spawnowanie natychmiast po starcie poziomu
+    m_afKillTime[0] = -g_cfSpawnInterval;
+    m_afKillTime[1] = -g_cfSpawnInterval;
+    m_afKillTime[2] = -g_cfSpawnInterval;
+    m_afKillTime[3] = g_cfSpawnInterval * 1.5;
+
+	m_bEagleDestroyed = false;
+
     Enemy::SetEnemiesLeft(20);
     Enemy::SetBonusesLeft(5);
 
@@ -1035,7 +1060,7 @@ void Map::HandleCollisions(f32 fDelta)
             if(m_apkEnemy[e]->IsAlive())
             {
                 // ENEMY-ENEMY collision
-                /*if (m_apkEnemy[e]->IsMoving())
+                if (m_apkEnemy[e]->IsMoving())
                 {
                     top1 = m_apkEnemy[e]->GetY() - (m_apkEnemy[e]->GetDirection() == DIR_UP ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
                     bottom2 = m_apkEnemy[(e + 1) % 4]->GetY() + 32;
@@ -1066,7 +1091,7 @@ void Map::HandleCollisions(f32 fDelta)
                         m_apkEnemy[e]->SetIsMoving(false);
                         m_apkEnemy[e]->SetDirection((DIRECTION) (rand() % 4));
                     }
-                }*/
+                }
 
                 // TANK-BLOCK collision
                 int i = (int) (m_apkEnemy[e]->GetX()) / 16;
@@ -1468,6 +1493,7 @@ void Map::Reset()
     delete m_apkEnemy[3];
     m_apkEnemy[3] = NULL;
 
+	// -g_cfSpawnInterval powoduje spawnowanie natychmiast po starcie poziomu
     m_afKillTime[0] = -g_cfSpawnInterval;
     m_afKillTime[1] = -g_cfSpawnInterval;
     m_afKillTime[2] = -g_cfSpawnInterval;

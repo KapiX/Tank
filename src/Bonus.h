@@ -51,6 +51,7 @@ public:
     inline int GetX() const { return m_iX; }
     inline int GetY() const { return m_iY; }
     inline bool IsAlive() const { return m_bIsAlive; }
+	inline Animation *GetAnimation() { return m_pkAnim; }
 };
 
 #endif

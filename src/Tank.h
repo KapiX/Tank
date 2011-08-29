@@ -106,6 +106,15 @@ public:
 
     virtual void OnExplode() = 0;
 
+	inline void ResetAnimations()
+	{
+		m_pkAnim->Reset();
+		m_pkSpawnAnim->Reset();
+		m_pkExplAnim->Reset();
+		if(m_apkBullets[0] != NULL) m_apkBullets[0]->m_pkExplAnim->Reset();
+		if(m_apkBullets[1] != NULL) m_apkBullets[1]->m_pkExplAnim->Reset();
+	}
+
     inline void SetX(f32 iX) { m_iX = iX; }
 	inline void SetY(f32 iY) { m_iY = iY; }
     inline void SetPosition(f32 iX, f32 iY) { m_iX = iX; m_iY = iY; }

@@ -42,6 +42,8 @@ public:
 	inline u8 GetCurrentFrame() const { return m_iCurrentFrame; }
 
     static inline void SetTimer(f32 *pfTimer) { m_pfTimer = pfTimer; }
+
+	inline void Reset() { m_iOldTime = 0; m_iCurrentFrame = 0; m_iFrameInc = 1; }
 };
 
 #endif

@@ -863,7 +863,7 @@ void Map::HandleCollisions(f32 fDelta)
 										m_apkEnemy[e]->SetShieldLevel((SHIELDLEVEL) (m_apkEnemy[e]->GetShieldLevel() - 1));
 									}
 								}
-								pkPlayer->GetBullet(0)->Destroy();
+								pkPlayer->GetBullet(1)->Destroy();
 							}
 							else
 							{
@@ -871,13 +871,13 @@ void Map::HandleCollisions(f32 fDelta)
 								{
 									m_apkEnemy[e]->SetHasBonus(false);
 									Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
-									pkPlayer->GetBullet(0)->Destroy();
+									pkPlayer->GetBullet(1)->Destroy();
 								}
 								else
 								{
 									pkPlayer->AddScore(m_apkEnemy[e]->GetTankLevel() * 100);
 									m_apkEnemy[e]->Destroy();
-									pkPlayer->GetBullet(0)->Destroy(false);
+									pkPlayer->GetBullet(1)->Destroy(false);
 								}
 							}
 						}

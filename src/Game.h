@@ -81,8 +81,6 @@ private:
     // GAMEOVER
     f32 m_iGameOverY;
 
-    f32 m_fOldTimer;
-
 public:
     Game(void);
     ~Game(void);

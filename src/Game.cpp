@@ -277,6 +277,10 @@ void Game::UpdateLevelCompleted(f32 fDelta)
 	{
 		m_pMap->LoadMap(m_apLevels[m_iCurrentLevel++]);
         m_pMap->UpdateBlocks();
+		// ¿ycia odejmuja sie przy spawnowaniu, bez tego po przejsciu na kolejna mape tracimy zycie
+		if(m_pMap->GetPlayer1()->IsAlive()) m_pMap->GetPlayer1()->AddLifes(1);
+		if(m_bPlayer2 && m_pMap->GetPlayer2()->IsAlive()) m_pMap->GetPlayer2()->AddLifes(1);
+
         m_iLevelStartOpeningY = 300;
 		m_fTimer = 0;
 		m_GameState = GS_LEVELSTARTING;

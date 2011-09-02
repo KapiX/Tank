@@ -3,6 +3,8 @@
 
 #include <SDL/SDL.h>
 #include <string>
+#include <fstream>
+#include <vector>
 #include "Map.h"
 #include "RenderList.h"
 #include "Singleton.h"
@@ -12,6 +14,7 @@
 #include "Menu.h"
 #include "Keyboard.h"
 #include "Tank.h"
+#include "LevelPack.h"
 
 const u16 g_ciMaxLevels = 1024;
 
@@ -64,10 +67,9 @@ private:
 
 	Map *m_pMap;
 
-	char *m_apLevels[2];
-	u32 m_iCurrentLevel;
-
 	GAMESTATE m_GameState;
+
+	LevelPack m_LP;
 
     bool m_bPlayer2;
 

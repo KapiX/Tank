@@ -130,9 +130,9 @@ Map::~Map(void)
 	}
 }
 
-bool Map::LoadMap(const char *szLevelName)
+bool Map::LoadMap(unsigned char *data, unsigned int size)
 {
-	SDL_RWops *file = SDL_RWFromFile(szLevelName, "r");
+	SDL_RWops *file = SDL_RWFromMem(data, size);
 	if(!ReadHeader(file))
 	{
 		SDL_RWclose(file);
@@ -1337,7 +1337,10 @@ void Map::Update(f32 fDelta)
 
     if(m_apkEnemy[0] != NULL && *m_pfTimer - m_afKillTime[0] >= g_cfSpawnInterval && !m_apkEnemy[0]->IsAlive() && !m_apkEnemy[0]->GetIsSpawning())
     {
-        m_apkEnemy[0]->SetHasBonus((bool) (rand() % 2));
+		if(Enemy::GetBonusesLeft() > 0)
+			m_apkEnemy[0]->SetHasBonus((bool) (rand() % 2));
+		else
+			m_apkEnemy[0]->SetHasBonus(false);
         m_apkEnemy[0]->SetShieldLevel((SHIELDLEVEL) (rand() % 4 + 1));
         m_apkEnemy[0]->SetTankLevel((TANKLEVEL) (rand() % 4 + 1));
         m_apkEnemy[0]->SetSpawnPoint(m_pMapInfo->e1Spawn.iX, m_pMapInfo->e1Spawn.iY);
@@ -1345,7 +1348,10 @@ void Map::Update(f32 fDelta)
     }
     if(m_apkEnemy[1] != NULL && *m_pfTimer - m_afKillTime[1] >= g_cfSpawnInterval && !m_apkEnemy[1]->IsAlive() && !m_apkEnemy[1]->GetIsSpawning())
     {
-        m_apkEnemy[1]->SetHasBonus((bool) (rand() % 2));
+		if(Enemy::GetBonusesLeft() > 0)
+			m_apkEnemy[1]->SetHasBonus((bool) (rand() % 2));
+		else
+			m_apkEnemy[1]->SetHasBonus(false);
         m_apkEnemy[1]->SetShieldLevel((SHIELDLEVEL) (rand() % 4 + 1));
         m_apkEnemy[1]->SetTankLevel((TANKLEVEL) (rand() % 4 + 1));
         m_apkEnemy[1]->SetSpawnPoint(m_pMapInfo->e2Spawn.iX, m_pMapInfo->e2Spawn.iY);
@@ -1353,7 +1359,10 @@ void Map::Update(f32 fDelta)
     }
     if(m_apkEnemy[2] != NULL && *m_pfTimer - m_afKillTime[2] >= g_cfSpawnInterval && !m_apkEnemy[2]->IsAlive() && !m_apkEnemy[2]->GetIsSpawning())
     {
-        m_apkEnemy[2]->SetHasBonus((bool) (rand() % 2));
+		if(Enemy::GetBonusesLeft() > 0)
+			m_apkEnemy[2]->SetHasBonus((bool) (rand() % 2));
+		else
+			m_apkEnemy[2]->SetHasBonus(false);
         m_apkEnemy[2]->SetShieldLevel((SHIELDLEVEL) (rand() % 4 + 1));
         m_apkEnemy[2]->SetTankLevel((TANKLEVEL) (rand() % 4 + 1));
         m_apkEnemy[2]->SetSpawnPoint(m_pMapInfo->e3Spawn.iX, m_pMapInfo->e3Spawn.iY);
@@ -1361,7 +1370,10 @@ void Map::Update(f32 fDelta)
     }
     if(m_apkEnemy[3] != NULL && *m_pfTimer - m_afKillTime[3] >= g_cfSpawnInterval && !m_apkEnemy[3]->IsAlive() && !m_apkEnemy[3]->GetIsSpawning())
     {
-        m_apkEnemy[3]->SetHasBonus((bool) (rand() % 2));
+		if(Enemy::GetBonusesLeft() > 0)
+			m_apkEnemy[3]->SetHasBonus((bool) (rand() % 2));
+		else
+			m_apkEnemy[3]->SetHasBonus(false);
         m_apkEnemy[3]->SetShieldLevel((SHIELDLEVEL) (rand() % 4 + 1));
         m_apkEnemy[3]->SetTankLevel((TANKLEVEL) (rand() % 4 + 1));
         m_apkEnemy[3]->SetSpawnPoint(m_pMapInfo->e1Spawn.iX, m_pMapInfo->e1Spawn.iY);

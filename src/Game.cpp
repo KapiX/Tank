@@ -25,8 +25,7 @@ void Game::LoadResources(Texture *pFont)
 
     m_bPlayer2 = false;
 
-	m_apLevels[0] = "levels/template.tlv";
-	m_apLevels[1] = "levels/template1.tlv";
+	m_LP.Init("levels/battlecity.tlp");
 
 	m_pMenuPointerAnim = new Animation();
 	m_pMenuPointerAnim->SetFrameRate(0.1f);
@@ -68,6 +67,7 @@ void Game::LoadResources(Texture *pFont)
 
 void Game::FreeResources()
 {
+	m_LP.Free();
 }
 
 void Game::Update(float fDelta)
@@ -159,7 +159,6 @@ void Game::UpdateMainMenu(float fDelta)
         m_fTimer = 0;
         if(m_pMainMenu->GetCurrentItem() == MM_1PLAYER || m_pMainMenu->GetCurrentItem() == MM_2PLAYERS)
         {
-			m_iCurrentLevel = 0;
             if(m_pMainMenu->GetCurrentItem() == MM_2PLAYERS)
             {
                 m_bPlayer2 = true;
@@ -170,7 +169,11 @@ void Game::UpdateMainMenu(float fDelta)
                 m_bPlayer2 = false;
                 m_pMap->Set2PlayerMode(m_bPlayer2);
             }
-            m_pMap->LoadMap(m_apLevels[m_iCurrentLevel++]);
+			unsigned int size = 0;
+			unsigned char *data = 0;
+			m_LP.GetLevelData(1, &data, &size);
+			m_pMap->LoadMap(data, size);
+			delete [] data;
             m_pMap->UpdateBlocks();
             m_iLevelStartOpeningY = 300;
             m_pInGameMenu->SetCurrentItem(0);
@@ -255,6 +258,7 @@ void Game::UpdateLevelPause(float fDelta)
             m_iSplashLogoY = 80.0f;
             m_pMainMenu->SetCurrentItem(0);
             m_pMap->Reset();
+			m_LP.ResetCurrentLevel();
             m_GameState = GS_MAINMENU;
         }
         else if(m_pInGameMenu->GetCurrentItem() == MM_EXIT)
@@ -275,11 +279,16 @@ void Game::UpdateLevelCompleted(f32 fDelta)
 
 	if(m_fTimer - m_fOldTimer > 3.0f)
 	{
-		m_pMap->LoadMap(m_apLevels[m_iCurrentLevel++]);
-        m_pMap->UpdateBlocks();
 		// ¿ycia odejmuja sie przy spawnowaniu, bez tego po przejsciu na kolejna mape tracimy zycie
 		if(m_pMap->GetPlayer1()->IsAlive()) m_pMap->GetPlayer1()->AddLifes(1);
 		if(m_bPlayer2 && m_pMap->GetPlayer2()->IsAlive()) m_pMap->GetPlayer2()->AddLifes(1);
+
+		unsigned int size = 0;
+		unsigned char *data = 0;
+		m_LP.GetLevelData(m_LP.NextLevel(), &data, &size);
+		m_pMap->LoadMap(data, size);
+		delete [] data;
+        m_pMap->UpdateBlocks();
 
         m_iLevelStartOpeningY = 300;
 		m_fTimer = 0;
@@ -299,7 +308,12 @@ void Game::UpdateGameOver(f32 fDelta)
     else if(m_iGameOverY <= 284.0f)
     {
         if(m_fTimer >= 5.0f)
+		{
+			m_pMainMenu->SetCurrentItem(0);
+            m_pMap->Reset();
+			m_LP.ResetCurrentLevel();
             m_GameState = GS_MAINMENU;
+		}
     }
 }
 

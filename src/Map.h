@@ -120,7 +120,7 @@ public:
         const char *szMiscTextureName);
     ~Map(void);
 
-	bool LoadMap(const char *szLevelName);
+	bool LoadMap(unsigned char *data, unsigned int size);
 
     void CalculateDamageUp(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy = false);
     void CalculateDamageRight(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy = false);

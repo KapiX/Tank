@@ -22,6 +22,9 @@
     <Filter Include="Renderer\AbstractRenderer">
       <UniqueIdentifier>{4c7425e4-4386-449f-a824-1da48af77c14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="7z">
+      <UniqueIdentifier>{d943ce5f-7098-4d51-bd9f-4ab94ab89703}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Animation.cpp">
@@ -65,6 +68,117 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OGLTexture.cpp">
       <Filter>Renderer\OpenGLRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\7zAlloc.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\7zBuf.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\7zBuf2.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\7zCrc.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\7zCrcOpt.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\7zDec.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\7zFile.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\7zIn.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\7zStream.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Alloc.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Bcj2.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Bra.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Bra86.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\BraIA64.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\CpuArch.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Delta.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\LzFind.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\LzFindMt.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Lzma2Dec.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Lzma2Enc.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Lzma86Dec.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Lzma86Enc.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\LzmaDec.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\LzmaEnc.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\LzmaLib.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\MtCoder.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Ppmd7.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Ppmd7Dec.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Ppmd7Enc.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Sha256.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Threads.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\Xz.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\XzCrc64.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\XzDec.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\XzEnc.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\7z\XzIn.c">
+      <Filter>7z</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\LevelPack.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +241,99 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Texture.h">
       <Filter>Renderer\AbstractRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\7z.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\7zAlloc.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\7zBuf.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\7zCrc.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\7zFile.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\7zVersion.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Alloc.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Bcj2.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Bra.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\CpuArch.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Delta.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\LzFind.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\LzFindMt.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\LzHash.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Lzma2Dec.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Lzma2Enc.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Lzma86.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\LzmaDec.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\LzmaEnc.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\LzmaLib.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\MtCoder.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Ppmd.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Ppmd7.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\RotateDefs.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Sha256.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Threads.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Types.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\Xz.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\XzCrc64.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7z\XzEnc.h">
+      <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\LevelPack.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

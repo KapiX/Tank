@@ -17,7 +17,6 @@ OGLVideoDriver::OGLVideoDriver(u32 iWidth, u32 iHeight)
 	glClearDepth(1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glAlphaFunc(GL_GREATER, 0.1f);

@@ -15,6 +15,10 @@
 #pragma comment(lib, "SDL.lib")
 #pragma comment(lib, "SDLmain.lib")
 
+
+#undef max
+#undef min
+
 template<typename T>
 T clamp(const T &what, const T &a, const T &b)
 {

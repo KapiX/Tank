@@ -1072,7 +1072,7 @@ void Map::HandleCollisions(f32 fDelta)
                     left2 = m_apkEnemy[(e + 1) % 4]->GetX();
                     if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2))
                     {
-                        m_apkEnemy[e]->SetIsMoving(false);
+                        //m_apkEnemy[e]->SetIsMoving(false);
                         m_apkEnemy[e]->SetDirection((DIRECTION) (rand() % 4));
                     }
                 }
@@ -1088,12 +1088,12 @@ void Map::HandleCollisions(f32 fDelta)
                     left2 = m_apkEnemy[(e + 3) % 4]->GetX();
                     if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2))
                     {
-                        m_apkEnemy[e]->SetIsMoving(false);
+                        //m_apkEnemy[e]->SetIsMoving(false);
                         m_apkEnemy[e]->SetDirection((DIRECTION) (rand() % 4));
                     }
                 }
 
-                // TANK-BLOCK collision
+                // ENEMY-BLOCK collision
                 int i = (int) (m_apkEnemy[e]->GetX()) / 16;
                 int j = (int) (m_apkEnemy[e]->GetY() - 24) / 16;
 
@@ -1109,6 +1109,7 @@ void Map::HandleCollisions(f32 fDelta)
                         {
                             DIRECTION dir = (DIRECTION) (rand() % 3 + 2); // bez DIR_UP
                             m_apkEnemy[e]->SetIsMoving(false);
+							m_apkEnemy[e]->SetY(bottom2);
                             m_apkEnemy[e]->SetDirection(dir);
                         }
                         else
@@ -1128,6 +1129,7 @@ void Map::HandleCollisions(f32 fDelta)
                             DIRECTION dir = (DIRECTION) (rand() % 3 + 1);
                             if(dir == 3) dir = (DIRECTION) 4; // bez DIR_DOWN
                             m_apkEnemy[e]->SetIsMoving(false);
+							m_apkEnemy[e]->SetY(top2 - 32);
                             m_apkEnemy[e]->SetDirection(dir);
                         }
                         else
@@ -1147,6 +1149,7 @@ void Map::HandleCollisions(f32 fDelta)
                             DIRECTION dir = (DIRECTION) (rand() % 3 + 2);
                             if(dir == 2) dir = (DIRECTION) 1; // bez DIR_RIGHT
                             m_apkEnemy[e]->SetIsMoving(false);
+							m_apkEnemy[e]->SetX(left2 - 32);
                             m_apkEnemy[e]->SetDirection(dir);
                         }
                         else
@@ -1165,6 +1168,7 @@ void Map::HandleCollisions(f32 fDelta)
                         {
                             DIRECTION dir = (DIRECTION) (rand() % 3 + 1); // bez DIR_LEFT
                             m_apkEnemy[e]->SetIsMoving(false);
+							m_apkEnemy[e]->SetX(right2);
                             m_apkEnemy[e]->SetDirection(dir);
                         }
                         else

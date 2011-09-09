@@ -940,8 +940,16 @@ void Map::HandleCollisions(f32 fDelta)
                         if((m_aBlocks[i][j - 1] != BT_EMPTY && m_aBlocks[i][j - 1] != BT_ICE && m_aBlocks[i][j - 1] != BT_JUNGLE && m_aBlocks[i][j - 1] != BT_SEA) ||
                            (m_aBlocks[i + 1][j - 1] != BT_EMPTY && m_aBlocks[i + 1][j - 1] != BT_ICE && m_aBlocks[i + 1][j - 1] != BT_JUNGLE && m_aBlocks[i + 1][j - 1] != BT_SEA))
                         {
-                            CalculateDamageUp(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j - 1], &m_aBlocks[i + 1][j - 1]);
-                            pkPlayer->GetBullet(b)->Destroy();
+							if(m_aBlocks[i][j - 1] == BT_EAGLELBOT || m_aBlocks[i][j - 1] == BT_EAGLERBOT ||
+							   m_aBlocks[i + 1][j - 1] == BT_EAGLELBOT || m_aBlocks[i + 1][j - 1] == BT_EAGLERBOT)
+							{
+								DestroyEagle();
+							}
+							else
+							{
+								CalculateDamageUp(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j - 1], &m_aBlocks[i + 1][j - 1]);
+							}
+							pkPlayer->GetBullet(b)->Destroy();
                         }
                         else if(pkPlayer->GetBullet(b)->GetDestroyJungle())
                         {
@@ -960,7 +968,15 @@ void Map::HandleCollisions(f32 fDelta)
                         if((m_aBlocks[i][j] != BT_EMPTY && m_aBlocks[i][j] != BT_ICE && m_aBlocks[i][j] != BT_JUNGLE && m_aBlocks[i][j] != BT_SEA) ||
                            (m_aBlocks[i + 1][j] != BT_EMPTY && m_aBlocks[i + 1][j] != BT_ICE && m_aBlocks[i + 1][j] != BT_JUNGLE && m_aBlocks[i + 1][j] != BT_SEA))
                         {
-                            CalculateDamageDown(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i + 1][j]);
+							if(m_aBlocks[i][j] == BT_EAGLELTOP || m_aBlocks[i][j] == BT_EAGLERTOP ||
+							   m_aBlocks[i + 1][j] == BT_EAGLELTOP || m_aBlocks[i + 1][j] == BT_EAGLERTOP)
+							{
+								DestroyEagle();
+							}
+							else
+							{
+								CalculateDamageDown(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i + 1][j]);
+							}
                             pkPlayer->GetBullet(b)->Destroy();
                         }
                         else if(pkPlayer->GetBullet(b)->GetDestroyJungle())
@@ -980,8 +996,16 @@ void Map::HandleCollisions(f32 fDelta)
                         if((m_aBlocks[i][j] != BT_EMPTY && m_aBlocks[i][j] != BT_ICE && m_aBlocks[i][j] != BT_JUNGLE && m_aBlocks[i][j] != BT_SEA) ||
                            (m_aBlocks[i][j + 1] != BT_EMPTY && m_aBlocks[i][j + 1] != BT_ICE && m_aBlocks[i][j + 1] != BT_JUNGLE && m_aBlocks[i][j + 1] != BT_SEA))
                         {
-                            CalculateDamageRight(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i][j + 1]);
-                            pkPlayer->GetBullet(b)->Destroy();
+							if(m_aBlocks[i][j] == BT_EAGLELBOT || m_aBlocks[i][j] == BT_EAGLELTOP ||
+							   m_aBlocks[i][j + 1] == BT_EAGLELBOT || m_aBlocks[i][j + 1] == BT_EAGLELTOP)
+							{
+								DestroyEagle();
+							}
+							else
+							{
+								CalculateDamageRight(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i][j + 1]);
+							}
+							pkPlayer->GetBullet(b)->Destroy();
                         }
                         else if(pkPlayer->GetBullet(b)->GetDestroyJungle())
                         {
@@ -1000,8 +1024,16 @@ void Map::HandleCollisions(f32 fDelta)
                         if((m_aBlocks[i - 1][j] != BT_EMPTY && m_aBlocks[i - 1][j] != BT_ICE && m_aBlocks[i - 1][j] != BT_JUNGLE && m_aBlocks[i - 1][j] != BT_SEA) ||
                            (m_aBlocks[i - 1][j + 1] != BT_EMPTY && m_aBlocks[i - 1][j + 1] != BT_ICE && m_aBlocks[i - 1][j + 1] != BT_JUNGLE && m_aBlocks[i - 1][j + 1] != BT_SEA))
                         {
-                            CalculateDamageLeft(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i - 1][j], &m_aBlocks[i - 1][j + 1]);
-                            pkPlayer->GetBullet(b)->Destroy();
+							if(m_aBlocks[i - 1][j] == BT_EAGLERBOT || m_aBlocks[i - 1][j] == BT_EAGLERTOP ||
+							   m_aBlocks[i - 1][j + 1] == BT_EAGLERBOT || m_aBlocks[i - 1][j + 1] == BT_EAGLERTOP)
+							{
+								DestroyEagle();
+							}
+							else
+							{
+								CalculateDamageLeft(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i - 1][j], &m_aBlocks[i - 1][j + 1]);
+							}
+							pkPlayer->GetBullet(b)->Destroy();
                         }
                         else if(pkPlayer->GetBullet(b)->GetDestroyJungle())
                         {
@@ -1196,7 +1228,15 @@ void Map::HandleCollisions(f32 fDelta)
                         if((m_aBlocks[i][j - 1] != BT_EMPTY && m_aBlocks[i][j - 1] != BT_ICE && m_aBlocks[i][j - 1] != BT_JUNGLE && m_aBlocks[i][j - 1] != BT_SEA) ||
                             (m_aBlocks[i + 1][j - 1] != BT_EMPTY && m_aBlocks[i + 1][j - 1] != BT_ICE && m_aBlocks[i + 1][j - 1] != BT_JUNGLE && m_aBlocks[i + 1][j - 1] != BT_SEA))
                         {
-                            CalculateDamageUp(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j - 1], &m_aBlocks[i + 1][j - 1], true);
+							if(m_aBlocks[i][j - 1] == BT_EAGLELBOT || m_aBlocks[i][j - 1] == BT_EAGLERBOT ||
+							   m_aBlocks[i + 1][j - 1] == BT_EAGLELBOT || m_aBlocks[i + 1][j - 1] == BT_EAGLERBOT)
+							{
+								DestroyEagle();
+							}
+							else
+							{
+								CalculateDamageUp(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j - 1], &m_aBlocks[i + 1][j - 1], true);
+							}
                             m_apkEnemy[e]->GetBullet(0)->Destroy();
                         }
                     }
@@ -1209,8 +1249,16 @@ void Map::HandleCollisions(f32 fDelta)
                         if((m_aBlocks[i][j] != BT_EMPTY && m_aBlocks[i][j] != BT_ICE && m_aBlocks[i][j] != BT_JUNGLE && m_aBlocks[i][j] != BT_SEA) ||
                             (m_aBlocks[i + 1][j] != BT_EMPTY && m_aBlocks[i + 1][j] != BT_ICE && m_aBlocks[i + 1][j] != BT_JUNGLE && m_aBlocks[i + 1][j] != BT_SEA))
                         {
-                            CalculateDamageDown(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i + 1][j], true);
-                            m_apkEnemy[e]->GetBullet(0)->Destroy();
+							if(m_aBlocks[i][j] == BT_EAGLELTOP || m_aBlocks[i][j] == BT_EAGLERTOP ||
+							   m_aBlocks[i + 1][j] == BT_EAGLELTOP || m_aBlocks[i + 1][j] == BT_EAGLERTOP)
+							{
+								DestroyEagle();
+							}
+							else
+							{
+								CalculateDamageDown(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i + 1][j], true);
+							}
+							m_apkEnemy[e]->GetBullet(0)->Destroy();
                         }
                     }
                     break;
@@ -1222,8 +1270,16 @@ void Map::HandleCollisions(f32 fDelta)
                         if((m_aBlocks[i][j] != BT_EMPTY && m_aBlocks[i][j] != BT_ICE && m_aBlocks[i][j] != BT_JUNGLE && m_aBlocks[i][j] != BT_SEA) ||
                             (m_aBlocks[i][j + 1] != BT_EMPTY && m_aBlocks[i][j + 1] != BT_ICE && m_aBlocks[i][j + 1] != BT_JUNGLE && m_aBlocks[i][j + 1] != BT_SEA))
                         {
-                            CalculateDamageRight(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i][j + 1], true);
-                            m_apkEnemy[e]->GetBullet(0)->Destroy();
+							if(m_aBlocks[i][j] == BT_EAGLELBOT || m_aBlocks[i][j] == BT_EAGLELTOP ||
+							   m_aBlocks[i][j + 1] == BT_EAGLELBOT || m_aBlocks[i][j + 1] == BT_EAGLELTOP)
+							{
+								DestroyEagle();
+							}
+							else
+							{
+								CalculateDamageRight(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i][j + 1], true);
+							}
+							m_apkEnemy[e]->GetBullet(0)->Destroy();
                         }
                     }
                     break;
@@ -1235,8 +1291,16 @@ void Map::HandleCollisions(f32 fDelta)
                         if((m_aBlocks[i - 1][j] != BT_EMPTY && m_aBlocks[i - 1][j] != BT_ICE && m_aBlocks[i - 1][j] != BT_JUNGLE && m_aBlocks[i - 1][j] != BT_SEA) ||
                             (m_aBlocks[i - 1][j + 1] != BT_EMPTY && m_aBlocks[i - 1][j + 1] != BT_ICE && m_aBlocks[i - 1][j + 1] != BT_JUNGLE && m_aBlocks[i - 1][j + 1] != BT_SEA))
                         {
-                            CalculateDamageLeft(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i - 1][j], &m_aBlocks[i - 1][j + 1], true);
-                            m_apkEnemy[e]->GetBullet(0)->Destroy();
+							if(m_aBlocks[i - 1][j] == BT_EAGLERBOT || m_aBlocks[i - 1][j] == BT_EAGLERTOP ||
+							   m_aBlocks[i - 1][j + 1] == BT_EAGLERBOT || m_aBlocks[i - 1][j + 1] == BT_EAGLERTOP)
+							{
+								DestroyEagle();
+							}
+							else
+							{
+								CalculateDamageLeft(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i - 1][j], &m_aBlocks[i - 1][j + 1], true);
+							}
+							m_apkEnemy[e]->GetBullet(0)->Destroy();
                         }
                     }
                     break;
@@ -1244,6 +1308,15 @@ void Map::HandleCollisions(f32 fDelta)
             }
         }
     }
+}
+
+void Map::DestroyEagle()
+{
+	m_bEagleDestroyed = true;
+	m_aBlocks[m_pMapInfo->eagle.iX * 2][m_pMapInfo->eagle.iY * 2] = BT_DEADEAGLELTOP;
+	m_aBlocks[m_pMapInfo->eagle.iX * 2 + 1][m_pMapInfo->eagle.iY * 2] = BT_DEADEAGLERTOP;
+    m_aBlocks[m_pMapInfo->eagle.iX * 2][m_pMapInfo->eagle.iY * 2 + 1] = BT_DEADEAGLELBOT;
+    m_aBlocks[m_pMapInfo->eagle.iX * 2 + 1][m_pMapInfo->eagle.iY * 2 + 1] = BT_DEADEAGLERBOT;
 }
 
 void Map::UpdateBlocks()
@@ -1271,7 +1344,7 @@ void Map::UpdateBlocks()
     m_pAnimation->Animate();
 }
 
-void Map::Update(f32 fDelta)
+void Map::Update(f32 fDelta, bool bGetInput)
 {
     for(int i = 0; i < g_ciMapWidth * 2; i++) 
 	{
@@ -1385,80 +1458,85 @@ void Map::Update(f32 fDelta)
     }
 
     m_pkPlayer1->Spawn();
-
-    /*
-     * CONTROLS
-     */
-    // PLAYER 1
-    if(Keyboard::GetInstance()->IsKeyDown(SDLK_UP))
-    {
-        m_pkPlayer1->SetDirection(DIR_UP);
-        m_pkPlayer1->SetIsMoving(true);
-    }
-    else if(Keyboard::GetInstance()->IsKeyDown(SDLK_RIGHT))
-    {
-        m_pkPlayer1->SetDirection(DIR_RIGHT);
-        m_pkPlayer1->SetIsMoving(true);
-    }
-    else if(Keyboard::GetInstance()->IsKeyDown(SDLK_DOWN))
-    {
-        m_pkPlayer1->SetDirection(DIR_DOWN);
-        m_pkPlayer1->SetIsMoving(true);
-    }
-    else if(Keyboard::GetInstance()->IsKeyDown(SDLK_LEFT))
-    {
-        m_pkPlayer1->SetDirection(DIR_LEFT);
-        m_pkPlayer1->SetIsMoving(true);
-    }
-    if(Keyboard::GetInstance()->IsKeyUp(SDLK_UP) && Keyboard::GetInstance()->IsKeyUp(SDLK_RIGHT) &&
-       Keyboard::GetInstance()->IsKeyUp(SDLK_DOWN) && Keyboard::GetInstance()->IsKeyUp(SDLK_LEFT))
-    {
-        m_pkPlayer1->SetIsMoving(false);
-    }
-    if(Keyboard::GetInstance()->KeyPressed(SDLK_RCTRL))
-    {
-        m_pkPlayer1->Shoot();
-    }
-    if(Keyboard::GetInstance()->KeyPressed(SDLK_k))
-    {
-        m_pkPlayer1->Destroy();
-    }
-
-    // PLAYER 2
-    if(m_b2PlayerMode)
+	if(m_b2PlayerMode)
     {
         m_pkPlayer2->Spawn();
+	}
 
-        if(Keyboard::GetInstance()->IsKeyDown(SDLK_w))
-        {
-            m_pkPlayer2->SetDirection(DIR_UP);
-            m_pkPlayer2->SetIsMoving(true);
-        }
-        else if(Keyboard::GetInstance()->IsKeyDown(SDLK_d))
-        {
-            m_pkPlayer2->SetDirection(DIR_RIGHT);
-            m_pkPlayer2->SetIsMoving(true);
-        }
-        else if(Keyboard::GetInstance()->IsKeyDown(SDLK_s))
-        {
-            m_pkPlayer2->SetDirection(DIR_DOWN);
-            m_pkPlayer2->SetIsMoving(true);
-        }
-        else if(Keyboard::GetInstance()->IsKeyDown(SDLK_a))
-        {
-            m_pkPlayer2->SetDirection(DIR_LEFT);
-            m_pkPlayer2->SetIsMoving(true);
-        }
-        if(Keyboard::GetInstance()->IsKeyUp(SDLK_w) && Keyboard::GetInstance()->IsKeyUp(SDLK_d) &&
-           Keyboard::GetInstance()->IsKeyUp(SDLK_s) && Keyboard::GetInstance()->IsKeyUp(SDLK_a))
-        {
-            m_pkPlayer2->SetIsMoving(false);
-        }
-        if(Keyboard::GetInstance()->KeyPressed(SDLK_q))
-        {
-            m_pkPlayer2->Shoot();
-        }
-    }
+	if(bGetInput)
+	{
+		/*
+		 * CONTROLS
+		 */
+		// PLAYER 1
+		if(Keyboard::GetInstance()->IsKeyDown(SDLK_UP))
+		{
+			m_pkPlayer1->SetDirection(DIR_UP);
+			m_pkPlayer1->SetIsMoving(true);
+		}
+		else if(Keyboard::GetInstance()->IsKeyDown(SDLK_RIGHT))
+		{
+			m_pkPlayer1->SetDirection(DIR_RIGHT);
+			m_pkPlayer1->SetIsMoving(true);
+		}
+		else if(Keyboard::GetInstance()->IsKeyDown(SDLK_DOWN))
+		{
+			m_pkPlayer1->SetDirection(DIR_DOWN);
+			m_pkPlayer1->SetIsMoving(true);
+		}
+		else if(Keyboard::GetInstance()->IsKeyDown(SDLK_LEFT))
+		{
+			m_pkPlayer1->SetDirection(DIR_LEFT);
+			m_pkPlayer1->SetIsMoving(true);
+		}
+		if(Keyboard::GetInstance()->IsKeyUp(SDLK_UP) && Keyboard::GetInstance()->IsKeyUp(SDLK_RIGHT) &&
+		   Keyboard::GetInstance()->IsKeyUp(SDLK_DOWN) && Keyboard::GetInstance()->IsKeyUp(SDLK_LEFT))
+		{
+			m_pkPlayer1->SetIsMoving(false);
+		}
+		if(Keyboard::GetInstance()->KeyPressed(SDLK_RCTRL))
+		{
+			m_pkPlayer1->Shoot();
+		}
+		if(Keyboard::GetInstance()->KeyPressed(SDLK_k))
+		{
+			m_pkPlayer1->Destroy();
+		}
+
+		// PLAYER 2
+		if(m_b2PlayerMode)
+		{
+			if(Keyboard::GetInstance()->IsKeyDown(SDLK_w))
+			{
+				m_pkPlayer2->SetDirection(DIR_UP);
+				m_pkPlayer2->SetIsMoving(true);
+			}
+			else if(Keyboard::GetInstance()->IsKeyDown(SDLK_d))
+			{
+				m_pkPlayer2->SetDirection(DIR_RIGHT);
+				m_pkPlayer2->SetIsMoving(true);
+			}
+			else if(Keyboard::GetInstance()->IsKeyDown(SDLK_s))
+			{
+				m_pkPlayer2->SetDirection(DIR_DOWN);
+				m_pkPlayer2->SetIsMoving(true);
+			}
+			else if(Keyboard::GetInstance()->IsKeyDown(SDLK_a))
+			{
+				m_pkPlayer2->SetDirection(DIR_LEFT);
+				m_pkPlayer2->SetIsMoving(true);
+			}
+			if(Keyboard::GetInstance()->IsKeyUp(SDLK_w) && Keyboard::GetInstance()->IsKeyUp(SDLK_d) &&
+			   Keyboard::GetInstance()->IsKeyUp(SDLK_s) && Keyboard::GetInstance()->IsKeyUp(SDLK_a))
+			{
+				m_pkPlayer2->SetIsMoving(false);
+			}
+			if(Keyboard::GetInstance()->KeyPressed(SDLK_q))
+			{
+				m_pkPlayer2->Shoot();
+			}
+		}
+	} // bGetInput
 
     HandleCollisions(fDelta);
 
@@ -1514,6 +1592,8 @@ void Map::Reset()
     m_afKillTime[1] = -g_cfSpawnInterval;
     m_afKillTime[2] = -g_cfSpawnInterval;
     m_afKillTime[3] = g_cfSpawnInterval * 1.5;
+
+	m_bEagleDestroyed = false;
 }
 
 Animation *Map::SetupAnimation()

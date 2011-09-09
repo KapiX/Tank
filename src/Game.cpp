@@ -225,6 +225,12 @@ void Game::UpdateLevelPlaying(float fDelta)
         }
     }
 
+	if(m_pMap->IsEagleDestroyed())
+	{
+		m_iGameOverY = 800.0f;
+        m_GameState = GS_GAMEOVER;
+	}
+
 	if(Enemy::GetEnemiesLeft() == 0 && !m_pMap->GetEnemy(0)->IsAlive() && !m_pMap->GetEnemy(0)->IsSpawning() && !m_pMap->GetEnemy(0)->IsExploding() && !m_pMap->GetEnemy(1)->IsAlive() && !m_pMap->GetEnemy(1)->IsSpawning() && !m_pMap->GetEnemy(1)->IsExploding() && !m_pMap->GetEnemy(2)->IsAlive() && !m_pMap->GetEnemy(2)->IsSpawning() && !m_pMap->GetEnemy(2)->IsExploding() && !m_pMap->GetEnemy(3)->IsAlive() && !m_pMap->GetEnemy(3)->IsSpawning() && !m_pMap->GetEnemy(3)->IsExploding())
 	{
 		m_fOldTimer = m_fTimer;
@@ -310,16 +316,16 @@ void Game::UpdateLevelCompleted(f32 fDelta)
 
 void Game::UpdateGameOver(f32 fDelta)
 {
-	m_pMap->Update(fDelta);
+	m_pMap->Update(fDelta, false);
     
     if(m_iGameOverY > 284.0f)
     {
         m_iGameOverY -= 100.0f * fDelta;
-        m_fTimer = 0;
+		m_fOldTimer = m_fTimer;
     }
     else if(m_iGameOverY <= 284.0f)
     {
-        if(m_fTimer >= 5.0f)
+        if(m_fTimer - m_fOldTimer > 5.0f)
 		{
 			m_pMainMenu->SetCurrentItem(0);
             m_pMap->Reset();

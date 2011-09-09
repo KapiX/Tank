@@ -70,8 +70,8 @@ enum BLOCK_TYPE
     BT_EAGLERBOT = 2088,
 	BT_DEADEAGLE = 4128,
     BT_DEADEAGLELTOP = 4128,
-    BT_DEADEAGLERTOP = 4136,
-    BT_DEADEAGLELBOT = 6176,
+    BT_DEADEAGLELBOT = 4136,
+    BT_DEADEAGLERTOP = 6176,
     BT_DEADEAGLERBOT = 6184,
 	BT_EDGE = 4112,
 	BT_DUMMY = 49 // random totalny, potrzebne aby za pierwszym razem wyczyœciæ obszar wype³niony BT_EMPTY
@@ -127,9 +127,10 @@ public:
     void CalculateDamageDown(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy = false);
     void CalculateDamageLeft(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy = false);
     void HandleCollisions(f32 fDelta);
+	void DestroyEagle();
 
     void UpdateBlocks();
-	void Update(f32 fDelta);
+	void Update(f32 fDelta, bool bGetInput = true);
 	void Render();
 
     void Reset();
@@ -141,6 +142,7 @@ public:
     Player *GetPlayer2() { return m_pkPlayer2; }
 	Enemy *GetEnemy(int iEnemy) { return m_apkEnemy[iEnemy]; }
     bool Is2PlayerMode() { return m_b2PlayerMode; }
+	bool IsEagleDestroyed() { return m_bEagleDestroyed; }
 
     static Animation *SetupAnimation();
     inline static void SetTimer(f32 *pfTimer) { m_pfTimer = pfTimer; }

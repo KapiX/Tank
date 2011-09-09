@@ -279,20 +279,32 @@ void Game::UpdateLevelCompleted(f32 fDelta)
 
 	if(m_fTimer - m_fOldTimer > 3.0f)
 	{
-		// ¿ycia odejmuja sie przy spawnowaniu, bez tego po przejsciu na kolejna mape tracimy zycie
-		if(m_pMap->GetPlayer1()->IsAlive()) m_pMap->GetPlayer1()->AddLifes(1);
-		if(m_bPlayer2 && m_pMap->GetPlayer2()->IsAlive()) m_pMap->GetPlayer2()->AddLifes(1);
+		if(m_LP.GetNextLevel() > m_LP.GetLevelCount())
+		{
+			m_fTimer = 0;
+            m_iSplashLogoY = 80.0f;
+            m_pMainMenu->SetCurrentItem(0);
+            m_pMap->Reset();
+			m_LP.ResetCurrentLevel();
+            m_GameState = GS_MAINMENU;
+		}
+		else
+		{
+			// ¿ycia odejmuja sie przy spawnowaniu, bez tego po przejsciu na kolejna mape tracimy zycie
+			if(m_pMap->GetPlayer1()->IsAlive()) m_pMap->GetPlayer1()->AddLifes(1);
+			if(m_bPlayer2 && m_pMap->GetPlayer2()->IsAlive()) m_pMap->GetPlayer2()->AddLifes(1);
 
-		unsigned int size = 0;
-		unsigned char *data = 0;
-		m_LP.GetLevelData(m_LP.NextLevel(), &data, &size);
-		m_pMap->LoadMap(data, size);
-		delete [] data;
-        m_pMap->UpdateBlocks();
+			unsigned int size = 0;
+			unsigned char *data = 0;
+			m_LP.GetLevelData(m_LP.NextLevel(), &data, &size);
+			m_pMap->LoadMap(data, size);
+			delete [] data;
+			m_pMap->UpdateBlocks();
 
-        m_iLevelStartOpeningY = 300;
-		m_fTimer = 0;
-		m_GameState = GS_LEVELSTARTING;
+			m_iLevelStartOpeningY = 300;
+			m_fTimer = 0;
+			m_GameState = GS_LEVELSTARTING;
+		}
 	}
 }
 

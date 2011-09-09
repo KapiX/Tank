@@ -632,7 +632,7 @@ void Map::HandleCollisions(f32 fDelta)
                     if(m_apkEnemy[3]->IsAlive())
                     {
                         m_apkEnemy[3]->Destroy();
-                        m_afKillTime[3] = *m_pfTimer;
+                        m_afKillTime[3] = *m_pfTimer + g_cfSpawnInterval * 1.5;
                         m_fLastKill = *m_pfTimer;
                     }
                     break;
@@ -1073,7 +1073,7 @@ void Map::HandleCollisions(f32 fDelta)
                     if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2))
                     {
                         //m_apkEnemy[e]->SetIsMoving(false);
-                        m_apkEnemy[e]->SetDirection((DIRECTION) (rand() % 4));
+                        m_apkEnemy[e]->SetDirection((DIRECTION) (rand() % 4 + 1));
                     }
                 }
                 if (m_apkEnemy[e]->IsMoving())
@@ -1089,7 +1089,7 @@ void Map::HandleCollisions(f32 fDelta)
                     if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2))
                     {
                         //m_apkEnemy[e]->SetIsMoving(false);
-                        m_apkEnemy[e]->SetDirection((DIRECTION) (rand() % 4));
+                        m_apkEnemy[e]->SetDirection((DIRECTION) (rand() % 4 + 1));
                     }
                 }
 

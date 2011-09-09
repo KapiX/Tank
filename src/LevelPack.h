@@ -66,6 +66,7 @@ public:
 	void GetLevelData(int iLevel, Byte **data, unsigned int *size);
 	inline int GetCurrentLevel() { return m_iCurrentLevel; }
 	inline int GetNextLevel() { return m_iCurrentLevel + 1; }
+	inline int GetLevelCount() { return m_iLevelCount; }
 	inline int NextLevel() { m_iCurrentLevel += 1; return m_iCurrentLevel; }
 	inline void ResetCurrentLevel() { m_iCurrentLevel = 1; }
 };

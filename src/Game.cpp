@@ -215,19 +215,19 @@ void Game::UpdateLevelPlaying(float fDelta)
     {
         if(m_bPlayer2 && m_pMap->GetPlayer2()->GetLifes() == 0 && !m_pMap->GetPlayer2()->IsSpawning() && !m_pMap->GetPlayer2()->IsAlive() && !m_pMap->GetPlayer2()->IsExploding())
         {
-            m_iGameOverY = 800.0f;
+            m_iGameOverY = 600.0f;
             m_GameState = GS_GAMEOVER;
         }
         else if(!m_bPlayer2)
         {
-            m_iGameOverY = 800.0f;
+            m_iGameOverY = 600.0f;
             m_GameState = GS_GAMEOVER;
         }
     }
 
 	if(m_pMap->IsEagleDestroyed())
 	{
-		m_iGameOverY = 800.0f;
+		m_iGameOverY = 600.0f;
         m_GameState = GS_GAMEOVER;
 	}
 

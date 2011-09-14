@@ -180,6 +180,9 @@
     <ClCompile Include="..\..\src\LevelPack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\SoundManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Animation.h">
@@ -333,6 +336,9 @@
       <Filter>7z</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\LevelPack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\SoundManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

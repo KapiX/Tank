@@ -23,6 +23,8 @@ void Game::LoadResources(Texture *pFont)
     Tank::SetTimer(&m_fTimer);
     Map::SetTimer(&m_fTimer);
 
+	SoundManager::GetInstance();
+
     m_bPlayer2 = false;
 
 	m_LP.Init("levels/battlecity.tlp");
@@ -198,6 +200,7 @@ void Game::UpdateLevelStarting(float fDelta)
         {
             m_fTimer = 0;
             m_GameState = GS_LEVELPLAYING;
+			SoundManager::GetInstance()->Play(SND_LEVELSTARTING);
         }
     }
 }
@@ -209,6 +212,7 @@ void Game::UpdateLevelPlaying(float fDelta)
     if(Keyboard::GetInstance()->KeyPressed(SDLK_ESCAPE))
     {
         m_GameState = GS_LEVELPAUSE;
+		SoundManager::GetInstance()->Play(SND_PAUSE);
     }
 
     if(m_pMap->GetPlayer1()->GetLifes() == 0 && !m_pMap->GetPlayer1()->IsSpawning() && !m_pMap->GetPlayer1()->IsAlive() && !m_pMap->GetPlayer1()->IsExploding())
@@ -251,12 +255,14 @@ void Game::UpdateLevelPause(float fDelta)
     if(Keyboard::GetInstance()->KeyPressed(SDLK_ESCAPE))
     {
         m_GameState = GS_LEVELPLAYING;
+		SoundManager::GetInstance()->Play(SND_PAUSE);
     }
     if(Keyboard::GetInstance()->KeyPressed(SDLK_RETURN))
     {
         if(m_pInGameMenu->GetCurrentItem() == IM_BACK_TO_GAME)
         {
             m_GameState = GS_LEVELPLAYING;
+			SoundManager::GetInstance()->Play(SND_PAUSE);
         }
         else if(m_pInGameMenu->GetCurrentItem() == IM_EXIT_TO_MENU)
         {

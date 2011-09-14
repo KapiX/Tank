@@ -15,6 +15,7 @@
 #include "Keyboard.h"
 #include "Tank.h"
 #include "LevelPack.h"
+#include "SoundManager.h"
 
 const u16 g_ciMaxLevels = 1024;
 

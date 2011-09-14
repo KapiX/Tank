@@ -11,6 +11,7 @@
 #include "Types.h"
 #include "VideoDriver.h"
 #include "Bonus.h"
+#include "SoundManager.h"
 #include <SDL/SDL.h>
 #include <ctime>
 

@@ -59,6 +59,7 @@
     <ClCompile Include="..\..\src\OGLTexture.cpp" />
     <ClCompile Include="..\..\src\OGLVideoDriver.cpp" />
     <ClCompile Include="..\..\src\Player.cpp" />
+    <ClCompile Include="..\..\src\SoundManager.cpp" />
     <ClCompile Include="..\..\src\Tank.cpp" />
     <ClCompile Include="..\..\src\Timer.cpp" />
     <ClCompile Include="..\..\src\Window.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="..\..\src\Player.h" />
     <ClInclude Include="..\..\src\RenderList.h" />
     <ClInclude Include="..\..\src\Singleton.h" />
+    <ClInclude Include="..\..\src\SoundManager.h" />
     <ClInclude Include="..\..\src\Tank.h" />
     <ClInclude Include="..\..\src\Texture.h" />
     <ClInclude Include="..\..\src\Timer.h" />

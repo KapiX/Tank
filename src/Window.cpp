@@ -16,7 +16,7 @@ Window::~Window(void)
 
 void Window::Init(u32 iWidth, u32 iHeight, bool bFullscreen, VIDEO_DRIVER kVD)
 {
-    if(SDL_Init(SDL_INIT_VIDEO) < 0)
+    if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
     {
     }
 
@@ -37,6 +37,8 @@ void Window::Init(u32 iWidth, u32 iHeight, bool bFullscreen, VIDEO_DRIVER kVD)
             SDL_WM_SetCaption("Tank [OpenGL, using VBO]", NULL);
         }
     }
+
+	SDL_ShowCursor(SDL_DISABLE);
 
     switch(kVD)
     {

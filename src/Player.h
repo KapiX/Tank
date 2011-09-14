@@ -2,6 +2,7 @@
 #define _PLAYER_H_
 
 #include "Tank.h"
+#include "SoundManager.h"
 
 class Player :
     public Tank
@@ -42,6 +43,8 @@ public:
 	inline u32 GetLifes() const { return m_iLifes; }
 	inline u32 GetScore() const { return m_iScore; }
 	//inline PLAYER_COLOR GetColor() const { return m_kColor; }
+
+	inline void SetIsMoving(bool bIsMoving) { Tank::SetIsMoving(bIsMoving); SoundManager::GetInstance()->Play(bIsMoving ? SND_MOVING : SND_NMOVING); }
 };
 
 #endif

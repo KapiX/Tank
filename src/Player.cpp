@@ -59,6 +59,7 @@ void Player::Shoot()
                 break;
             }
             m_apkBullets[0]->m_bIsAlive = true;
+			SoundManager::GetInstance()->Play(SND_SHOOT);
             return;
         }
         else if (!m_apkBullets[1]->m_bIsAlive && !m_apkBullets[1]->m_bExplode && (m_kTL == TL_3 || m_kTL == TL_4))
@@ -85,6 +86,7 @@ void Player::Shoot()
                 break;
             }
             m_apkBullets[1]->m_bIsAlive = true;
+			SoundManager::GetInstance()->Play(SND_SHOOT);
             return;
         }
     }

@@ -692,6 +692,18 @@ void Map::HandleCollisions(f32 fDelta)
                 }
                 Bonus::GetInstance()->SetIsAlive(false);
                 pkPlayer->AddScore(500);
+				if(Bonus::GetInstance()->GetBonusType() == BONUS_LIFE)
+				{
+					SoundManager::GetInstance()->Play(SND_LIFE);
+				}
+				else if(Bonus::GetInstance()->GetBonusType() == BONUS_GRENADE)
+				{
+					SoundManager::GetInstance()->Play(SND_EEXPLOSION);
+				}
+				else
+				{
+					SoundManager::GetInstance()->Play(SND_BONUS);
+				}
 			}
         }
 
@@ -794,6 +806,7 @@ void Map::HandleCollisions(f32 fDelta)
 									if(m_apkEnemy[e]->GetHasBonus())
 									{
                                         Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+										SoundManager::GetInstance()->Play(SND_TBONUSHIT);
 									}
 								}
 								else
@@ -802,10 +815,12 @@ void Map::HandleCollisions(f32 fDelta)
 									{
 										m_apkEnemy[e]->SetHasBonus(false);
 										Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+										SoundManager::GetInstance()->Play(SND_TBONUSHIT);
 									}
 									else
 									{
 										m_apkEnemy[e]->SetShieldLevel((SHIELDLEVEL) (m_apkEnemy[e]->GetShieldLevel() - 1));
+										SoundManager::GetInstance()->Play(SND_SHIELDHIT);
 									}
 								}
 								pkPlayer->GetBullet(0)->Destroy();
@@ -817,6 +832,7 @@ void Map::HandleCollisions(f32 fDelta)
 									m_apkEnemy[e]->SetHasBonus(false);
                                     Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
 									pkPlayer->GetBullet(0)->Destroy();
+									SoundManager::GetInstance()->Play(SND_TBONUSHIT);
 								}
 								else
 								{
@@ -825,6 +841,7 @@ void Map::HandleCollisions(f32 fDelta)
                                     m_afKillTime[e] = *m_pfTimer;
                                     m_fLastKill = *m_pfTimer;
 									pkPlayer->GetBullet(0)->Destroy(false);
+									SoundManager::GetInstance()->Play(SND_EEXPLOSION);
 								}
 							}
 						}
@@ -849,6 +866,7 @@ void Map::HandleCollisions(f32 fDelta)
 									if(m_apkEnemy[e]->GetHasBonus())
 									{
 										Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+										SoundManager::GetInstance()->Play(SND_TBONUSHIT);
 									}
 								}
 								else
@@ -857,10 +875,12 @@ void Map::HandleCollisions(f32 fDelta)
 									{
 										m_apkEnemy[e]->SetHasBonus(false);
 										Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+										SoundManager::GetInstance()->Play(SND_TBONUSHIT);
 									}
 									else
 									{
 										m_apkEnemy[e]->SetShieldLevel((SHIELDLEVEL) (m_apkEnemy[e]->GetShieldLevel() - 1));
+										SoundManager::GetInstance()->Play(SND_SHIELDHIT);
 									}
 								}
 								pkPlayer->GetBullet(1)->Destroy();
@@ -872,12 +892,14 @@ void Map::HandleCollisions(f32 fDelta)
 									m_apkEnemy[e]->SetHasBonus(false);
 									Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
 									pkPlayer->GetBullet(1)->Destroy();
+									SoundManager::GetInstance()->Play(SND_TBONUSHIT);
 								}
 								else
 								{
 									pkPlayer->AddScore(m_apkEnemy[e]->GetTankLevel() * 100);
 									m_apkEnemy[e]->Destroy();
 									pkPlayer->GetBullet(1)->Destroy(false);
+									SoundManager::GetInstance()->Play(SND_EEXPLOSION);
 								}
 							}
 						}
@@ -904,16 +926,19 @@ void Map::HandleCollisions(f32 fDelta)
 								{
 									m_apkEnemy[e]->GetBullet(0)->Destroy(false);
 									pkPlayer->SetTankLevel(TL_3);
+									SoundManager::GetInstance()->Play(SND_SHIELDHIT);
 								}
 								else
 								{
 									m_apkEnemy[e]->GetBullet(0)->Destroy(); // zycia odejmuja sie przy spawnie
 									pkPlayer->Destroy();
+									SoundManager::GetInstance()->Play(SND_FEXPLOSION);
 								}
 							}
 							else
 							{
 								m_apkEnemy[e]->GetBullet(0)->Destroy(false);
+								SoundManager::GetInstance()->Play(SND_STEELHIT);
 							}
 						}
 					}
@@ -954,9 +979,15 @@ void Map::HandleCollisions(f32 fDelta)
                         else if(pkPlayer->GetBullet(b)->GetDestroyJungle())
                         {
                             if(m_aBlocks[i][j - 1] == BT_JUNGLE)
+							{
                                 m_aBlocks[i][j - 1] = BT_EMPTY;
+								SoundManager::GetInstance()->Play(SND_BRICKHIT);
+							}
                             if(m_aBlocks[i + 1][j - 1] == BT_JUNGLE)
+							{
                                 m_aBlocks[i + 1][j - 1] = BT_EMPTY;
+								SoundManager::GetInstance()->Play(SND_BRICKHIT);
+							}
                         }
                     }
                     break;
@@ -982,9 +1013,15 @@ void Map::HandleCollisions(f32 fDelta)
                         else if(pkPlayer->GetBullet(b)->GetDestroyJungle())
                         {
                             if(m_aBlocks[i][j] == BT_JUNGLE)
+							{
                                 m_aBlocks[i][j] = BT_EMPTY;
+								SoundManager::GetInstance()->Play(SND_BRICKHIT);
+							}
                             if(m_aBlocks[i + 1][j] == BT_JUNGLE)
+							{
                                 m_aBlocks[i + 1][j] = BT_EMPTY;
+								SoundManager::GetInstance()->Play(SND_BRICKHIT);
+							}
                         }
                     }
                     break;
@@ -1010,9 +1047,15 @@ void Map::HandleCollisions(f32 fDelta)
                         else if(pkPlayer->GetBullet(b)->GetDestroyJungle())
                         {
                             if(m_aBlocks[i][j] == BT_JUNGLE)
+							{
                                 m_aBlocks[i][j] = BT_EMPTY;
+								SoundManager::GetInstance()->Play(SND_BRICKHIT);
+							}
                             if(m_aBlocks[i][j + 1] == BT_JUNGLE)
+							{
                                 m_aBlocks[i][j + 1] = BT_EMPTY;
+								SoundManager::GetInstance()->Play(SND_BRICKHIT);
+							}
                         }
                     }
                     break;
@@ -1038,9 +1081,15 @@ void Map::HandleCollisions(f32 fDelta)
                         else if(pkPlayer->GetBullet(b)->GetDestroyJungle())
                         {
                             if(m_aBlocks[i - 1][j] == BT_JUNGLE)
+							{
                                 m_aBlocks[i - 1][j] = BT_EMPTY;
+								SoundManager::GetInstance()->Play(SND_BRICKHIT);
+							}
                             if(m_aBlocks[i - 1][j + 1] == BT_JUNGLE)
+							{
                                 m_aBlocks[i - 1][j + 1] = BT_EMPTY;
+								SoundManager::GetInstance()->Play(SND_BRICKHIT);
+							}
                         }
                     }
                     break;
@@ -1473,6 +1522,7 @@ void Map::Update(f32 fDelta, bool bGetInput)
 		{
 			m_pkPlayer1->SetDirection(DIR_UP);
 			m_pkPlayer1->SetIsMoving(true);
+			SoundManager::GetInstance()->Play(SND_MOVING);
 		}
 		else if(Keyboard::GetInstance()->IsKeyDown(SDLK_RIGHT))
 		{

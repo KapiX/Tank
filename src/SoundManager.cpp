@@ -26,14 +26,16 @@ SoundManager::SoundManager()
 	m_pSounds[SND_TBONUSHIT] = Mix_LoadWAV("sounds/tbonushit.ogg");
 }
 
-SoundManager::~SoundManager()
+void SoundManager::Free()
 {
-	for(int i = 1; i <= SND_COUNT; i++)
+	for(int i = 1; i < SND_COUNT; i++)
 	{
 		Mix_FreeChunk(m_pSounds[i]);
+		m_pSounds[i] = NULL;
 	}
 
 	Mix_CloseAudio();
+	Mix_Quit();
 }
 
 void SoundManager::Play(SOUND sound)

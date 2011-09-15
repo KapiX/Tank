@@ -70,6 +70,7 @@ void Game::LoadResources(Texture *pFont)
 void Game::FreeResources()
 {
 	m_LP.Free();
+	SoundManager::GetInstance()->Free();
 }
 
 void Game::Update(float fDelta)
@@ -373,8 +374,7 @@ void Game::RenderSplash()
 {
 	VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
 	pVD->DrawSprite(m_pLogo, 286, m_iSplashLogoY, 64, 0, 0);
-	pVD->PrintText(m_pGameFont, 210, 247, 64, "                      TANK                         ", 1.0f, 255, 255, 255, m_iSplashAlpha);
-	pVD->PrintText(m_pGameFont, 210, 275, 64, "           COPYRIGHT (C) 2011 TANK TEAM            ", 1.0f, 255, 255, 255, m_iSplashAlpha);
+	pVD->PrintText(m_pGameFont, 210, 261, 64, "                      TANK                         ", 1.0f, 255, 255, 255, m_iSplashAlpha);
 	pVD->PrintText(m_pGameFont, 210, 289, 64, "     ORIGINAL SOUNDS AND GRAPHICS - NAMCO, Ltd.    ", 1.0f, 255, 255, 255, m_iSplashAlpha);
 	pVD->PrintText(m_pGameFont, 210, 303, 64, "BINARIES LICENSED UNDER COMMON PUBLIC LICENSE (CPL)", 1.0f, 255, 255, 255, m_iSplashAlpha);
 }

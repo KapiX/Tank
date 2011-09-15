@@ -9,7 +9,7 @@
 
 enum SOUND
 {
-	SND_BONUS = 1,
+	SND_BONUS = 0,
 	SND_BRICKHIT,
 	SND_EEXPLOSION,
 	SND_FEXPLOSION,
@@ -25,7 +25,7 @@ enum SOUND
 	SND_STEELHIT,
 	SND_TBONUSHIT,
 
-	SND_COUNT = SND_TBONUSHIT,
+	SND_COUNT,
 };
 
 enum CHANNEL
@@ -45,8 +45,8 @@ private:
 
 public:
 	SoundManager();
-	~SoundManager();
 
+	void Free();
 	void Play(SOUND sound);
 };
 

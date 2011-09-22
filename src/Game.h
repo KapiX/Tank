@@ -110,6 +110,9 @@ public:
 	void RenderGameOver();
 
     void RenderHUD();
+
+	void Pause();
+	void Unpause();
 };
 
 #endif

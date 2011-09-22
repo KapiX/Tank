@@ -26,6 +26,10 @@ private:
 
     bool m_bRunning;
 
+	f32 m_fMaxAccumulatedTime;
+	f32 m_fLimit;
+	f32 m_fFPS;
+
 public:
     Window(void);
     ~Window(void);
@@ -34,16 +38,27 @@ public:
               VIDEO_DRIVER kVD = VD_OPENGL);
     void Shutdown();
 
+	void Loop();
+
     void Quit() { m_bRunning = false; }
     
     void HandleEvents();
     
     int IsEventPending() { return SDL_PollEvent(&m_kEvent); }
 
+	void SetPhysicsFPSLimit(f32 fLimit) { m_fLimit = fLimit; }
+	f32 GetPhysicsFPSLimit() const { return m_fLimit; }
+
     void *GetHwnd();
     VideoDriver *GetVideoDriver() const { return m_pVD; }
+	f32 GetFPS() const { return m_fFPS; }
 
     bool IsRunning() const { return m_bRunning; }
+
+	void (*Update)(float fDelta);
+	void (*Render)();
+	void (*Focus)();
+	void (*Unfocus)();
 };
 
 #endif

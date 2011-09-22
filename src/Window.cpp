@@ -2,8 +2,11 @@
 #include "Window.h"
 #include "OGLVideoDriver.h"
 //#include "D3D8VideoDriver.h"
+#include <algorithm>
 #ifdef WIN32
     #include <SDL/SDL_syswm.h>
+	#undef max
+	#undef min
 #endif
 
 Window::Window(void)
@@ -52,6 +55,10 @@ void Window::Init(u32 iWidth, u32 iHeight, bool bFullscreen, VIDEO_DRIVER kVD)
         return;
     }
 
+	m_fMaxAccumulatedTime = 1.0f;
+	m_fLimit = 60.0f;
+	m_fFPS = 0.0f;
+
     m_bRunning = true;
 }
 
@@ -70,6 +77,47 @@ void Window::Shutdown()
     SDL_Quit();
 }
 
+void Window::Loop()
+{
+	int iFrames = 0;
+	float fFramesTime = 0.0f;
+	float fDelta = 0.0f;
+	float fLastUpdateTime = SDL_GetTicks() / 1000.0f;
+    float fAccumulator = 0.0f;
+	float fTimeStep = 1.0f / m_fLimit;
+
+	while(IsRunning())
+    {
+        fDelta = SDL_GetTicks() / 1000.0f - fLastUpdateTime;
+        fLastUpdateTime += fDelta;
+        fDelta = std::max(0.0f, fDelta);
+        fAccumulator += fDelta;
+		// przyciêcie wartoœci
+        fAccumulator = std::min(m_fMaxAccumulatedTime, std::max(fAccumulator, 0.0f));
+
+        if(IsEventPending())
+        {
+            HandleEvents();
+        }
+        while(fAccumulator > fTimeStep)
+        {
+            Update(fTimeStep);
+            fAccumulator -= fTimeStep;
+        }
+
+		Render();
+
+		iFrames++;
+        fFramesTime += fDelta;
+        if(fFramesTime >= 1.0)
+        {
+            m_fFPS = iFrames / fFramesTime;
+            iFrames = 0;
+            fFramesTime = 0.0f;
+        }
+    }
+}
+
 void Window::HandleEvents()
 {
     switch(m_kEvent.type)
@@ -77,6 +125,19 @@ void Window::HandleEvents()
     case SDL_QUIT:
         m_bRunning = false;
         return;
+	case SDL_ACTIVEEVENT:
+		if(m_kEvent.active.state & SDL_APPINPUTFOCUS)
+		{
+			if(m_kEvent.active.gain)
+			{
+				Focus();
+			}
+			else
+			{
+				Unfocus();
+			}
+		}
+		break;
     }
 }
 

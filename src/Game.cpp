@@ -487,3 +487,15 @@ void Game::RenderGameOver()
 	pVD->PrintText(m_pGameFont, 364, m_iGameOverY, 64, "   GRA   ", 1.0f, 255, 0, 0, 255);
     pVD->PrintText(m_pGameFont, 364, m_iGameOverY + 14, 64, "SKOÑCZONA", 1.0f, 255, 0, 0, 255);
 }
+
+void Game::Pause()
+{
+    m_GameState = GS_LEVELPAUSE;
+	SoundManager::GetInstance()->Play(SND_PAUSE);
+}
+
+void Game::Unpause()
+{
+	m_GameState = GS_LEVELPLAYING;
+	SoundManager::GetInstance()->Play(SND_PAUSE);
+}

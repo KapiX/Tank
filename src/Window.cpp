@@ -105,7 +105,7 @@ void Window::Loop()
             fAccumulator -= fTimeStep;
         }
 
-		Render();
+		Render(m_pVD);
 
 		iFrames++;
         fFramesTime += fDelta;

@@ -48,6 +48,7 @@ public:
 
 	void Free();
 	void Play(SOUND sound);
+	void Stop();
 };
 
 #endif

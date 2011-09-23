@@ -91,3 +91,8 @@ void SoundManager::Play(SOUND sound)
 		return;
 	}
 }
+
+void SoundManager::Stop()
+{
+	Mix_HaltChannel(-1);
+}

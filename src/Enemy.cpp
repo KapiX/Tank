@@ -110,14 +110,20 @@ void Enemy::Update(f32 fDelta)
         m_pkAnim->Animate();
 
         static bool shot = false;
+		static bool chdir = false;
 
         f32 time1 = (int) *m_pfTimer % 3;
-        f32 time2 = (int) *m_pfTimer % ((rand() % 3) + 1);
+        f32 time2 = (int) *m_pfTimer % ((rand() % 5) + 1);
 
-        if(time1 == 0)
+        if(time1 == 0 && !chdir)
         {
             SetDirection((DIRECTION) ((rand() % 12039) % 4 + 1));
+			chdir = true;
         }
+		else if(time1 != 0 && chdir)
+		{
+			chdir = false;
+		}
         if(time2 == 0 && !shot)
         {
             Shoot();

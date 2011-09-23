@@ -56,7 +56,7 @@ public:
     bool IsRunning() const { return m_bRunning; }
 
 	void (*Update)(float fDelta);
-	void (*Render)();
+	void (*Render)(VideoDriver *pVD);
 	void (*Focus)();
 	void (*Unfocus)();
 };

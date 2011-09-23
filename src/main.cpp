@@ -31,17 +31,17 @@ void Update(float fDelta)
 	Game::GetInstance()->Update(fDelta);
 }
 
-void Render()
+void Render(VideoDriver *pVD)
 {
-	Window::GetInstance()->GetVideoDriver()->BeginScene();
+	pVD->BeginScene();
 
-    Window::GetInstance()->GetVideoDriver()->Clear(0, 0, 0);
+    pVD->Clear(0, 0, 0);
     Game::GetInstance()->Render();
 	// Rysowanie FPS
 	sprintf(temp, "FPS:%d", (int) Window::GetInstance()->GetFPS());
-	Window::GetInstance()->GetVideoDriver()->PrintText(pFont, 730, 6, 64, temp, 1, 0, 255, 0);
+	pVD->PrintText(pFont, 730, 6, 64, temp, 1, 0, 255, 0);
 
-    Window::GetInstance()->GetVideoDriver()->EndScene();
+    pVD->EndScene();
 }
 
 int main(int argc, char *argv[])

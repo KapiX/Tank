@@ -222,11 +222,13 @@ void Game::UpdateLevelPlaying(float fDelta)
         {
             m_iGameOverY = 600.0f;
             m_GameState = GS_GAMEOVER;
+			SoundManager::GetInstance()->Stop();
         }
         else if(!m_bPlayer2)
         {
             m_iGameOverY = 600.0f;
             m_GameState = GS_GAMEOVER;
+			SoundManager::GetInstance()->Stop();
         }
     }
 
@@ -234,6 +236,7 @@ void Game::UpdateLevelPlaying(float fDelta)
 	{
 		m_iGameOverY = 600.0f;
         m_GameState = GS_GAMEOVER;
+		SoundManager::GetInstance()->Stop();
 	}
 
 	if(Enemy::GetEnemiesLeft() == 0 && !m_pMap->GetEnemy(0)->IsAlive() && !m_pMap->GetEnemy(0)->IsSpawning() && !m_pMap->GetEnemy(0)->IsExploding() && !m_pMap->GetEnemy(1)->IsAlive() && !m_pMap->GetEnemy(1)->IsSpawning() && !m_pMap->GetEnemy(1)->IsExploding() && !m_pMap->GetEnemy(2)->IsAlive() && !m_pMap->GetEnemy(2)->IsSpawning() && !m_pMap->GetEnemy(2)->IsExploding() && !m_pMap->GetEnemy(3)->IsAlive() && !m_pMap->GetEnemy(3)->IsSpawning() && !m_pMap->GetEnemy(3)->IsExploding())
@@ -484,8 +487,8 @@ void Game::RenderGameOver()
     // dolna belka
 	RenderHUD();
 
-	pVD->PrintText(m_pGameFont, 364, m_iGameOverY, 64, "   GRA   ", 1.0f, 255, 0, 0, 255);
-    pVD->PrintText(m_pGameFont, 364, m_iGameOverY + 14, 64, "SKOÑCZONA", 1.0f, 255, 0, 0, 255);
+	pVD->PrintText(m_pGameFont, 384, m_iGameOverY, 64, "GAME", 1.0f, 255, 0, 0, 255);
+    pVD->PrintText(m_pGameFont, 384, m_iGameOverY + 14, 64, "OVER", 1.0f, 255, 0, 0, 255);
 }
 
 void Game::Pause()

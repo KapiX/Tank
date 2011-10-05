@@ -1,3 +1,22 @@
+/*
+	Copyright 2011 Kacper Kasper
+
+	This file is part of Tank.
+
+    Tank is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Tank is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Tank.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef _KEYBOARD_H_
 #define _KEYBOARD_H_
 
@@ -55,7 +74,7 @@ public:
         case SDLK_RETURN: return "Enter";
         case SDLK_PAUSE: return "Pause";
         case SDLK_ESCAPE: return "Escape";
-        case SDLK_SPACE: return "Spacja";
+        case SDLK_SPACE: return "Space";
         case SDLK_EXCLAIM: return "!";
         case SDLK_QUOTEDBL: return "\"";
         case SDLK_HASH: return "#";
@@ -137,10 +156,10 @@ public:
         case SDLK_KP_PLUS: return "Num +";
         case SDLK_KP_ENTER: return "Num Enter";
         case SDLK_KP_EQUALS: return "Num =";
-        case SDLK_UP: return "Strza³ka w górê";
-        case SDLK_DOWN: return "Strza³ka w dó³";
-        case SDLK_RIGHT: return "Strza³ka w prawo";
-        case SDLK_LEFT: return "Strza³ka w lewo";
+        case SDLK_UP: return "Up";
+        case SDLK_DOWN: return "Down";
+        case SDLK_RIGHT: return "Right";
+        case SDLK_LEFT: return "Left";
         case SDLK_INSERT: return "Insert";
         case SDLK_HOME: return "Home";
         case SDLK_END: return "End";
@@ -164,26 +183,26 @@ public:
         case SDLK_NUMLOCK: return "Num Lock";
         case SDLK_CAPSLOCK: return "Caps Lock";
         case SDLK_SCROLLOCK: return "Scroll Lock";
-        case SDLK_RSHIFT: return "Prawy Shift";
-        case SDLK_LSHIFT: return "Lewy Shift";
-        case SDLK_RCTRL: return "Prawy Ctrl";
-        case SDLK_LCTRL: return "Lewy Ctrl";
-        case SDLK_RALT: return "Prawy Alt";
-        case SDLK_LALT: return "Lewy Alt";
-        case SDLK_RMETA: return "Prawy META";
-        case SDLK_LMETA: return "Lewy META";
-        case SDLK_LSUPER: return "Lewy Windows";
-        case SDLK_RSUPER: return "Prawy Windows";
+        case SDLK_RSHIFT: return "Right Shift";
+        case SDLK_LSHIFT: return "Left Shift";
+        case SDLK_RCTRL: return "Right Ctrl";
+        case SDLK_LCTRL: return "Left Ctrl";
+        case SDLK_RALT: return "Right Alt";
+        case SDLK_LALT: return "Left Alt";
+        case SDLK_RMETA: return "Right META";
+        case SDLK_LMETA: return "Left META";
+        case SDLK_LSUPER: return "Left SUPER";
+        case SDLK_RSUPER: return "Right SUPER";
         case SDLK_MODE: return "Alt Gr";
         case SDLK_COMPOSE: return "Compose";
-        case SDLK_HELP: return "Pomoc";
+        case SDLK_HELP: return "Help";
         case SDLK_PRINT: return "Print Screen";
         case SDLK_SYSREQ: return "Sys Rq";
         case SDLK_BREAK: return "Break";
         case SDLK_MENU: return "Menu";
         case SDLK_POWER: return "Power";
         case SDLK_EURO: return "Euro";
-        case SDLK_UNDO: return "Cofnij";
+        case SDLK_UNDO: return "Undo";
         default: return "";
         }
     }

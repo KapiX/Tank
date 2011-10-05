@@ -3,3 +3,6 @@ In order to make this project work, you need to:
   directory where your executable file is located
 - (on Windows) put dlls from libs/bin in directory where your executable file
   is located
+
+*.tlp files are just 7z archives and you can modify them using any software
+that supports 7z format.

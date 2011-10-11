@@ -396,9 +396,9 @@ void Game::RenderSplash()
 {
 	VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
 	pVD->DrawSprite(m_pLogo, 286, m_iSplashLogoY, 64, 0, 0);
-	pVD->PrintText(m_pGameFont, 210, 261, 64, "                      TANK                         ", 1.0f, 255, 255, 255, m_iSplashAlpha);
-	pVD->PrintText(m_pGameFont, 210, 289, 64, "     ORIGINAL SOUNDS AND GRAPHICS - NAMCO, Ltd.    ", 1.0f, 255, 255, 255, m_iSplashAlpha);
-	pVD->PrintText(m_pGameFont, 210, 303, 64, "BINARIES LICENSED UNDER COMMON PUBLIC LICENSE (CPL)", 1.0f, 255, 255, 255, m_iSplashAlpha);
+	pVD->PrintText(m_pGameFont, 210, 261, 64, "                      TANK                       ", 1.0f, 255, 255, 255, m_iSplashAlpha);
+	pVD->PrintText(m_pGameFont, 210, 289, 64, "    ORIGINAL SOUNDS AND GRAPHICS - NAMCO, Ltd.   ", 1.0f, 255, 255, 255, m_iSplashAlpha);
+	pVD->PrintText(m_pGameFont, 210, 303, 64, "BINARIES AND SOURCE LICENSED UNDER GNU GPL VER. 3", 1.0f, 255, 255, 255, m_iSplashAlpha);
 }
 
 void Game::RenderMainMenu()

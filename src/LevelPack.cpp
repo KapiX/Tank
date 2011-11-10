@@ -18,6 +18,7 @@
 */
 
 #include "LevelPack.h"
+#include <cstring>
 
 void LevelPack::Init(const char *strFilename)
 {

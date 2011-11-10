@@ -19,8 +19,7 @@
 
 /**
  TODO:
- - slizganie na BT_ICE
- - kolizje pociskow lepiej odzwierciedlic
+ - sliding on BT_ICE
  */
 
 #include <SDL/SDL.h>

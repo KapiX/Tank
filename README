@@ -6,3 +6,10 @@ In order to make this project work, you need to:
 
 *.tlp files are just 7z archives and you can modify them using any software
 that supports 7z format.
+
+Compiling on linux:
+Needed libs:
+- libSDL-1.2.14
+- libSDL_image-1.2.10
+- libSDL_mixer-1.2.11
+- libGLEW-1.5

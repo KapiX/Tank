@@ -255,7 +255,6 @@ void Game::UpdateLevelPlaying(float fDelta)
 	{
 		m_iGameOverY = 600.0f;
         m_GameState = GS_GAMEOVER;
-		SoundManager::GetInstance()->Stop();
 	}
 
 	if(Enemy::GetEnemiesLeft() == 0 && !m_pMap->GetEnemy(0)->IsAlive() && !m_pMap->GetEnemy(0)->IsSpawning() && !m_pMap->GetEnemy(0)->IsExploding() && !m_pMap->GetEnemy(1)->IsAlive() && !m_pMap->GetEnemy(1)->IsSpawning() && !m_pMap->GetEnemy(1)->IsExploding() && !m_pMap->GetEnemy(2)->IsAlive() && !m_pMap->GetEnemy(2)->IsSpawning() && !m_pMap->GetEnemy(2)->IsExploding() && !m_pMap->GetEnemy(3)->IsAlive() && !m_pMap->GetEnemy(3)->IsSpawning() && !m_pMap->GetEnemy(3)->IsExploding())
@@ -512,12 +511,18 @@ void Game::RenderGameOver()
 
 void Game::Pause()
 {
-    m_GameState = GS_LEVELPAUSE;
-	SoundManager::GetInstance()->Play(SND_PAUSE);
+	if(m_GameState == GS_LEVELPLAYING)
+	{
+		m_GameState = GS_LEVELPAUSE;
+		SoundManager::GetInstance()->Play(SND_PAUSE);
+	}
 }
 
 void Game::Unpause()
 {
-	m_GameState = GS_LEVELPLAYING;
-	SoundManager::GetInstance()->Play(SND_PAUSE);
+	if(m_GameState == GS_LEVELPAUSE)
+	{
+		m_GameState = GS_LEVELPLAYING;
+		SoundManager::GetInstance()->Play(SND_PAUSE);
+	}
 }

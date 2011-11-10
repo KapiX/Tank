@@ -56,7 +56,7 @@ private:
 
 	int Buf_EnsureSize(CBuf *dest, size_t size);
 #ifndef _WIN32
-	Byte kUtf8Limits[5] = { 0xC0, 0xE0, 0xF0, 0xF8, 0xFC }; // TODO nie skompiluje sie
+	Byte kUtf8Limits[5];
 
 	Bool Utf16_To_Utf8(Byte *dest, size_t *destLen, const UInt16 *src, size_t srcLen);
 	SRes Utf16_To_Utf8Buf(CBuf *dest, const UInt16 *src, size_t srcLen);

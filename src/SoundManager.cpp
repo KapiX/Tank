@@ -21,7 +21,6 @@
 
 SoundManager::SoundManager()
 {
-	Mix_Init(MIX_INIT_OGG);
 	Mix_OpenAudio(96000, MIX_DEFAULT_FORMAT, 1, 1024);
 
 	Mix_AllocateChannels(5);
@@ -54,7 +53,6 @@ void SoundManager::Free()
 	}
 
 	Mix_CloseAudio();
-	Mix_Quit();
 }
 
 void SoundManager::Play(SOUND sound)

@@ -46,6 +46,8 @@ void Window::Init(u32 iWidth, u32 iHeight, bool bFullscreen, VIDEO_DRIVER kVD)
     flags = SDL_HWSURFACE | SDL_OPENGL;
     if(bFullscreen) flags |= SDL_FULLSCREEN;
 
+	SDL_WM_SetIcon(SDL_LoadBMP("icon.bmp"), NULL);
+
     m_pScreen = SDL_SetVideoMode(iWidth, iHeight, 24, flags);
 
     if(kVD == VD_OPENGL)
@@ -111,7 +113,7 @@ void Window::Loop()
         fLastUpdateTime += fDelta;
         fDelta = std::max(0.0f, fDelta);
         fAccumulator += fDelta;
-		// przyciêcie wartoœci
+		// przyciÃªcie wartoÂœci
         fAccumulator = std::min(m_fMaxAccumulatedTime, std::max(fAccumulator, 0.0f));
 
         if(IsEventPending())

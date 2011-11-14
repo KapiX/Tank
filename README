@@ -1,15 +1,15 @@
 In order to make this project work, you need to:
-- put directories graphics and levels (which are located in resources) in
-  directory where your executable file is located
+- put directories graphics, levels and sounds, and icon.bmp (which are located
+  in resources) in directory where your executable file is located
 - (on Windows) put dlls from libs/bin in directory where your executable file
   is located
 
 *.tlp files are just 7z archives and you can modify them using any software
 that supports 7z format.
 
-Compiling on linux:
+Compiling/running on linux:
 Needed libs:
 - libSDL-1.2.14
 - libSDL_image-1.2.10
-- libSDL_mixer-1.2.11
+- libSDL_mixer-1.2.8
 - libGLEW-1.5

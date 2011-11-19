@@ -35,6 +35,7 @@ Enemy::Enemy(VideoDriver *pVD, Texture *pTankTexture, Texture *pMiscTexture, boo
     m_pkBonusAnim->SetPlaying(m_bHasBonus);
     m_kSL = kSL;
     m_bSpawn = false;
+	m_bStopped = false;
     SetIsMoving(true);
 }
 
@@ -100,6 +101,7 @@ void Enemy::Update(f32 fDelta)
 {
     Tank::Update(fDelta);
 
+	// Checking if time bonus is over
     if(*m_pfTimer - m_fStopTime > 10.0f)
         m_bStopped = false;
 

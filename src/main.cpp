@@ -17,11 +17,6 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
- TODO:
- - sliding on BT_ICE
- */
-
 #include <SDL/SDL.h>
 #include <cstdio>
 

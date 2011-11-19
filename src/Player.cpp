@@ -115,30 +115,64 @@ void Player::Update(f32 fDelta)
 {
     Tank::Update(fDelta);
 
-    if(m_bIsAlive && m_bIsMoving)
-    {
-        m_pkAnim->Animate();
-		switch(m_kDir)
-        {
-			case DIR_LEFT:
-				m_iX -= m_iSpeed * fDelta;
-				break;
-			case DIR_RIGHT:
-				m_iX += m_iSpeed * fDelta;
-				break;
-			case DIR_UP:
-				m_iY -= m_iSpeed * fDelta;
-				break;
-			case DIR_DOWN:
-				m_iY += m_iSpeed * fDelta;
-				break;
-		}
+	// prevent change of direction
+	if(m_fSlide > 0)
+	{
+		m_bIsMoving = false;
+		m_kDir = m_kSlidingDir;
+	}
+	else
+	{
+		m_bSliding = false;
 	}
 
-    if(m_bIsAlive && m_bShield)
-    {
-        m_pkShieldAnim->Animate();
-    }
+	if(m_bIsAlive)
+	{
+		if(m_bIsMoving)
+		{
+			m_pkAnim->Animate();
+			switch(m_kDir)
+			{
+				case DIR_LEFT:
+					m_iX -= m_iSpeed * fDelta;
+					break;
+				case DIR_RIGHT:
+					m_iX += m_iSpeed * fDelta;
+					break;
+				case DIR_UP:
+					m_iY -= m_iSpeed * fDelta;
+					break;
+				case DIR_DOWN:
+					m_iY += m_iSpeed * fDelta;
+					break;
+			}
+		}
+		if(m_bSliding && !m_bIsMoving)
+		{
+			m_pkAnim->Animate();
+			m_fSlide -= m_iSpeed * fDelta;
+			switch(m_kSlidingDir)
+			{
+				case DIR_LEFT:
+					m_iX -= m_iSpeed * fDelta;
+					break;
+				case DIR_RIGHT:
+					m_iX += m_iSpeed * fDelta;
+					break;
+				case DIR_UP:
+					m_iY -= m_iSpeed * fDelta;
+					break;
+				case DIR_DOWN:
+					m_iY += m_iSpeed * fDelta;
+					break;
+			}
+		}
+
+		if(m_bShield)
+		{
+			m_pkShieldAnim->Animate();
+		}
+	}
     if(m_bSpawn && m_pkSpawnAnim->GetCurrentFrame() == 9)
     {
         ActivateShield(5.0f);
@@ -210,4 +244,11 @@ void Player::ActivateShield(f32 iTime)
     m_bShield = true;
     m_iShieldTime = iTime;
     m_fOldTime = *m_pfTimer;
+}
+
+void Player::Slide(f32 fSlide)
+{
+	m_bSliding = true;
+	m_fSlide = fSlide;
+	m_kSlidingDir = m_kDir;
 }

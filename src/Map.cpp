@@ -650,7 +650,11 @@ void Map::HandleCollisions(f32 fDelta)
             {
                 if((m_aBlocks[i][j - 1] != BT_EMPTY && m_aBlocks[i][j - 1] != BT_ICE && m_aBlocks[i][j - 1] != BT_JUNGLE) ||
                    (m_aBlocks[i + 1][j - 1] != BT_EMPTY && m_aBlocks[i + 1][j - 1] != BT_ICE && m_aBlocks[i + 1][j - 1] != BT_JUNGLE))
+				{
                     pkPlayer->SetIsMoving(false);
+					pkPlayer->Slide(0.0f);
+				}
+				if(pkPlayer->IsMoving() && m_aBlocks[i][j] == BT_ICE && m_aBlocks[i + 1][j] == BT_ICE) pkPlayer->Slide(16.0f);
             }
             break;
         case DIR_DOWN:
@@ -660,7 +664,11 @@ void Map::HandleCollisions(f32 fDelta)
             {
                 if((m_aBlocks[i][j + 2] != BT_EMPTY && m_aBlocks[i][j + 2] != BT_ICE && m_aBlocks[i][j + 2] != BT_JUNGLE) ||
                    (m_aBlocks[i + 1][j + 2] != BT_EMPTY && m_aBlocks[i + 1][j + 2] != BT_ICE && m_aBlocks[i + 1][j + 2] != BT_JUNGLE))
+				{
                     pkPlayer->SetIsMoving(false);
+					pkPlayer->Slide(0.0f);
+				}
+				if(pkPlayer->IsMoving() && m_aBlocks[i][j + 1] == BT_ICE && m_aBlocks[i + 1][j + 1] == BT_ICE) pkPlayer->Slide(16.0f);
             }
             break;
         case DIR_RIGHT:
@@ -670,7 +678,11 @@ void Map::HandleCollisions(f32 fDelta)
             {
                 if((m_aBlocks[i + 2][j] != BT_EMPTY && m_aBlocks[i + 2][j] != BT_ICE && m_aBlocks[i + 2][j] != BT_JUNGLE) ||
                    (m_aBlocks[i + 2][j + 1] != BT_EMPTY && m_aBlocks[i + 2][j + 1] != BT_ICE && m_aBlocks[i + 2][j + 1] != BT_JUNGLE))
+				{
                     pkPlayer->SetIsMoving(false);
+					pkPlayer->Slide(0.0f);
+				}
+				if(pkPlayer->IsMoving() && m_aBlocks[i + 1][j] == BT_ICE && m_aBlocks[i + 1][j + 1] == BT_ICE) pkPlayer->Slide(16.0f);
             }
             break;
         case DIR_LEFT:
@@ -680,7 +692,11 @@ void Map::HandleCollisions(f32 fDelta)
             {
                 if((m_aBlocks[i - 1][j] != BT_EMPTY && m_aBlocks[i - 1][j] != BT_ICE && m_aBlocks[i - 1][j] != BT_JUNGLE) ||
                    (m_aBlocks[i - 1][j + 1] != BT_EMPTY && m_aBlocks[i - 1][j + 1] != BT_ICE && m_aBlocks[i - 1][j + 1] != BT_JUNGLE))
+				{
                     pkPlayer->SetIsMoving(false);
+					pkPlayer->Slide(0.0f);
+				}
+				if(pkPlayer->IsMoving() && m_aBlocks[i][j] == BT_ICE && m_aBlocks[i + 1][j + 1] == BT_ICE) pkPlayer->Slide(16.0f);
             }
             break;
         }

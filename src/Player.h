@@ -35,6 +35,10 @@ private:
 
     f32 m_fOldTime; // shield
 
+	f32 m_fSlide;
+	bool m_bSliding;
+	DIRECTION m_kSlidingDir;
+
 public:
     Player(VideoDriver *pVD, Texture *pTankTexture, Texture *pMiscTexture, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 85.0f);
     ~Player();
@@ -49,6 +53,7 @@ public:
     void OnExplode();
 
     void ActivateShield(f32 iTime);
+	void Slide(f32 fSlide);
 
 	inline void ResetAnimations() { Tank::ResetAnimations(); m_pkShieldAnim->Reset(); }
 

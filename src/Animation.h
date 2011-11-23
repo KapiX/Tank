@@ -38,14 +38,25 @@ private:
 	bool m_bOscillate; // 1, 2, 3, 2, 1, 2, ...
 	u8 m_iMaxFrames;
 
+	u8 *m_iFrames;
+	u8 m_iFrameIterator;
+
     static f32 *m_pfTimer;
+
+#pragma warning(disable:4244)
 
 public:
 	Animation():
-		m_iCurrentFrame(0), m_iMaxFrames(0), m_iFrameInc(1),
+		m_iCurrentFrame(0), m_iMaxFrames(0), m_iFrameInc(1), m_iFrameIterator(0),
 		m_iFrameRate(100), m_iOldTime(0),
-		m_bOscillate(false), m_bPlaying(true) {}
-	~Animation() {}
+		m_bOscillate(false), m_bPlaying(true) { m_iFrames = NULL; }
+	~Animation() {
+		if(m_iFrames != NULL)
+		{
+			delete [] m_iFrames;
+			m_iFrames = NULL;
+		}
+	}
 
 	void Animate();
 
@@ -54,11 +65,13 @@ public:
 	inline void SetMaxFrames(u8 iMaxFrames) { m_iMaxFrames = iMaxFrames; }
 	inline void SetCurrentFrame(u8 iCurrentFrame) { m_iCurrentFrame = iCurrentFrame; }
 	inline void SetFrameRate(f32 iFrameRate) { m_iFrameRate = iFrameRate; }
+	inline void SetFrames(u8 *iFrames) { m_iFrames = iFrames; }
 
 	inline bool GetPlaying() const { return m_bPlaying; }
 	inline bool GetOscillate() const { return m_bOscillate; }
 	inline u8 GetMaxFrames() const { return m_iMaxFrames; }
 	inline u8 GetCurrentFrame() const { return m_iCurrentFrame; }
+	inline u8 GetFrameIterator() const { return m_iFrameIterator; }
 
     static inline void SetTimer(f32 *pfTimer) { m_pfTimer = pfTimer; }
 

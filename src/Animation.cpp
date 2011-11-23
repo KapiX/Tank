@@ -27,21 +27,30 @@ void Animation::Animate() {
 			return;
 
 		m_iOldTime = *m_pfTimer;
-		m_iCurrentFrame += m_iFrameInc;
+		if(m_iFrames == NULL)
+		{
+			m_iCurrentFrame += m_iFrameInc;
 
-		if(m_bOscillate) {
-			if(m_iFrameInc > 0) 
-            {
-				if(m_iCurrentFrame >= m_iMaxFrames - 1)
-					m_iFrameInc = -m_iFrameInc;
-			}
-            else
-            {
-				if(m_iCurrentFrame <= 0)
-					m_iFrameInc = -m_iFrameInc;
-			}
-		} else
-			if(m_iCurrentFrame >= m_iMaxFrames)
-				m_iCurrentFrame = 0;
+			if(m_bOscillate) {
+				if(m_iFrameInc > 0) 
+				{
+					if(m_iCurrentFrame >= m_iMaxFrames - 1)
+						m_iFrameInc = -m_iFrameInc;
+				}
+				else
+				{
+					if(m_iCurrentFrame <= 0)
+						m_iFrameInc = -m_iFrameInc;
+				}
+			} else
+				if(m_iCurrentFrame >= m_iMaxFrames)
+					m_iCurrentFrame = 0;
+		}
+		else
+		{
+			m_iCurrentFrame = m_iFrames[m_iFrameIterator];
+			m_iFrameIterator++;
+			if(m_iFrameIterator >= m_iMaxFrames) m_iFrameIterator = 0;
+		}
 	}
 }

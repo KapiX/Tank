@@ -44,7 +44,7 @@ void Bonus::Randomize(u16 iX, u16 iY, u16 iW, u16 iH)
 {
 	m_iX = rand() % iW + iX;
 	m_iY = rand() % iH + iY;
-	m_bt = static_cast<BONUS_TYPE>((rand() % BONUS_PISTOL) + 1);
+	m_bt = static_cast<BONUS_TYPE>((rand() % BONUS_BOAT) + 1);
 	m_bIsAlive = true;
 }
 

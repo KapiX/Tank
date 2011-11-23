@@ -30,8 +30,11 @@ private:
     Animation *m_pkShieldAnim;
     bool m_bShield;
     f32 m_iShieldTime;
+	bool m_bBoat;
     u32 m_iLifes;
     u32 m_iScore;
+
+	u8 m_iNum;
 
     f32 m_fOldTime; // shield
 
@@ -40,7 +43,7 @@ private:
 	DIRECTION m_kSlidingDir;
 
 public:
-    Player(VideoDriver *pVD, Texture *pTankTexture, Texture *pMiscTexture, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 85.0f);
+    Player(VideoDriver *pVD, u8 iNum, Texture *pTankTexture, Texture *pMiscTexture, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 85.0f);
     ~Player();
 
     void Spawn();
@@ -57,6 +60,7 @@ public:
 
 	inline void ResetAnimations() { Tank::ResetAnimations(); m_pkShieldAnim->Reset(); }
 
+	inline void SetBoat(bool bBoat) { m_bBoat = bBoat; }
     inline void SetLifes(u32 iLifes) { m_iLifes = iLifes; }
 	inline void AddLifes(s32 iLifes) { m_iLifes += iLifes; }
 	inline void SetScore(u32 iScore) { m_iScore = iScore; }
@@ -64,6 +68,7 @@ public:
 	//inline void SetColor(PLAYER_COLOR pc) { m_kColor = pc; }
 	
 	inline bool GetShield() const { return m_bShield; }
+	inline bool GetBoat() const { return m_bBoat; }
 	inline u32 GetLifes() const { return m_iLifes; }
 	inline u32 GetScore() const { return m_iScore; }
 	//inline PLAYER_COLOR GetColor() const { return m_kColor; }

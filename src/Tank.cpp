@@ -135,9 +135,28 @@ Tank::Tank(VideoDriver *pVD, Texture *pTankTexture, Texture *pMiscTexture, TANKL
     m_pkAnim->SetOscillate(true);
     m_pkAnim->SetPlaying(false);
     
+	u8 *frames = new u8[16];
+	frames[0] = 0;
+	frames[1] = 1;
+	frames[2] = 2;
+	frames[3] = 3;
+	frames[4] = 4;
+	frames[5] = 5;
+	frames[6] = 0;
+	frames[7] = 1;
+	frames[8] = 2;
+	frames[9] = 3;
+	frames[10] = 4;
+	frames[11] = 5;
+	frames[12] = 6;
+	frames[13] = 7;
+	frames[14] = 8;
+	frames[15] = 9;
+
     m_pkSpawnAnim = new Animation();
-    m_pkSpawnAnim->SetFrameRate(0.15f);
-    m_pkSpawnAnim->SetMaxFrames(10 + 1); // aby wykryæ czy animacja sie skonczyla
+	m_pkSpawnAnim->SetFrames(frames);
+    m_pkSpawnAnim->SetFrameRate(0.07f);
+    m_pkSpawnAnim->SetMaxFrames(15 + 1); // aby wykryæ czy animacja sie skonczyla
     m_pkSpawnAnim->SetOscillate(false);
     m_pkSpawnAnim->SetPlaying(false);
 
@@ -213,7 +232,7 @@ void Tank::Update(f32 fDelta)
     if(m_bSpawn)
     {
 	    m_pkSpawnAnim->Animate();
-        if(m_pkSpawnAnim->GetCurrentFrame() == 10)
+        if(m_pkSpawnAnim->GetFrameIterator() == 15)
         {
             m_bSpawn = false;
             m_pkSpawnAnim->SetPlaying(false);

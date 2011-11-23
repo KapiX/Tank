@@ -294,6 +294,7 @@ void Game::UpdateLevelPause(float fDelta)
             m_pMap->Reset();
 			m_LP.ResetCurrentLevel();
             m_GameState = GS_MAINMENU;
+			SoundManager::GetInstance()->Stop();
         }
         else if(m_pInGameMenu->GetCurrentItem() == MM_EXIT)
         {

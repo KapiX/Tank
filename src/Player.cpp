@@ -19,7 +19,7 @@
 
 #include "Player.h"
 
-Player::Player(VideoDriver *pVD, Texture *pTankTexture, Texture *pMiscTexture, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed)
+Player::Player(VideoDriver *pVD, u8 iNum, Texture *pTankTexture, Texture *pMiscTexture, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed)
     : Tank(pVD, pTankTexture, pMiscTexture, kTL, kDir, iSpeed)
 {
     m_pkShieldAnim = new Animation();
@@ -29,6 +29,7 @@ Player::Player(VideoDriver *pVD, Texture *pTankTexture, Texture *pMiscTexture, T
     m_pkShieldAnim->SetPlaying(true);
     m_bShield = false;
     m_bSpawn = false;
+	m_iNum = iNum;
 }
 
 Player::~Player()
@@ -173,7 +174,7 @@ void Player::Update(f32 fDelta)
 			m_pkShieldAnim->Animate();
 		}
 	}
-    if(m_bSpawn && m_pkSpawnAnim->GetCurrentFrame() == 9)
+    if(m_bSpawn && m_pkSpawnAnim->GetFrameIterator() == 14)
     {
         ActivateShield(5.0f);
     }
@@ -223,8 +224,12 @@ void Player::Render()
     {
         if(m_bShield)
         {
-            m_pVD->DrawSprite(m_pMiscTexture, m_iX, m_iY, 3.0f, m_pkShieldAnim->GetCurrentFrame() * 32, 32, 32, 32);
+            m_pVD->DrawSprite(m_pMiscTexture, m_iX, m_iY, 4.0f, m_pkShieldAnim->GetCurrentFrame() * 32, 32, 32, 32);
         }
+		if(m_bBoat)
+		{
+			m_pVD->DrawSprite(m_pMiscTexture, m_iX, m_iY, 3.0f, 256 + 32 * (m_iNum - 1), 0, 32, 32);
+		}
     }
 }
 

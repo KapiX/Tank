@@ -42,11 +42,11 @@ Map::Map(VideoDriver *pVD, const char *szBlockTextureName, const char *szPlayer1
 
     Bonus::SetTexture(m_pBonusTexture);
 
-    m_pkPlayer1 = new Player(pVD, m_pPlayer1Texture, m_pMiscTexture);
+    m_pkPlayer1 = new Player(pVD, 1, m_pPlayer1Texture, m_pMiscTexture);
     m_pkPlayer1->SetLifes(3);
     m_pkPlayer1->SetScore(0);
 
-    m_pkPlayer2 = new Player(pVD, m_pPlayer2Texture, m_pMiscTexture);
+    m_pkPlayer2 = new Player(pVD, 2, m_pPlayer2Texture, m_pMiscTexture);
     m_pkPlayer2->SetLifes(3);
     m_pkPlayer2->SetScore(0);
 
@@ -651,10 +651,14 @@ void Map::HandleCollisions(f32 fDelta)
                 if((m_aBlocks[i][j - 1] != BT_EMPTY && m_aBlocks[i][j - 1] != BT_ICE && m_aBlocks[i][j - 1] != BT_JUNGLE) ||
                    (m_aBlocks[i + 1][j - 1] != BT_EMPTY && m_aBlocks[i + 1][j - 1] != BT_ICE && m_aBlocks[i + 1][j - 1] != BT_JUNGLE))
 				{
-                    pkPlayer->SetIsMoving(false);
+                    if(m_aBlocks[i][j - 1] == BT_SEA && m_aBlocks[i + 1][j - 1] == BT_SEA && pkPlayer->GetBoat()) ;
+					else
+					{
+						pkPlayer->SetIsMoving(false);
+					}
 					pkPlayer->Slide(0.0f);
 				}
-				if(pkPlayer->IsMoving() && m_aBlocks[i][j] == BT_ICE && m_aBlocks[i + 1][j] == BT_ICE) pkPlayer->Slide(16.0f);
+				if(pkPlayer->IsMoving() && m_aBlocks[i][j] == BT_ICE && m_aBlocks[i + 1][j] == BT_ICE) pkPlayer->Slide(32.0f);
             }
             break;
         case DIR_DOWN:
@@ -665,10 +669,14 @@ void Map::HandleCollisions(f32 fDelta)
                 if((m_aBlocks[i][j + 2] != BT_EMPTY && m_aBlocks[i][j + 2] != BT_ICE && m_aBlocks[i][j + 2] != BT_JUNGLE) ||
                    (m_aBlocks[i + 1][j + 2] != BT_EMPTY && m_aBlocks[i + 1][j + 2] != BT_ICE && m_aBlocks[i + 1][j + 2] != BT_JUNGLE))
 				{
-                    pkPlayer->SetIsMoving(false);
+                    if(m_aBlocks[i][j + 2] == BT_SEA && m_aBlocks[i + 1][j + 2] == BT_SEA && pkPlayer->GetBoat()) ;
+					else
+					{
+						pkPlayer->SetIsMoving(false);
+					}
 					pkPlayer->Slide(0.0f);
 				}
-				if(pkPlayer->IsMoving() && m_aBlocks[i][j + 1] == BT_ICE && m_aBlocks[i + 1][j + 1] == BT_ICE) pkPlayer->Slide(16.0f);
+				if(pkPlayer->IsMoving() && m_aBlocks[i][j + 1] == BT_ICE && m_aBlocks[i + 1][j + 1] == BT_ICE) pkPlayer->Slide(32.0f);
             }
             break;
         case DIR_RIGHT:
@@ -679,10 +687,14 @@ void Map::HandleCollisions(f32 fDelta)
                 if((m_aBlocks[i + 2][j] != BT_EMPTY && m_aBlocks[i + 2][j] != BT_ICE && m_aBlocks[i + 2][j] != BT_JUNGLE) ||
                    (m_aBlocks[i + 2][j + 1] != BT_EMPTY && m_aBlocks[i + 2][j + 1] != BT_ICE && m_aBlocks[i + 2][j + 1] != BT_JUNGLE))
 				{
-                    pkPlayer->SetIsMoving(false);
+                    if(m_aBlocks[i + 2][j] == BT_SEA && m_aBlocks[i + 2][j + 1] == BT_SEA && pkPlayer->GetBoat()) ;
+					else
+					{
+						pkPlayer->SetIsMoving(false);
+					}
 					pkPlayer->Slide(0.0f);
 				}
-				if(pkPlayer->IsMoving() && m_aBlocks[i + 1][j] == BT_ICE && m_aBlocks[i + 1][j + 1] == BT_ICE) pkPlayer->Slide(16.0f);
+				if(pkPlayer->IsMoving() && m_aBlocks[i + 1][j] == BT_ICE && m_aBlocks[i + 1][j + 1] == BT_ICE) pkPlayer->Slide(32.0f);
             }
             break;
         case DIR_LEFT:
@@ -693,10 +705,15 @@ void Map::HandleCollisions(f32 fDelta)
                 if((m_aBlocks[i - 1][j] != BT_EMPTY && m_aBlocks[i - 1][j] != BT_ICE && m_aBlocks[i - 1][j] != BT_JUNGLE) ||
                    (m_aBlocks[i - 1][j + 1] != BT_EMPTY && m_aBlocks[i - 1][j + 1] != BT_ICE && m_aBlocks[i - 1][j + 1] != BT_JUNGLE))
 				{
-                    pkPlayer->SetIsMoving(false);
+                    if(m_aBlocks[i - 1][j] == BT_SEA && m_aBlocks[i - 1][j + 1] == BT_SEA && pkPlayer->GetBoat()) // do nothing
+						;
+					else
+					{
+						pkPlayer->SetIsMoving(false);
+					}
 					pkPlayer->Slide(0.0f);
 				}
-				if(pkPlayer->IsMoving() && m_aBlocks[i][j] == BT_ICE && m_aBlocks[i + 1][j + 1] == BT_ICE) pkPlayer->Slide(16.0f);
+				if(pkPlayer->IsMoving() && m_aBlocks[i][j] == BT_ICE && m_aBlocks[i + 1][j + 1] == BT_ICE) pkPlayer->Slide(32.0f);
             }
             break;
         }
@@ -793,7 +810,7 @@ void Map::HandleCollisions(f32 fDelta)
                     pkPlayer->GetBullet(1)->SetSpeed(pkPlayer->GetSpeed() * 3 * 2);
                     break;
                 case BONUS_BOAT:
-                    // TODO
+					pkPlayer->SetBoat(true);
                     break;
                 }
                 Bonus::GetInstance()->SetIsAlive(false);
@@ -1028,17 +1045,25 @@ void Map::HandleCollisions(f32 fDelta)
 						{
 							if(!pkPlayer->GetShield())
 							{
-								if(pkPlayer->GetTankLevel() == TL_4)
+								if(!pkPlayer->GetBoat())
 								{
-									m_apkEnemy[e]->GetBullet(0)->Destroy(false);
-									pkPlayer->SetTankLevel(TL_3);
-									SoundManager::GetInstance()->Play(SND_SHIELDHIT);
+									if(pkPlayer->GetTankLevel() == TL_4)
+									{
+										m_apkEnemy[e]->GetBullet(0)->Destroy(false);
+										pkPlayer->SetTankLevel(TL_3);
+										SoundManager::GetInstance()->Play(SND_SHIELDHIT);
+									}
+									else
+									{
+										m_apkEnemy[e]->GetBullet(0)->Destroy(); // zycia odejmuja sie przy spawnie
+										pkPlayer->Destroy();
+										SoundManager::GetInstance()->Play(SND_FEXPLOSION);
+									}
 								}
 								else
 								{
-									m_apkEnemy[e]->GetBullet(0)->Destroy(); // zycia odejmuja sie przy spawnie
-									pkPlayer->Destroy();
-									SoundManager::GetInstance()->Play(SND_FEXPLOSION);
+									m_apkEnemy[e]->GetBullet(0)->Destroy(false);
+									pkPlayer->SetBoat(false);
 								}
 							}
 							else
@@ -1743,12 +1768,12 @@ void Map::Render()
 void Map::Reset()
 {
     delete m_pkPlayer1;
-    m_pkPlayer1 = new Player(m_pVD, m_pPlayer1Texture, m_pMiscTexture);
+    m_pkPlayer1 = new Player(m_pVD, 1, m_pPlayer1Texture, m_pMiscTexture);
     m_pkPlayer1->SetLifes(3);
     m_pkPlayer1->SetScore(0);
 
     delete m_pkPlayer2;
-    m_pkPlayer2 = new Player(m_pVD, m_pPlayer2Texture, m_pMiscTexture);
+    m_pkPlayer2 = new Player(m_pVD, 2, m_pPlayer2Texture, m_pMiscTexture);
     m_pkPlayer2->SetLifes(3);
     m_pkPlayer2->SetScore(0);
 

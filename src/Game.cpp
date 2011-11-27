@@ -19,8 +19,6 @@
 
 #include "Game.h"
 
-#pragma warning(disable:4244)
-
 Game::Game(void)
 {
 }
@@ -296,7 +294,7 @@ void Game::UpdateLevelPause(float fDelta)
             m_GameState = GS_MAINMENU;
 			SoundManager::GetInstance()->Stop();
         }
-        else if(m_pInGameMenu->GetCurrentItem() == MM_EXIT)
+        else if(m_pInGameMenu->GetCurrentItem() == IM_EXIT_TO_SYSTEM)
         {
             Window::GetInstance()->Quit();
         }

@@ -43,8 +43,6 @@ private:
 
     static f32 *m_pfTimer;
 
-#pragma warning(disable:4244)
-
 public:
 	Animation():
 		m_iCurrentFrame(0), m_iMaxFrames(0), m_iFrameInc(1), m_iFrameIterator(0),

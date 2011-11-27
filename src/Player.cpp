@@ -30,6 +30,7 @@ Player::Player(VideoDriver *pVD, u8 iNum, Texture *pTankTexture, Texture *pMiscT
     m_bShield = false;
     m_bSpawn = false;
 	m_iNum = iNum;
+    m_bBoat = false;
 }
 
 Player::~Player()

@@ -49,6 +49,7 @@
     <ClCompile Include="..\..\src\7z\XzIn.c" />
     <ClCompile Include="..\..\src\Animation.cpp" />
     <ClCompile Include="..\..\src\Bonus.cpp" />
+    <ClCompile Include="..\..\src\Config.cpp" />
     <ClCompile Include="..\..\src\Enemy.cpp" />
     <ClCompile Include="..\..\src\Game.cpp" />
     <ClCompile Include="..\..\src\LevelPack.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="..\..\src\7z\XzEnc.h" />
     <ClInclude Include="..\..\src\Animation.h" />
     <ClInclude Include="..\..\src\Bonus.h" />
+    <ClInclude Include="..\..\src\Config.h" />
     <ClInclude Include="..\..\src\Enemy.h" />
     <ClInclude Include="..\..\src\Game.h" />
     <ClInclude Include="..\..\src\Keyboard.h" />

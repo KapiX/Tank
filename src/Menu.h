@@ -21,10 +21,10 @@
 #define _MENU_H_
 
 #include "Animation.h"
-#include "List.h"
 #include "VideoDriver.h"
 #include "Texture.h"
-#include <string.h>
+#include <vector>
+#include <string>
 
 enum MENU_ORIENTATION
 {
@@ -35,8 +35,8 @@ enum MENU_ORIENTATION
 class Menu
 {
 private:
-	char *m_szTitle;
-	List<const char *> m_Items;
+	std::string m_szTitle;
+	std::vector<std::string> m_Items;
 	Texture *m_pPointer;
 	Texture *m_pFont;
 	u8 m_iCurrent;
@@ -48,17 +48,17 @@ public:
 	Menu(VideoDriver *pVD, Texture *pFont, Texture *pPointer);
 	~Menu();
 
-	void Render(int iX, int iY);
+	void Render(int iX, int iY, int iZ = 64, int iR = 255, int iG = 255, int iB = 255);
 
 	void NextItem();
 	void PrevItem();
 	void SetCurrentItem(u8 item);
 	inline u8 GetCurrentItem() { return m_iCurrent; }
-	void AddItem(const char *szText);
-	//void ChangeItem(u8 item, const char *szText);
+	void AddItem(std::string szText);
+	void ChangeItem(u8 item, std::string szText);
 
-	inline void SetTitle(const char *szTitle) { m_szTitle = new char[strlen(szTitle)]; strcpy(m_szTitle, szTitle); }
-	inline char *GetTitle() { return m_szTitle; }
+	inline void SetTitle(std::string szTitle) { m_szTitle = szTitle; }
+    inline char *GetTitle() { return (char *) m_szTitle.c_str(); }
 
 	inline void SetPointerAnim(Animation *pAnimation) { m_pPointerAnim = pAnimation; }
 

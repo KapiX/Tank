@@ -71,8 +71,8 @@ public:
 
     CONTROLLER GetP1Controller() const { return m_kP1Controller; }
     CONTROLLER GetP2Controller() const { return m_kP2Controller; }
-    CONTROLS GetP1Controls() const { return m_kP1Controls; }
-    CONTROLS GetP2Controls() const { return m_kP2Controls; }
+    CONTROLS *GetP1Controls() { return &m_kP1Controls; }
+    CONTROLS *GetP2Controls() { return &m_kP2Controls; }
     bool GetFullscreen() const { return m_bFullscreen; }
 };
 

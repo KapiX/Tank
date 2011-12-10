@@ -161,52 +161,18 @@ public:
 	}
 	inline void SetDirection(DIRECTION Dir)
     {
-        int modulo;
+        int mult;
         switch(Dir)
         {
         case DIR_UP:
-            modulo = (int) m_iX % 16;
-            if(modulo <= 8)
-            {
-                m_iX = (int) m_iX - modulo;
-            }
-            else
-            {
-                m_iX = (int) m_iX + modulo % 8;
-            }
+        case DIR_DOWN:
+            mult = (int) (m_iX + 8) / 16;
+            m_iX = mult * 16;
             break;
         case DIR_RIGHT:
-            modulo = (int) (m_iY - 24) % 16;
-            if(modulo <= 8)
-            {
-                m_iY = (int) m_iY - modulo;
-            }
-            else
-            {
-                m_iY = (int) m_iY + modulo % 8;
-            }
-            break;
-        case DIR_DOWN:
-            modulo = (int) m_iX % 16;
-            if(modulo <= 8)
-            {
-                m_iX = (int) m_iX - modulo;
-            }
-            else
-            {
-                m_iX = (int) m_iX + modulo % 8;
-            }
-            break;
         case DIR_LEFT:
-            modulo = (int) (m_iY - 24) % 16;
-            if(modulo <= 8)
-            {
-                m_iY = (int) m_iY - modulo;
-            }
-            else
-            {
-                m_iY = (int) m_iY + modulo % 8;
-            }
+            mult = (int) (m_iY + 8 - 24) / 16;
+            m_iY = mult * 16 + 24;
             break;
         }
         m_kDir = Dir;
@@ -232,6 +198,7 @@ public:
 	inline Animation *GetAnimation() const { return m_pkAnim; }
 	inline bool GetExplode() const { return m_bExplode; }
     inline Bullet *GetBullet(int i) const { i = (i > 0) ? 1 : 0; return m_apkBullets[i]; }
+    inline bool IsOnSpawn() const { return ((m_iX < m_iSpawnX * 32 + 32) && (m_iX + 32 > m_iSpawnX * 32) && (m_iY < m_iSpawnY * 32 + 32) && (m_iY + 32 > m_iSpawnY * 32)); }
 
     inline static void SetTimer(f32 *pfTimer) { m_pfTimer = pfTimer; }
 };

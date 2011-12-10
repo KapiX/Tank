@@ -229,7 +229,7 @@ void Player::Render()
         }
 		if(m_bBoat)
 		{
-			m_pVD->DrawSprite(m_pMiscTexture, m_iX, m_iY, 3.0f, 256 + 32 * (m_iNum - 1), 0, 32, 32);
+			m_pVD->DrawSprite(m_pMiscTexture, m_iX, m_iY, 3.0f, 256 + 32 * (m_iNum - 1), 32, 32, 32);
 		}
     }
 }

@@ -638,13 +638,13 @@ void Map::HandleCollisions(f32 fDelta)
         else if(p == 1) pkPlayer = m_pkPlayer2;
 
         // TANK-BLOCK collision
-        int i = (int) (pkPlayer->GetX()) / 16;
-        int j = (int) (pkPlayer->GetY() - 24) / 16;
+        int i = (int) (pkPlayer->GetX() + 8) / 16;
+        int j = (int) (pkPlayer->GetY() + 8 - 24) / 16;
 
         switch(pkPlayer->GetDirection())
         {
         case DIR_UP:
-            top1 = pkPlayer->GetY() - pkPlayer->GetSpeed() * fDelta;
+            top1 = pkPlayer->GetY();
             bottom2 = j * 16 + 24;
             if(top1 < bottom2)
             {
@@ -654,7 +654,7 @@ void Map::HandleCollisions(f32 fDelta)
                     if(m_aBlocks[i][j - 1] == BT_SEA && m_aBlocks[i + 1][j - 1] == BT_SEA && pkPlayer->GetBoat()) ;
 					else
 					{
-						pkPlayer->SetIsMoving(false);
+						pkPlayer->SetY(bottom2);
 					}
 					pkPlayer->Slide(0.0f);
 				}
@@ -662,7 +662,7 @@ void Map::HandleCollisions(f32 fDelta)
             }
             break;
         case DIR_DOWN:
-            bottom1 = pkPlayer->GetY() + 32 + pkPlayer->GetSpeed() * fDelta;
+            bottom1 = pkPlayer->GetY() + 32;
             top2 = (j + 2) * 16 + 24;
             if(bottom1 > top2)
             {
@@ -672,7 +672,7 @@ void Map::HandleCollisions(f32 fDelta)
                     if(m_aBlocks[i][j + 2] == BT_SEA && m_aBlocks[i + 1][j + 2] == BT_SEA && pkPlayer->GetBoat()) ;
 					else
 					{
-						pkPlayer->SetIsMoving(false);
+						pkPlayer->SetY(top2 - 32);
 					}
 					pkPlayer->Slide(0.0f);
 				}
@@ -680,7 +680,7 @@ void Map::HandleCollisions(f32 fDelta)
             }
             break;
         case DIR_RIGHT:
-            right1 = pkPlayer->GetX() + 32 + pkPlayer->GetSpeed() * fDelta;
+            right1 = pkPlayer->GetX() + 32;
             left2 = (i + 2) * 16;
             if(right1 > left2)
             {
@@ -690,7 +690,7 @@ void Map::HandleCollisions(f32 fDelta)
                     if(m_aBlocks[i + 2][j] == BT_SEA && m_aBlocks[i + 2][j + 1] == BT_SEA && pkPlayer->GetBoat()) ;
 					else
 					{
-						pkPlayer->SetIsMoving(false);
+						pkPlayer->SetX(left2 - 32);
 					}
 					pkPlayer->Slide(0.0f);
 				}
@@ -698,7 +698,7 @@ void Map::HandleCollisions(f32 fDelta)
             }
             break;
         case DIR_LEFT:
-            left1 = pkPlayer->GetX() - pkPlayer->GetSpeed() * fDelta;
+            left1 = pkPlayer->GetX();
             right2 = i * 16;
             if(left1 < right2)
             {
@@ -709,7 +709,7 @@ void Map::HandleCollisions(f32 fDelta)
 						;
 					else
 					{
-						pkPlayer->SetIsMoving(false);
+						pkPlayer->SetX(right2);
 					}
 					pkPlayer->Slide(0.0f);
 				}
@@ -835,37 +835,62 @@ void Map::HandleCollisions(f32 fDelta)
 		{
 			if(m_apkEnemy[e] != NULL)
 			{
-				if(m_apkEnemy[e]->IsAlive() && pkPlayer->IsMoving())
+                if(m_apkEnemy[e]->IsAlive() && !m_apkEnemy[e]->IsOnSpawn() && pkPlayer->IsMoving() && pkPlayer->IsAlive())
 				{
-					top1 = pkPlayer->GetY() - (pkPlayer->GetDirection() == DIR_UP ? pkPlayer->GetSpeed() * fDelta : 0);
+					top1 = pkPlayer->GetY();
 					bottom2 = m_apkEnemy[e]->GetY() + 32;
-					left1 = pkPlayer->GetX() - (pkPlayer->GetDirection() == DIR_LEFT ? pkPlayer->GetSpeed() * fDelta : 0);
+					left1 = pkPlayer->GetX();
 					right2 = m_apkEnemy[e]->GetX() + 32;
-					bottom1 = pkPlayer->GetY() + 32 + (pkPlayer->GetDirection() == DIR_DOWN ? pkPlayer->GetSpeed() * fDelta : 0);
+					bottom1 = pkPlayer->GetY() + 32;
 					top2 = m_apkEnemy[e]->GetY();
-					right1 = pkPlayer->GetX() + 32 + (pkPlayer->GetDirection() == DIR_RIGHT ? pkPlayer->GetSpeed() * fDelta : 0);
+					right1 = pkPlayer->GetX() + 32;
 					left2 = m_apkEnemy[e]->GetX();
 					if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2))
 					{
-						pkPlayer->SetIsMoving(false);
+						switch(pkPlayer->GetDirection())
+                        {
+                        case DIR_UP:
+                            pkPlayer->SetY(pkPlayer->GetY() + pkPlayer->GetSpeed() * fDelta);
+                            break;
+                        case DIR_DOWN:
+                            pkPlayer->SetY(pkPlayer->GetY() - pkPlayer->GetSpeed() * fDelta);
+                            break;
+                        case DIR_LEFT:
+                            pkPlayer->SetX(pkPlayer->GetX() + pkPlayer->GetSpeed() * fDelta);
+                            break;
+                        case DIR_RIGHT:
+                            pkPlayer->SetX(pkPlayer->GetX() - pkPlayer->GetSpeed() * fDelta);
+                            break;
+                        }
 					}
 				}
-				if(pkPlayer->IsAlive() && m_apkEnemy[e]->IsMoving())
+                if(pkPlayer->IsAlive() && !pkPlayer->IsOnSpawn() && m_apkEnemy[e]->IsMoving() && m_apkEnemy[e]->IsAlive())
 				{
-					top1 = m_apkEnemy[e]->GetY() - (m_apkEnemy[e]->GetDirection() == DIR_UP ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
+					top1 = m_apkEnemy[e]->GetY();
 					bottom2 = pkPlayer->GetY() + 32;
-					left1 = m_apkEnemy[e]->GetX() - (m_apkEnemy[e]->GetDirection() == DIR_LEFT ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
+					left1 = m_apkEnemy[e]->GetX();
 					right2 = pkPlayer->GetX() + 32;
-					bottom1 = m_apkEnemy[e]->GetY() + 32 + (m_apkEnemy[e]->GetDirection() == DIR_DOWN ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
+					bottom1 = m_apkEnemy[e]->GetY() + 32;
 					top2 = pkPlayer->GetY();
-					right1 = m_apkEnemy[e]->GetX() + 32 + (m_apkEnemy[e]->GetDirection() == DIR_RIGHT ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
+					right1 = m_apkEnemy[e]->GetX() + 32;
 					left2 = pkPlayer->GetX();
 					if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2))
 					{
-						m_apkEnemy[e]->Shoot();
-						m_apkEnemy[e]->SetIsMoving(false);
-						DIRECTION dir = (DIRECTION) (rand() % 4 + 1);
-						m_apkEnemy[e]->SetDirection(dir);
+						switch(m_apkEnemy[e]->GetDirection())
+                        {
+                        case DIR_UP:
+                            m_apkEnemy[e]->SetY(m_apkEnemy[e]->GetY() + m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        case DIR_DOWN:
+                            m_apkEnemy[e]->SetY(m_apkEnemy[e]->GetY() - m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        case DIR_LEFT:
+                            m_apkEnemy[e]->SetX(m_apkEnemy[e]->GetX() + m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        case DIR_RIGHT:
+                            m_apkEnemy[e]->SetX(m_apkEnemy[e]->GetX() - m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        }
 					}
 				}
 
@@ -1093,32 +1118,32 @@ void Map::HandleCollisions(f32 fDelta)
                     bottom2 = j * 16 + 24;
                     if(top1 < bottom2)
                     {
-						BLOCK_TYPE b1 = m_aBlocks[i][j - 1];
-						BLOCK_TYPE b2 = m_aBlocks[i + 1][j - 1];
+						BLOCK_TYPE b1 = m_aBlocks[i][j];
+						BLOCK_TYPE b2 = m_aBlocks[i + 1][j];
 						if((b1 != BT_EMPTY && b1 != BT_ICE && b1 != BT_JUNGLE && b1 != BT_SEA && b1 != BT_BRICK_VLEFT && b1 != BT_BRICK_LBOT && b1 != BT_BRICK_LTOP && b1 != BT_DEADEAGLELTOP && b1 != BT_DEADEAGLELBOT && b1 != BT_DEADEAGLERTOP && b1 != BT_DEADEAGLERBOT) ||
                            (b2 != BT_EMPTY && b2 != BT_ICE && b2 != BT_JUNGLE && b2 != BT_SEA && b2 != BT_BRICK_VRIGHT && b2 != BT_BRICK_RBOT && b2 != BT_BRICK_RTOP && b2 != BT_DEADEAGLELTOP && b2 != BT_DEADEAGLELBOT && b2 != BT_DEADEAGLERTOP && b2 != BT_DEADEAGLERBOT))
                         {
-							if(m_aBlocks[i][j - 1] == BT_EAGLELBOT || m_aBlocks[i][j - 1] == BT_EAGLERBOT ||
-							   m_aBlocks[i + 1][j - 1] == BT_EAGLELBOT || m_aBlocks[i + 1][j - 1] == BT_EAGLERBOT)
+							if(b1 == BT_EAGLELBOT || b1 == BT_EAGLERBOT ||
+							   b2 == BT_EAGLELBOT || b2 == BT_EAGLERBOT)
 							{
 								DestroyEagle();
 							}
 							else
 							{
-								CalculateDamageUp(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j - 1], &m_aBlocks[i + 1][j - 1]);
+								CalculateDamageUp(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i + 1][j]);
 							}
 							pkPlayer->GetBullet(b)->Destroy();
                         }
                         else if(pkPlayer->GetBullet(b)->GetDestroyJungle())
                         {
-                            if(m_aBlocks[i][j - 1] == BT_JUNGLE)
+                            if(m_aBlocks[i][j] == BT_JUNGLE)
 							{
-                                m_aBlocks[i][j - 1] = BT_EMPTY;
+                                m_aBlocks[i][j] = BT_EMPTY;
 								SoundManager::GetInstance()->Play(SND_BRICKHIT);
 							}
-                            if(m_aBlocks[i + 1][j - 1] == BT_JUNGLE)
+                            if(m_aBlocks[i + 1][j] == BT_JUNGLE)
 							{
-                                m_aBlocks[i + 1][j - 1] = BT_EMPTY;
+                                m_aBlocks[i + 1][j] = BT_EMPTY;
 								SoundManager::GetInstance()->Play(SND_BRICKHIT);
 							}
                         }
@@ -1201,32 +1226,32 @@ void Map::HandleCollisions(f32 fDelta)
                     right2 = i * 16;
                     if(left1 < right2)
                     {
-						BLOCK_TYPE b1 = m_aBlocks[i - 1][j];
-						BLOCK_TYPE b2 = m_aBlocks[i - 1][j + 1];
+						BLOCK_TYPE b1 = m_aBlocks[i][j];
+						BLOCK_TYPE b2 = m_aBlocks[i][j + 1];
 						if((b1 != BT_EMPTY && b1 != BT_ICE && b1 != BT_JUNGLE && b1 != BT_SEA && b1 != BT_BRICK_HTOP && b1 != BT_BRICK_RTOP && b1 != BT_BRICK_LTOP && b1 != BT_DEADEAGLELTOP && b1 != BT_DEADEAGLELBOT && b1 != BT_DEADEAGLERTOP && b1 != BT_DEADEAGLERBOT) ||
                            (b2 != BT_EMPTY && b2 != BT_ICE && b2 != BT_JUNGLE && b2 != BT_SEA && b2 != BT_BRICK_HBOT && b2 != BT_BRICK_RBOT && b2 != BT_BRICK_LBOT && b2 != BT_DEADEAGLELTOP && b2 != BT_DEADEAGLELBOT && b2 != BT_DEADEAGLERTOP && b2 != BT_DEADEAGLERBOT))
                         {
-							if(m_aBlocks[i - 1][j] == BT_EAGLERBOT || m_aBlocks[i - 1][j] == BT_EAGLERTOP ||
-							   m_aBlocks[i - 1][j + 1] == BT_EAGLERBOT || m_aBlocks[i - 1][j + 1] == BT_EAGLERTOP)
+							if(b1 == BT_EAGLERBOT || b1 == BT_EAGLERTOP ||
+							   b2 == BT_EAGLERBOT || b2 == BT_EAGLERTOP)
 							{
 								DestroyEagle();
 							}
 							else
 							{
-								CalculateDamageLeft(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i - 1][j], &m_aBlocks[i - 1][j + 1]);
+								CalculateDamageLeft(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i][j + 1]);
 							}
 							pkPlayer->GetBullet(b)->Destroy();
                         }
                         else if(pkPlayer->GetBullet(b)->GetDestroyJungle())
                         {
-                            if(m_aBlocks[i - 1][j] == BT_JUNGLE)
+                            if(m_aBlocks[i][j] == BT_JUNGLE)
 							{
-                                m_aBlocks[i - 1][j] = BT_EMPTY;
+                                m_aBlocks[i][j] = BT_EMPTY;
 								SoundManager::GetInstance()->Play(SND_BRICKHIT);
 							}
-                            if(m_aBlocks[i - 1][j + 1] == BT_JUNGLE)
+                            if(m_aBlocks[i][j + 1] == BT_JUNGLE)
 							{
-                                m_aBlocks[i - 1][j + 1] = BT_EMPTY;
+                                m_aBlocks[i][j + 1] = BT_EMPTY;
 								SoundManager::GetInstance()->Play(SND_BRICKHIT);
 							}
                         }
@@ -1240,34 +1265,62 @@ void Map::HandleCollisions(f32 fDelta)
     if(iPCount == 2)
     {
         // TANK-TANK collision
-        if (m_pkPlayer1->IsAlive() && m_pkPlayer1->IsMoving())
+        if (m_pkPlayer1->IsAlive() && m_pkPlayer1->IsMoving() && !m_pkPlayer2->IsOnSpawn())
         {
-            top1 = m_pkPlayer1->GetY() - (m_pkPlayer1->GetDirection() == DIR_UP ? m_pkPlayer1->GetSpeed() * fDelta : 0);
+            top1 = m_pkPlayer1->GetY();
             bottom2 = m_pkPlayer2->GetY() + 32;
-            left1 = m_pkPlayer1->GetX() - (m_pkPlayer1->GetDirection() == DIR_LEFT ? m_pkPlayer1->GetSpeed() * fDelta : 0);
+            left1 = m_pkPlayer1->GetX();
             right2 = m_pkPlayer2->GetX() + 32;
-            bottom1 = m_pkPlayer1->GetY() + 32 + (m_pkPlayer1->GetDirection() == DIR_DOWN ? m_pkPlayer1->GetSpeed() * fDelta : 0);
+            bottom1 = m_pkPlayer1->GetY() + 32;
             top2 = m_pkPlayer2->GetY();
-            right1 = m_pkPlayer1->GetX() + 32 + (m_pkPlayer1->GetDirection() == DIR_RIGHT ? m_pkPlayer1->GetSpeed() * fDelta : 0);
+            right1 = m_pkPlayer1->GetX() + 32;
             left2 = m_pkPlayer2->GetX();
             if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2))
             {
-                m_pkPlayer1->SetIsMoving(false);
+                switch(m_pkPlayer1->GetDirection())
+                {
+                case DIR_UP:
+                    m_pkPlayer1->SetY(m_pkPlayer1->GetY() + m_pkPlayer1->GetSpeed() * fDelta);
+                    break;
+                case DIR_DOWN:
+                    m_pkPlayer1->SetY(m_pkPlayer1->GetY() - m_pkPlayer1->GetSpeed() * fDelta);
+                    break;
+                case DIR_LEFT:
+                    m_pkPlayer1->SetX(m_pkPlayer1->GetX() + m_pkPlayer1->GetSpeed() * fDelta);
+                    break;
+                case DIR_RIGHT:
+                    m_pkPlayer1->SetX(m_pkPlayer1->GetX() - m_pkPlayer1->GetSpeed() * fDelta);
+                    break;
+                }
             }
         }
-        if (m_pkPlayer2->IsAlive() && m_pkPlayer2->IsMoving())
+        if (m_pkPlayer2->IsAlive() && m_pkPlayer2->IsMoving() && !m_pkPlayer1->IsOnSpawn())
         {
-            top1 = m_pkPlayer2->GetY() - (m_pkPlayer2->GetDirection() == DIR_UP ? m_pkPlayer2->GetSpeed() * fDelta : 0);
+            top1 = m_pkPlayer2->GetY();
             bottom2 = m_pkPlayer1->GetY() + 32;
-            left1 = m_pkPlayer2->GetX() - (m_pkPlayer2->GetDirection() == DIR_LEFT ? m_pkPlayer2->GetSpeed() * fDelta : 0);
+            left1 = m_pkPlayer2->GetX();
             right2 = m_pkPlayer1->GetX() + 32;
-            bottom1 = m_pkPlayer2->GetY() + 32 + (m_pkPlayer2->GetDirection() == DIR_DOWN ? m_pkPlayer2->GetSpeed() * fDelta : 0);
+            bottom1 = m_pkPlayer2->GetY() + 32;
             top2 = m_pkPlayer1->GetY();
-            right1 = m_pkPlayer2->GetX() + 32 + (m_pkPlayer2->GetDirection() == DIR_RIGHT ? m_pkPlayer2->GetSpeed() * fDelta : 0);
+            right1 = m_pkPlayer2->GetX() + 32;
             left2 = m_pkPlayer1->GetX();
             if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2))
             {
-                m_pkPlayer2->SetIsMoving(false);
+                switch(m_pkPlayer2->GetDirection())
+                {
+                case DIR_UP:
+                    m_pkPlayer2->SetY(m_pkPlayer2->GetY() + m_pkPlayer2->GetSpeed() * fDelta);
+                    break;
+                case DIR_DOWN:
+                    m_pkPlayer2->SetY(m_pkPlayer2->GetY() - m_pkPlayer2->GetSpeed() * fDelta);
+                    break;
+                case DIR_LEFT:
+                    m_pkPlayer2->SetX(m_pkPlayer2->GetX() + m_pkPlayer2->GetSpeed() * fDelta);
+                    break;
+                case DIR_RIGHT:
+                    m_pkPlayer2->SetX(m_pkPlayer2->GetX() - m_pkPlayer2->GetSpeed() * fDelta);
+                    break;
+                }
             }
         }
     }
@@ -1280,47 +1333,91 @@ void Map::HandleCollisions(f32 fDelta)
             if(m_apkEnemy[e]->IsAlive())
             {
                 // ENEMY-ENEMY collision
-                if (m_apkEnemy[e]->IsMoving())
+                if (m_apkEnemy[e]->IsMoving() && !m_apkEnemy[e]->IsOnSpawn())
                 {
-                    top1 = m_apkEnemy[e]->GetY() - (m_apkEnemy[e]->GetDirection() == DIR_UP ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
+                    top1 = m_apkEnemy[e]->GetY();
                     bottom2 = m_apkEnemy[(e + 1) % 4]->GetY() + 32;
-                    left1 = m_apkEnemy[e]->GetX() - (m_apkEnemy[e]->GetDirection() == DIR_LEFT ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
+                    left1 = m_apkEnemy[e]->GetX();
                     right2 = m_apkEnemy[(e + 1) % 4]->GetX() + 32;
-                    bottom1 = m_apkEnemy[e]->GetY() + 32 + (m_apkEnemy[e]->GetDirection() == DIR_DOWN ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
+                    bottom1 = m_apkEnemy[e]->GetY() + 32;
                     top2 = m_apkEnemy[(e + 1) % 4]->GetY();
-                    right1 = m_apkEnemy[e]->GetX() + 32 + (m_apkEnemy[e]->GetDirection() == DIR_RIGHT ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
+                    right1 = m_apkEnemy[e]->GetX() + 32;
                     left2 = m_apkEnemy[(e + 1) % 4]->GetX();
-                    if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2))
+                    if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2) && !m_apkEnemy[(e + 1) % 4]->IsOnSpawn())
                     {
-                        //m_apkEnemy[e]->SetIsMoving(false);
+                        switch(m_apkEnemy[e]->GetDirection())
+                        {
+                        case DIR_UP:
+                            m_apkEnemy[e]->SetY(m_apkEnemy[e]->GetY() + m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        case DIR_DOWN:
+                            m_apkEnemy[e]->SetY(m_apkEnemy[e]->GetY() - m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        case DIR_LEFT:
+                            m_apkEnemy[e]->SetX(m_apkEnemy[e]->GetX() + m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        case DIR_RIGHT:
+                            m_apkEnemy[e]->SetX(m_apkEnemy[e]->GetX() - m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        }
                         m_apkEnemy[e]->SetDirection((DIRECTION) (rand() % 4 + 1));
                     }
-                }
-                if (m_apkEnemy[e]->IsMoving())
-                {
-                    top1 = m_apkEnemy[e]->GetY() - (m_apkEnemy[e]->GetDirection() == DIR_UP ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
-                    bottom2 = m_apkEnemy[(e + 3) % 4]->GetY() + 32;
-                    left1 = m_apkEnemy[e]->GetX() - (m_apkEnemy[e]->GetDirection() == DIR_LEFT ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
-                    right2 = m_apkEnemy[(e + 3) % 4]->GetX() + 32;
-                    bottom1 = m_apkEnemy[e]->GetY() + 32 + (m_apkEnemy[e]->GetDirection() == DIR_DOWN ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
-                    top2 = m_apkEnemy[(e + 3) % 4]->GetY();
-                    right1 = m_apkEnemy[e]->GetX() + 32 + (m_apkEnemy[e]->GetDirection() == DIR_RIGHT ? m_apkEnemy[e]->GetSpeed() * fDelta : 0);
-                    left2 = m_apkEnemy[(e + 3) % 4]->GetX();
-                    if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2))
+                    bottom2 = m_apkEnemy[(e + 2) % 4]->GetY() + 32;
+                    right2 = m_apkEnemy[(e + 2) % 4]->GetX() + 32;
+                    top2 = m_apkEnemy[(e + 2) % 4]->GetY();
+                    left2 = m_apkEnemy[(e + 2) % 4]->GetX();
+                    if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2) && !m_apkEnemy[(e + 2) % 4]->IsOnSpawn())
                     {
-                        //m_apkEnemy[e]->SetIsMoving(false);
+                        switch(m_apkEnemy[e]->GetDirection())
+                        {
+                        case DIR_UP:
+                            m_apkEnemy[e]->SetY(m_apkEnemy[e]->GetY() + m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        case DIR_DOWN:
+                            m_apkEnemy[e]->SetY(m_apkEnemy[e]->GetY() - m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        case DIR_LEFT:
+                            m_apkEnemy[e]->SetX(m_apkEnemy[e]->GetX() + m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        case DIR_RIGHT:
+                            m_apkEnemy[e]->SetX(m_apkEnemy[e]->GetX() - m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        }
+                        m_apkEnemy[e]->SetDirection((DIRECTION) (rand() % 4 + 1));
+                    }
+                    bottom2 = m_apkEnemy[(e + 3) % 4]->GetY() + 32;
+                    right2 = m_apkEnemy[(e + 3) % 4]->GetX() + 32;
+                    top2 = m_apkEnemy[(e + 3) % 4]->GetY();
+                    left2 = m_apkEnemy[(e + 3) % 4]->GetX();
+                    if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2) && !m_apkEnemy[(e + 3) % 4]->IsOnSpawn())
+                    {
+                        switch(m_apkEnemy[e]->GetDirection())
+                        {
+                        case DIR_UP:
+                            m_apkEnemy[e]->SetY(m_apkEnemy[e]->GetY() + m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        case DIR_DOWN:
+                            m_apkEnemy[e]->SetY(m_apkEnemy[e]->GetY() - m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        case DIR_LEFT:
+                            m_apkEnemy[e]->SetX(m_apkEnemy[e]->GetX() + m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        case DIR_RIGHT:
+                            m_apkEnemy[e]->SetX(m_apkEnemy[e]->GetX() - m_apkEnemy[e]->GetSpeed() * fDelta);
+                            break;
+                        }
                         m_apkEnemy[e]->SetDirection((DIRECTION) (rand() % 4 + 1));
                     }
                 }
 
                 // ENEMY-BLOCK collision
-                int i = (int) (m_apkEnemy[e]->GetX()) / 16;
-                int j = (int) (m_apkEnemy[e]->GetY() - 24) / 16;
+                int i = (int) (m_apkEnemy[e]->GetX() + 8) / 16;
+                int j = (int) (m_apkEnemy[e]->GetY() + 8 - 24) / 16;
 
                 switch(m_apkEnemy[e]->GetDirection())
                 {
                 case DIR_UP:
-                    top1 = m_apkEnemy[e]->GetY() - m_apkEnemy[e]->GetSpeed() * fDelta;
+                    top1 = m_apkEnemy[e]->GetY();
                     bottom2 = j * 16 + 24;
                     if(top1 < bottom2)
                     {
@@ -1328,18 +1425,13 @@ void Map::HandleCollisions(f32 fDelta)
                            (m_aBlocks[i + 1][j - 1] != BT_EMPTY && m_aBlocks[i + 1][j - 1] != BT_ICE && m_aBlocks[i + 1][j - 1] != BT_JUNGLE))
                         {
                             DIRECTION dir = (DIRECTION) (rand() % 3 + 2); // bez DIR_UP
-                            m_apkEnemy[e]->SetIsMoving(false);
 							m_apkEnemy[e]->SetY(bottom2);
                             m_apkEnemy[e]->SetDirection(dir);
-                        }
-                        else
-                        {
-                            m_apkEnemy[e]->SetIsMoving(true);
                         }
                     }
                     break;
                 case DIR_DOWN:
-                    bottom1 = m_apkEnemy[e]->GetY() + 32 + m_apkEnemy[e]->GetSpeed() * fDelta;
+                    bottom1 = m_apkEnemy[e]->GetY() + 32;
                     top2 = (j + 2) * 16 + 24;
                     if(bottom1 > top2)
                     {
@@ -1348,18 +1440,13 @@ void Map::HandleCollisions(f32 fDelta)
                         {
                             DIRECTION dir = (DIRECTION) (rand() % 3 + 1);
                             if(dir == 3) dir = (DIRECTION) 4; // bez DIR_DOWN
-                            m_apkEnemy[e]->SetIsMoving(false);
 							m_apkEnemy[e]->SetY(top2 - 32);
                             m_apkEnemy[e]->SetDirection(dir);
-                        }
-                        else
-                        {
-                            m_apkEnemy[e]->SetIsMoving(true);
                         }
                     }
                     break;
                 case DIR_RIGHT:
-                    right1 = m_apkEnemy[e]->GetX() + 32 + m_apkEnemy[e]->GetSpeed() * fDelta;
+                    right1 = m_apkEnemy[e]->GetX() + 32;
                     left2 = (i + 2) * 16;
                     if(right1 > left2)
                     {
@@ -1368,18 +1455,13 @@ void Map::HandleCollisions(f32 fDelta)
                         {
                             DIRECTION dir = (DIRECTION) (rand() % 3 + 2);
                             if(dir == 2) dir = (DIRECTION) 1; // bez DIR_RIGHT
-                            m_apkEnemy[e]->SetIsMoving(false);
 							m_apkEnemy[e]->SetX(left2 - 32);
                             m_apkEnemy[e]->SetDirection(dir);
-                        }
-                        else
-                        {
-                            m_apkEnemy[e]->SetIsMoving(true);
                         }
                     }
                     break;
                 case DIR_LEFT:
-                    left1 = m_apkEnemy[e]->GetX() - m_apkEnemy[e]->GetSpeed() * fDelta;
+                    left1 = m_apkEnemy[e]->GetX();
                     right2 = i * 16;
                     if(left1 < right2)
                     {
@@ -1387,13 +1469,8 @@ void Map::HandleCollisions(f32 fDelta)
                            (m_aBlocks[i - 1][j + 1] != BT_EMPTY && m_aBlocks[i - 1][j + 1] != BT_ICE && m_aBlocks[i - 1][j + 1] != BT_JUNGLE))
                         {
                             DIRECTION dir = (DIRECTION) (rand() % 3 + 1); // bez DIR_LEFT
-                            m_apkEnemy[e]->SetIsMoving(false);
 							m_apkEnemy[e]->SetX(right2);
                             m_apkEnemy[e]->SetDirection(dir);
-                        }
-                        else
-                        {
-                            m_apkEnemy[e]->SetIsMoving(true);
                         }
                     }
                     break;
@@ -1413,19 +1490,19 @@ void Map::HandleCollisions(f32 fDelta)
                     bottom2 = j * 16 + 24;
                     if(top1 < bottom2)
                     {
-                        BLOCK_TYPE b1 = m_aBlocks[i][j - 1];
-						BLOCK_TYPE b2 = m_aBlocks[i + 1][j - 1];
+                        BLOCK_TYPE b1 = m_aBlocks[i][j];
+						BLOCK_TYPE b2 = m_aBlocks[i + 1][j];
 						if((b1 != BT_EMPTY && b1 != BT_ICE && b1 != BT_JUNGLE && b1 != BT_SEA && b1 != BT_BRICK_VLEFT && b1 != BT_BRICK_LBOT && b1 != BT_BRICK_LTOP && b1 != BT_DEADEAGLELTOP && b1 != BT_DEADEAGLELBOT && b1 != BT_DEADEAGLERTOP && b1 != BT_DEADEAGLERBOT) ||
                            (b2 != BT_EMPTY && b2 != BT_ICE && b2 != BT_JUNGLE && b2 != BT_SEA && b2 != BT_BRICK_VRIGHT && b2 != BT_BRICK_RBOT && b2 != BT_BRICK_RTOP && b2 != BT_DEADEAGLELTOP && b2 != BT_DEADEAGLELBOT && b2 != BT_DEADEAGLERTOP && b2 != BT_DEADEAGLERBOT))
                         {
-							if(m_aBlocks[i][j - 1] == BT_EAGLELBOT || m_aBlocks[i][j - 1] == BT_EAGLERBOT ||
-							   m_aBlocks[i + 1][j - 1] == BT_EAGLELBOT || m_aBlocks[i + 1][j - 1] == BT_EAGLERBOT)
+							if(b1 == BT_EAGLELBOT || b1 == BT_EAGLERBOT ||
+							   b2 == BT_EAGLELBOT || b2 == BT_EAGLERBOT)
 							{
 								DestroyEagle();
 							}
 							else
 							{
-								CalculateDamageUp(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j - 1], &m_aBlocks[i + 1][j - 1], true);
+								CalculateDamageUp(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i + 1][j], true);
 							}
                             m_apkEnemy[e]->GetBullet(0)->Destroy();
                         }
@@ -1441,8 +1518,8 @@ void Map::HandleCollisions(f32 fDelta)
 						if((b1 != BT_EMPTY && b1 != BT_ICE && b1 != BT_JUNGLE && b1 != BT_SEA && b1 != BT_BRICK_VLEFT && b1 != BT_BRICK_LBOT && b1 != BT_BRICK_LTOP && b1 != BT_DEADEAGLELTOP && b1 != BT_DEADEAGLELBOT && b1 != BT_DEADEAGLERTOP && b1 != BT_DEADEAGLERBOT) ||
                            (b2 != BT_EMPTY && b2 != BT_ICE && b2 != BT_JUNGLE && b2 != BT_SEA && b2 != BT_BRICK_VRIGHT && b2 != BT_BRICK_RBOT && b2 != BT_BRICK_RTOP && b2 != BT_DEADEAGLELTOP && b2 != BT_DEADEAGLELBOT && b2 != BT_DEADEAGLERTOP && b2 != BT_DEADEAGLERBOT))
                         {
-							if(m_aBlocks[i][j] == BT_EAGLELTOP || m_aBlocks[i][j] == BT_EAGLERTOP ||
-							   m_aBlocks[i + 1][j] == BT_EAGLELTOP || m_aBlocks[i + 1][j] == BT_EAGLERTOP)
+							if(b1 == BT_EAGLELTOP || b1 == BT_EAGLERTOP ||
+							   b2 == BT_EAGLELTOP || b2 == BT_EAGLERTOP)
 							{
 								DestroyEagle();
 							}
@@ -1464,8 +1541,8 @@ void Map::HandleCollisions(f32 fDelta)
 						if((b1 != BT_EMPTY && b1 != BT_ICE && b1 != BT_JUNGLE && b1 != BT_SEA && b1 != BT_BRICK_HTOP && b1 != BT_BRICK_RTOP && b1 != BT_BRICK_LTOP && b1 != BT_DEADEAGLELTOP && b1 != BT_DEADEAGLELBOT && b1 != BT_DEADEAGLERTOP && b1 != BT_DEADEAGLERBOT) ||
                            (b2 != BT_EMPTY && b2 != BT_ICE && b2 != BT_JUNGLE && b2 != BT_SEA && b2 != BT_BRICK_HBOT && b2 != BT_BRICK_RBOT && b2 != BT_BRICK_LBOT && b2 != BT_DEADEAGLELTOP && b2 != BT_DEADEAGLELBOT && b2 != BT_DEADEAGLERTOP && b2 != BT_DEADEAGLERBOT))
                         {
-							if(m_aBlocks[i][j] == BT_EAGLELBOT || m_aBlocks[i][j] == BT_EAGLELTOP ||
-							   m_aBlocks[i][j + 1] == BT_EAGLELBOT || m_aBlocks[i][j + 1] == BT_EAGLELTOP)
+							if(b1 == BT_EAGLELBOT || b1 == BT_EAGLELTOP ||
+							   b2 == BT_EAGLELBOT || b2 == BT_EAGLELTOP)
 							{
 								DestroyEagle();
 							}
@@ -1482,19 +1559,19 @@ void Map::HandleCollisions(f32 fDelta)
                     right2 = i * 16;
                     if(left1 < right2)
                     {
-						BLOCK_TYPE b1 = m_aBlocks[i - 1][j];
-						BLOCK_TYPE b2 = m_aBlocks[i - 1][j + 1];
+						BLOCK_TYPE b1 = m_aBlocks[i][j];
+						BLOCK_TYPE b2 = m_aBlocks[i][j + 1];
 						if((b1 != BT_EMPTY && b1 != BT_ICE && b1 != BT_JUNGLE && b1 != BT_SEA && b1 != BT_BRICK_HTOP && b1 != BT_BRICK_RTOP && b1 != BT_BRICK_LTOP && b1 != BT_DEADEAGLELTOP && b1 != BT_DEADEAGLELBOT && b1 != BT_DEADEAGLERTOP && b1 != BT_DEADEAGLERBOT) ||
                            (b2 != BT_EMPTY && b2 != BT_ICE && b2 != BT_JUNGLE && b2 != BT_SEA && b2 != BT_BRICK_HBOT && b2 != BT_BRICK_RBOT && b2 != BT_BRICK_LBOT && b2 != BT_DEADEAGLELTOP && b2 != BT_DEADEAGLELBOT && b2 != BT_DEADEAGLERTOP && b2 != BT_DEADEAGLERBOT))
                         {
-							if(m_aBlocks[i - 1][j] == BT_EAGLERBOT || m_aBlocks[i - 1][j] == BT_EAGLERTOP ||
-							   m_aBlocks[i - 1][j + 1] == BT_EAGLERBOT || m_aBlocks[i - 1][j + 1] == BT_EAGLERTOP)
+							if(b1 == BT_EAGLERBOT || b1 == BT_EAGLERTOP ||
+							   b2 == BT_EAGLERBOT || b2 == BT_EAGLERTOP)
 							{
 								DestroyEagle();
 							}
 							else
 							{
-								CalculateDamageLeft(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i - 1][j], &m_aBlocks[i - 1][j + 1], true);
+								CalculateDamageLeft(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i][j + 1], true);
 							}
 							m_apkEnemy[e]->GetBullet(0)->Destroy();
                         }
@@ -1737,7 +1814,6 @@ void Map::Update(f32 fDelta, bool bGetInput)
 		}
 	} // bGetInput
 
-    HandleCollisions(fDelta);
 
     Bonus::GetInstance()->Update();
 
@@ -1748,6 +1824,8 @@ void Map::Update(f32 fDelta, bool bGetInput)
     if(m_apkEnemy[1] != NULL) m_apkEnemy[1]->Update(fDelta);
     if(m_apkEnemy[2] != NULL) m_apkEnemy[2]->Update(fDelta);
     if(m_apkEnemy[3] != NULL) m_apkEnemy[3]->Update(fDelta);
+
+    HandleCollisions(fDelta);
 }
 
 void Map::Render()

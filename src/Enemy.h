@@ -83,6 +83,7 @@ public:
     inline SHIELDLEVEL GetShieldLevel() const { return m_kSL; }
 	inline bool GetHasBonus() const { return m_bHasBonus; }
 	inline bool GetIsSpawning() const { return m_bSpawn; }
+    inline bool GetStopped() const { return m_bStopped; }
 
     inline static int GetEnemiesLeft() { return m_iEnemiesLeft; }
     inline static int GetBonusesLeft() { return m_iBonusesLeft; }

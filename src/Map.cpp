@@ -864,7 +864,7 @@ void Map::HandleCollisions(f32 fDelta)
                         }
 					}
 				}
-                if(pkPlayer->IsAlive() && !pkPlayer->IsOnSpawn() && m_apkEnemy[e]->IsMoving() && m_apkEnemy[e]->IsAlive())
+                if(pkPlayer->IsAlive() && !pkPlayer->IsOnSpawn() && m_apkEnemy[e]->IsMoving() && m_apkEnemy[e]->IsAlive() && !m_apkEnemy[e]->GetStopped())
 				{
 					top1 = m_apkEnemy[e]->GetY();
 					bottom2 = pkPlayer->GetY() + 32;

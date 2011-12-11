@@ -138,7 +138,7 @@ void Enemy::Update(f32 fDelta)
 
         if(time1 == 0 && !chdir)
         {
-            SetDirection((DIRECTION) ((rand() % 12039) % 4 + 1));
+            SetDirection((DIRECTION) (rand() % 4 + 1));
 			chdir = true;
         }
 		else if(time1 != 0 && chdir)

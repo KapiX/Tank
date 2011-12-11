@@ -24,6 +24,7 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include "Config.h"
 #include "Map.h"
 #include "RenderList.h"
 #include "Singleton.h"
@@ -42,7 +43,8 @@ enum GAMESTATE
 {
 	GS_SPLASH = 1,
 	GS_MAINMENU,
-	//GS_CONTROLSMENU,
+	GS_CONTROLSMENU,
+    GS_CONTROLSWAITING,
 	GS_LEVELSTARTING,
 	GS_LEVELPLAYING,
 	GS_LEVELPAUSE,
@@ -53,7 +55,7 @@ enum GAMESTATE
 enum MAINMENU {
 	MM_1PLAYER = 0,
 	MM_2PLAYERS,
-	//MM_CONTROLS,
+	MM_CONTROLS,
 	//MM_EDITOR,
 	MM_EXIT
 };
@@ -62,6 +64,34 @@ enum INGAMEMENU {
 	IM_BACK_TO_GAME = 0,
 	IM_EXIT_TO_MENU,
 	IM_EXIT_TO_SYSTEM
+};
+
+enum CONTROLSPLAYERMENU {
+    CPM_1P = 0,
+    CPM_2P
+};
+
+enum CONTROLSMENU {
+    CM_CONTROLLER = 0,
+    CM_UP,
+    CM_DOWN,
+    CM_LEFT,
+    CM_RIGHT,
+    CM_SHOOT,
+    CM_BACK
+};
+
+enum WAITINGFOR {
+    WF_P1UP = 1,
+    WF_P1DOWN,
+    WF_P1LEFT,
+    WF_P1RIGHT,
+    WF_P1SHOOT,
+    WF_P2UP,
+    WF_P2DOWN,
+    WF_P2LEFT,
+    WF_P2RIGHT,
+    WF_P2SHOOT
 };
 
 class Game :
@@ -103,6 +133,12 @@ private:
     // GAMEOVER
     f32 m_iGameOverY;
 
+    // CONTROLS
+    Menu *m_pPlayerSelectMenu;
+    Menu *m_pP1ControlsMenu;
+    Menu *m_pP2ControlsMenu;
+    WAITINGFOR m_kWaitingFor;
+
 public:
     Game(void);
     ~Game(void);
@@ -113,6 +149,8 @@ public:
     void Update(float fDelta);
 	void UpdateSplash(float fDelta);
 	void UpdateMainMenu(float fDelta);
+    void UpdateControlsMenu(float fDelta);
+    void UpdateControlsWaiting(float fDelta);
 	void UpdateLevelStarting(float fDelta);
 	void UpdateLevelPlaying(float fDelta);
 	void UpdateLevelPause(float fDelta);
@@ -122,6 +160,8 @@ public:
     void Render();
 	void RenderSplash();
 	void RenderMainMenu();
+    void RenderControlsMenu();
+    void RenderControlsWaiting();
 	void RenderLevelStarting();
 	void RenderLevelPlaying();
 	void RenderLevelPause();

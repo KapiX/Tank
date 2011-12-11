@@ -21,6 +21,7 @@
 #define _MAP_H_
 
 #include "Animation.h"
+#include "Config.h"
 #include "RenderList.h"
 #include "Keyboard.h"
 #include "Player.h"

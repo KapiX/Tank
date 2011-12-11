@@ -22,6 +22,7 @@
 
 #include "Game.h"
 #include "Window.h"
+#include "Config.h"
 
 #pragma comment(lib, "SDL.lib")
 #pragma comment(lib, "SDLmain.lib")
@@ -59,12 +60,13 @@ void Render(VideoDriver *pVD)
 
 int main(int argc, char *argv[])
 {
+    Config::GetInstance()->ReadFromFile("config.cfg");
 	Window::GetInstance()->Render = Render;
 	Window::GetInstance()->Update = Update;
 	Window::GetInstance()->Focus = Focus;
 	Window::GetInstance()->Unfocus = Unfocus;
 
-    Window::GetInstance()->Init(800, 600, false, VD_OPENGL);
+    Window::GetInstance()->Init(800, 600, Config::GetInstance()->GetFullscreen(), VD_OPENGL);
 
 	pFont = Window::GetInstance()->GetVideoDriver()->CreateTexture("graphics/font.png");
 	Game::GetInstance()->LoadResources(pFont);
@@ -74,6 +76,8 @@ int main(int argc, char *argv[])
     Game::GetInstance()->FreeResources();
 
     Window::GetInstance()->Shutdown();
+
+    Config::GetInstance()->SaveToFile("config.cfg");
 
     return 0;
 }

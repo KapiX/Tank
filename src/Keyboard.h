@@ -53,16 +53,15 @@ public:
         return false;
     }
 
-    SDLKey WaitForKey()
+    SDLKey GetKey()
     {
         SDL_Event event;
-        event.type = SDL_NOEVENT;
-        while(event.type != SDL_KEYDOWN) {
-            if(!SDL_WaitEvent(&event)) {
-                return SDLK_UNKNOWN;
-            }
+        SDL_PollEvent(&event);
+        if(event.type == SDL_KEYDOWN) {
+            return event.key.keysym.sym;
         }
-        return event.key.keysym.sym;
+        else
+            return SDLK_UNKNOWN;
     }
 
     char *GetKeyName(SDLKey key)

@@ -1744,70 +1744,69 @@ void Map::Update(f32 fDelta, bool bGetInput)
 		 * CONTROLS
 		 */
 		// PLAYER 1
-		if(Keyboard::GetInstance()->IsKeyDown(SDLK_UP))
+        if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP1Controls()->iUp))
 		{
 			m_pkPlayer1->SetDirection(DIR_UP);
 			m_pkPlayer1->SetIsMoving(true);
-			SoundManager::GetInstance()->Play(SND_MOVING);
 		}
-		else if(Keyboard::GetInstance()->IsKeyDown(SDLK_RIGHT))
+		else if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP1Controls()->iRight))
 		{
 			m_pkPlayer1->SetDirection(DIR_RIGHT);
 			m_pkPlayer1->SetIsMoving(true);
 		}
-		else if(Keyboard::GetInstance()->IsKeyDown(SDLK_DOWN))
+		else if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP1Controls()->iDown))
 		{
 			m_pkPlayer1->SetDirection(DIR_DOWN);
 			m_pkPlayer1->SetIsMoving(true);
 		}
-		else if(Keyboard::GetInstance()->IsKeyDown(SDLK_LEFT))
+		else if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP1Controls()->iLeft))
 		{
 			m_pkPlayer1->SetDirection(DIR_LEFT);
 			m_pkPlayer1->SetIsMoving(true);
 		}
-		if(Keyboard::GetInstance()->IsKeyUp(SDLK_UP) && Keyboard::GetInstance()->IsKeyUp(SDLK_RIGHT) &&
-		   Keyboard::GetInstance()->IsKeyUp(SDLK_DOWN) && Keyboard::GetInstance()->IsKeyUp(SDLK_LEFT))
+		if(Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP1Controls()->iUp) &&
+           Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP1Controls()->iRight) &&
+		   Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP1Controls()->iDown) &&
+           Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP1Controls()->iLeft))
 		{
 			m_pkPlayer1->SetIsMoving(false);
 		}
-		if(Keyboard::GetInstance()->KeyPressed(SDLK_RCTRL))
+		if(Keyboard::GetInstance()->KeyPressed((SDLKey) Config::GetInstance()->GetP1Controls()->iShoot))
 		{
 			m_pkPlayer1->Shoot();
-		}
-		if(Keyboard::GetInstance()->KeyPressed(SDLK_k))
-		{
-			m_pkPlayer1->Destroy();
 		}
 
 		// PLAYER 2
 		if(m_b2PlayerMode)
 		{
-			if(Keyboard::GetInstance()->IsKeyDown(SDLK_w))
+			if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP2Controls()->iUp))
 			{
 				m_pkPlayer2->SetDirection(DIR_UP);
 				m_pkPlayer2->SetIsMoving(true);
 			}
-			else if(Keyboard::GetInstance()->IsKeyDown(SDLK_d))
+			else if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP2Controls()->iRight))
 			{
 				m_pkPlayer2->SetDirection(DIR_RIGHT);
 				m_pkPlayer2->SetIsMoving(true);
 			}
-			else if(Keyboard::GetInstance()->IsKeyDown(SDLK_s))
+			else if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP2Controls()->iDown))
 			{
 				m_pkPlayer2->SetDirection(DIR_DOWN);
 				m_pkPlayer2->SetIsMoving(true);
 			}
-			else if(Keyboard::GetInstance()->IsKeyDown(SDLK_a))
+			else if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP2Controls()->iLeft))
 			{
 				m_pkPlayer2->SetDirection(DIR_LEFT);
 				m_pkPlayer2->SetIsMoving(true);
 			}
-			if(Keyboard::GetInstance()->IsKeyUp(SDLK_w) && Keyboard::GetInstance()->IsKeyUp(SDLK_d) &&
-			   Keyboard::GetInstance()->IsKeyUp(SDLK_s) && Keyboard::GetInstance()->IsKeyUp(SDLK_a))
+			if(Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP2Controls()->iUp) &&
+               Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP2Controls()->iRight) &&
+			   Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP2Controls()->iDown) &&
+               Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP2Controls()->iLeft))
 			{
 				m_pkPlayer2->SetIsMoving(false);
 			}
-			if(Keyboard::GetInstance()->KeyPressed(SDLK_q))
+			if(Keyboard::GetInstance()->KeyPressed((SDLKey) Config::GetInstance()->GetP2Controls()->iShoot))
 			{
 				m_pkPlayer2->Shoot();
 			}

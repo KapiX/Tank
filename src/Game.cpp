@@ -65,7 +65,7 @@ void Game::LoadResources(Texture *pFont)
 	m_pMainMenu->SetTitle("MAIN MENU");
 	m_pMainMenu->AddItem("1 PLAYER");
 	m_pMainMenu->AddItem("2 PLAYERS");
-	//m_pMainMenu->AddItem("CONTROLS");
+	m_pMainMenu->AddItem("CONTROLS");
 	//m_pMainMenu->AddItem("EDITOR");
 	m_pMainMenu->AddItem("EXIT");
 
@@ -75,6 +75,35 @@ void Game::LoadResources(Texture *pFont)
 	m_pInGameMenu->AddItem("BACK TO GAME");
 	m_pInGameMenu->AddItem("EXIT TO MENU");
 	m_pInGameMenu->AddItem("EXIT TO SYSTEM");
+
+    m_pPlayerSelectMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pMenuPointer);
+	m_pPlayerSelectMenu->SetPointerAnim(m_pMenuPointerAnim);
+    m_pPlayerSelectMenu->SetOrientation(MO_HORIZONTAL);
+    m_pPlayerSelectMenu->SetTitle("PLAYER");
+    m_pPlayerSelectMenu->AddItem("1");
+    m_pPlayerSelectMenu->AddItem("2");
+
+    m_pP1ControlsMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pMenuPointer);
+	m_pP1ControlsMenu->SetPointerAnim(m_pMenuPointerAnim);
+    m_pP1ControlsMenu->SetTitle("PLAYER 1 CONTROLS");
+    m_pP1ControlsMenu->AddItem("CONTROLLER: ");
+    m_pP1ControlsMenu->AddItem("UP:         ");
+    m_pP1ControlsMenu->AddItem("DOWN:       ");
+    m_pP1ControlsMenu->AddItem("LEFT:       ");
+    m_pP1ControlsMenu->AddItem("RIGHT:      ");
+    m_pP1ControlsMenu->AddItem("SHOOT:      ");
+    m_pP1ControlsMenu->AddItem("BACK");
+
+    m_pP2ControlsMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pMenuPointer);
+	m_pP2ControlsMenu->SetPointerAnim(m_pMenuPointerAnim);
+    m_pP2ControlsMenu->SetTitle("PLAYER 2 CONTROLS");
+    m_pP2ControlsMenu->AddItem("CONTROLLER: ");
+    m_pP2ControlsMenu->AddItem("UP:         ");
+    m_pP2ControlsMenu->AddItem("DOWN:       ");
+    m_pP2ControlsMenu->AddItem("LEFT:       ");
+    m_pP2ControlsMenu->AddItem("RIGHT:      ");
+    m_pP2ControlsMenu->AddItem("SHOOT:      ");
+    m_pP2ControlsMenu->AddItem("BACK");
 
 	m_pMap = new Map(Window::GetInstance()->GetVideoDriver(), "graphics/blocks.png", "graphics/player_yellow.png", "graphics/player_green.png", "graphics/enemy.png", "graphics/misc.png");
 
@@ -101,6 +130,12 @@ void Game::Update(float fDelta)
 	case GS_MAINMENU:
 		UpdateMainMenu(fDelta);
 		break;
+    case GS_CONTROLSMENU:
+        UpdateControlsMenu(fDelta);
+        break;
+    case GS_CONTROLSWAITING:
+        UpdateControlsWaiting(fDelta);
+        break;
 	case GS_LEVELSTARTING:
 		UpdateLevelStarting(fDelta);
 		break;
@@ -176,9 +211,9 @@ void Game::UpdateMainMenu(float fDelta)
     }
     if(Keyboard::GetInstance()->KeyPressed(SDLK_RETURN))
     {
-        m_fTimer = 0;
         if(m_pMainMenu->GetCurrentItem() == MM_1PLAYER || m_pMainMenu->GetCurrentItem() == MM_2PLAYERS)
         {
+            m_fTimer = 0;
             if(m_pMainMenu->GetCurrentItem() == MM_2PLAYERS)
             {
                 m_bPlayer2 = true;
@@ -199,11 +234,202 @@ void Game::UpdateMainMenu(float fDelta)
             m_pInGameMenu->SetCurrentItem(0);
             m_GameState = GS_LEVELSTARTING;
         }
+        else if(m_pMainMenu->GetCurrentItem() == MM_CONTROLS)
+        {
+            char item[64];
+            char controller1[32];
+            char controller2[32];
+            if(Config::GetInstance()->GetP1Controller() == KEYBOARD)
+            {
+                strcpy(controller1, "KEYBOARD");
+                sprintf(item, "UP:         %s", Keyboard::GetInstance()->GetKeyName((SDLKey) Config::GetInstance()->GetP1Controls()->iUp));
+                m_pP1ControlsMenu->ChangeItem(CM_UP, item);
+                sprintf(item, "DOWN:       %s", Keyboard::GetInstance()->GetKeyName((SDLKey) Config::GetInstance()->GetP1Controls()->iDown));
+                m_pP1ControlsMenu->ChangeItem(CM_DOWN, item);
+                sprintf(item, "LEFT:       %s", Keyboard::GetInstance()->GetKeyName((SDLKey) Config::GetInstance()->GetP1Controls()->iLeft));
+                m_pP1ControlsMenu->ChangeItem(CM_LEFT, item);
+                sprintf(item, "RIGHT:      %s", Keyboard::GetInstance()->GetKeyName((SDLKey) Config::GetInstance()->GetP1Controls()->iRight));
+                m_pP1ControlsMenu->ChangeItem(CM_RIGHT, item);
+                sprintf(item, "SHOOT:      %s", Keyboard::GetInstance()->GetKeyName((SDLKey) Config::GetInstance()->GetP1Controls()->iShoot));
+                m_pP1ControlsMenu->ChangeItem(CM_SHOOT, item);
+            }
+            if(Config::GetInstance()->GetP2Controller() == KEYBOARD) 
+            {
+                strcpy(controller2, "KEYBOARD");
+                sprintf(item, "UP:         %s", Keyboard::GetInstance()->GetKeyName((SDLKey) Config::GetInstance()->GetP2Controls()->iUp));
+                m_pP2ControlsMenu->ChangeItem(CM_UP, item);
+                sprintf(item, "DOWN:       %s", Keyboard::GetInstance()->GetKeyName((SDLKey) Config::GetInstance()->GetP2Controls()->iDown));
+                m_pP2ControlsMenu->ChangeItem(CM_DOWN, item);
+                sprintf(item, "LEFT:       %s", Keyboard::GetInstance()->GetKeyName((SDLKey) Config::GetInstance()->GetP2Controls()->iLeft));
+                m_pP2ControlsMenu->ChangeItem(CM_LEFT, item);
+                sprintf(item, "RIGHT:      %s", Keyboard::GetInstance()->GetKeyName((SDLKey) Config::GetInstance()->GetP2Controls()->iRight));
+                m_pP2ControlsMenu->ChangeItem(CM_RIGHT, item);
+                sprintf(item, "SHOOT:      %s", Keyboard::GetInstance()->GetKeyName((SDLKey) Config::GetInstance()->GetP2Controls()->iShoot));
+                m_pP2ControlsMenu->ChangeItem(CM_SHOOT, item);
+            }
+            sprintf(item, "CONTROLLER: %s", controller1);
+            m_pP1ControlsMenu->ChangeItem(CM_CONTROLLER, item);
+            sprintf(item, "CONTROLLER: %s", controller2);
+            m_pP2ControlsMenu->ChangeItem(CM_CONTROLLER, item);
+            
+            m_GameState = GS_CONTROLSMENU;
+        }
         else if(m_pMainMenu->GetCurrentItem() == MM_EXIT)
         {
             Window::GetInstance()->Quit();
         }
     }
+}
+
+void Game::UpdateControlsMenu(float fDelta)
+{
+	m_pMenuPointerAnim->Animate();
+
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_LEFT))
+    {
+        m_pPlayerSelectMenu->PrevItem();
+    }
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_RIGHT))
+    {
+        m_pPlayerSelectMenu->NextItem();
+    }
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_UP))
+    {
+        m_pP1ControlsMenu->PrevItem();
+        m_pP2ControlsMenu->PrevItem();
+    }
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_DOWN))
+    {
+        m_pP1ControlsMenu->NextItem();
+        m_pP2ControlsMenu->NextItem();
+    }
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_RETURN))
+    {
+        if(m_pPlayerSelectMenu->GetCurrentItem() == CPM_1P)
+        {
+            switch(m_pP1ControlsMenu->GetCurrentItem())
+            {
+            case CM_UP:
+                m_kWaitingFor = WF_P1UP;
+                m_GameState = GS_CONTROLSWAITING;
+                break;
+            case CM_DOWN:
+                m_kWaitingFor = WF_P1DOWN;
+                m_GameState = GS_CONTROLSWAITING;
+                break;
+            case CM_LEFT:
+                m_kWaitingFor = WF_P1LEFT;
+                m_GameState = GS_CONTROLSWAITING;
+                break;
+            case CM_RIGHT:
+                m_kWaitingFor = WF_P1RIGHT;
+                m_GameState = GS_CONTROLSWAITING;
+                break;
+            case CM_SHOOT:
+                m_kWaitingFor = WF_P1SHOOT;
+                m_GameState = GS_CONTROLSWAITING;
+                break;
+            case CM_BACK:
+                m_fTimer = 0;
+                m_GameState = GS_MAINMENU;
+                break;
+            }
+        }
+        else
+        {
+            switch(m_pP2ControlsMenu->GetCurrentItem())
+            {
+            case CM_UP:
+                m_kWaitingFor = WF_P2UP;
+                m_GameState = GS_CONTROLSWAITING;
+                break;
+            case CM_DOWN:
+                m_kWaitingFor = WF_P2DOWN;
+                m_GameState = GS_CONTROLSWAITING;
+                break;
+            case CM_LEFT:
+                m_kWaitingFor = WF_P2LEFT;
+                m_GameState = GS_CONTROLSWAITING;
+                break;
+            case CM_RIGHT:
+                m_kWaitingFor = WF_P2RIGHT;
+                m_GameState = GS_CONTROLSWAITING;
+                break;
+            case CM_SHOOT:
+                m_kWaitingFor = WF_P2SHOOT;
+                m_GameState = GS_CONTROLSWAITING;
+                break;
+            case CM_BACK:
+                m_fTimer = 0;
+                m_GameState = GS_MAINMENU;
+                break;
+            }
+        }
+    }
+}
+
+void Game::UpdateControlsWaiting(float fDelta)
+{
+    SDLKey key;
+    while((key = Keyboard::GetInstance()->GetKey()) == SDLK_UNKNOWN);
+    // set key to pressed state
+    Keyboard::GetInstance()->KeyPressed(key);
+    
+    char item[64];
+    switch(m_kWaitingFor)
+    {
+    case WF_P1UP:
+        Config::GetInstance()->GetP1Controls()->iUp = (u32) key;
+        sprintf(item, "UP:         %s", Keyboard::GetInstance()->GetKeyName(key));
+        m_pP1ControlsMenu->ChangeItem(CM_UP, item);
+        break;
+    case WF_P1DOWN:
+        Config::GetInstance()->GetP1Controls()->iDown = (u32) key;
+        sprintf(item, "DOWN:       %s", Keyboard::GetInstance()->GetKeyName(key));
+        m_pP1ControlsMenu->ChangeItem(CM_DOWN, item);
+        break;
+    case WF_P1LEFT:
+        Config::GetInstance()->GetP1Controls()->iLeft = (u32) key;
+        sprintf(item, "LEFT:       %s", Keyboard::GetInstance()->GetKeyName(key));
+        m_pP1ControlsMenu->ChangeItem(CM_LEFT, item);
+        break;
+    case WF_P1RIGHT:
+        Config::GetInstance()->GetP1Controls()->iRight = (u32) key;
+        sprintf(item, "RIGHT:      %s", Keyboard::GetInstance()->GetKeyName(key));
+        m_pP1ControlsMenu->ChangeItem(CM_RIGHT, item);
+        break;
+    case WF_P1SHOOT:
+        Config::GetInstance()->GetP1Controls()->iShoot = (u32) key;
+        sprintf(item, "SHOOT:      %s", Keyboard::GetInstance()->GetKeyName(key));
+        m_pP1ControlsMenu->ChangeItem(CM_SHOOT, item);
+        break;
+    case WF_P2UP:
+        Config::GetInstance()->GetP2Controls()->iUp = (u32) key;
+        sprintf(item, "UP:         %s", Keyboard::GetInstance()->GetKeyName(key));
+        m_pP2ControlsMenu->ChangeItem(CM_UP, item);
+        break;
+    case WF_P2DOWN:
+        Config::GetInstance()->GetP2Controls()->iDown = (u32) key;
+        sprintf(item, "DOWN:       %s", Keyboard::GetInstance()->GetKeyName(key));
+        m_pP2ControlsMenu->ChangeItem(CM_DOWN, item);
+        break;
+    case WF_P2LEFT:
+        Config::GetInstance()->GetP2Controls()->iLeft = (u32) key;
+        sprintf(item, "LEFT:       %s", Keyboard::GetInstance()->GetKeyName(key));
+        m_pP2ControlsMenu->ChangeItem(CM_LEFT, item);
+        break;
+    case WF_P2RIGHT:
+        Config::GetInstance()->GetP2Controls()->iRight = (u32) key;
+        sprintf(item, "RIGHT:      %s", Keyboard::GetInstance()->GetKeyName(key));
+        m_pP2ControlsMenu->ChangeItem(CM_RIGHT, item);
+        break;
+    case WF_P2SHOOT:
+        Config::GetInstance()->GetP2Controls()->iShoot = (u32) key;
+        sprintf(item, "SHOOT:      %s", Keyboard::GetInstance()->GetKeyName(key));
+        m_pP2ControlsMenu->ChangeItem(CM_SHOOT, item);
+        break;
+    }
+    m_GameState = GS_CONTROLSMENU;
 }
 
 void Game::UpdateLevelStarting(float fDelta)
@@ -372,6 +598,12 @@ void Game::Render()
 	case GS_MAINMENU:
 		RenderMainMenu();
 		break;
+    case GS_CONTROLSMENU:
+        RenderControlsMenu();
+        break;
+    case GS_CONTROLSWAITING:
+        RenderControlsWaiting();
+        break;
 	case GS_LEVELSTARTING:
 		RenderLevelStarting();
 		break;
@@ -404,6 +636,45 @@ void Game::RenderMainMenu()
 	VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
 	pVD->DrawSprite(m_pLogo, 286, m_iSplashLogoY, 64, 0, 0);
 	m_pMainMenu->Render(350, 300);
+}
+
+void Game::RenderControlsMenu()
+{
+	VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
+	pVD->DrawSprite(m_pLogo, 286, m_iSplashLogoY, 64, 0, 0);
+	m_pPlayerSelectMenu->Render(350, 300);
+
+    if(m_pPlayerSelectMenu->GetCurrentItem() == CPM_1P)
+    {
+        m_pP1ControlsMenu->Render(334, 326);
+    }
+    else if(m_pPlayerSelectMenu->GetCurrentItem() == CPM_2P)
+    {
+        m_pP2ControlsMenu->Render(334, 326);
+    }
+}
+
+void Game::RenderControlsWaiting()
+{
+	VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
+	pVD->DrawSprite(m_pLogo, 286, m_iSplashLogoY, 62, 0, 0);
+    m_pPlayerSelectMenu->Render(350, 300, 62);
+
+    if(m_pPlayerSelectMenu->GetCurrentItem() == CPM_1P)
+    {
+        m_pP1ControlsMenu->Render(334, 326, 62);
+    }
+    else if(m_pPlayerSelectMenu->GetCurrentItem() == CPM_2P)
+    {
+        m_pP2ControlsMenu->Render(334, 326, 62);
+    }
+
+    pVD->FillRectangle(250, 250, 300, 100, 63, 0, 0, 0);
+    pVD->DrawLine(250, 250, 550, 250, 64);
+    pVD->DrawLine(550, 250, 550, 350, 64);
+    pVD->DrawLine(550, 350, 250, 350, 64);
+    pVD->DrawLine(250, 350, 250, 250, 64);
+    pVD->PrintText(m_pGameFont, 250 + 94, 250 + 43, 64, "PRESS A KEY...");
 }
 
 void Game::RenderLevelStarting()
@@ -447,7 +718,7 @@ void Game::RenderLevelPause()
     m_pMap->Render();
 
     pVD->FillRectangle(0, 0, 800, 24, 1, 255, 255, 255, 255);
-    m_pInGameMenu->Render(6, 6);
+    m_pInGameMenu->Render(6, 6, 64, 0, 0, 0);
 	RenderHUD();
 }
 

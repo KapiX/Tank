@@ -43,6 +43,9 @@ ipch/
 # CodeLite generated files #
 ############################
 *.tags
+*.mk
+*.workspace.session
+tank.txt
 
 # Build generated directories #
 ###############################

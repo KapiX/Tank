@@ -68,25 +68,25 @@ void OGLRenderList::AddElement(Sprite *pSprite, Color *pColor)
 
     if(m_kRLT == RLT_LINKED)
     {
-        // wierzcho쿮k 1
+        // vertex 1
         m_aVerts[m_iCount * 3 * 4] = pSprite->iX;
         m_aVerts[m_iCount * 3 * 4 + 1] = pSprite->iY;
         m_aVerts[m_iCount * 3 * 4 + 2] = pSprite->iZ;
         m_aTexCoords[m_iCount * 2 * 4] = pSprite->iS1 / m_pTexture->GetWidth();
         m_aTexCoords[m_iCount * 2 * 4 + 1] = pSprite->iT1 / m_pTexture->GetHeight();
-        // wierzcho쿮k 2
+        // vertex 2
         m_aVerts[m_iCount * 3 * 4 + 3] = pSprite->iX + pSprite->iW;
         m_aVerts[m_iCount * 3 * 4 + 4] = pSprite->iY;
         m_aVerts[m_iCount * 3 * 4 + 5] = pSprite->iZ;
         m_aTexCoords[m_iCount * 2 * 4 + 2] = pSprite->iS2 / m_pTexture->GetWidth();
         m_aTexCoords[m_iCount * 2 * 4 + 3] = pSprite->iT1 / m_pTexture->GetHeight();
-        // wierzcho쿮k 3
+        // vertex 3
         m_aVerts[m_iCount * 3 * 4 + 6] = pSprite->iX;
         m_aVerts[m_iCount * 3 * 4 + 7] = pSprite->iY + pSprite->iH;
         m_aVerts[m_iCount * 3 * 4 + 8] = pSprite->iZ;
         m_aTexCoords[m_iCount * 2 * 4 + 4] = pSprite->iS1 / m_pTexture->GetWidth();
         m_aTexCoords[m_iCount * 2 * 4 + 5] = pSprite->iT2 / m_pTexture->GetHeight();
-        // wierzcho쿮k 4
+        // vertex 4
         m_aVerts[m_iCount * 3 * 4 + 9] = pSprite->iX + pSprite->iW;
         m_aVerts[m_iCount * 3 * 4 + 10] = pSprite->iY + pSprite->iH;
         m_aVerts[m_iCount * 3 * 4 + 11] = pSprite->iZ;
@@ -105,37 +105,37 @@ void OGLRenderList::AddElement(Sprite *pSprite, Color *pColor)
     }
     else if(m_kRLT == RLT_NORMAL)
     {
-        // wierzcho쿮k 1
+        // vertex 1
         m_aVerts[m_iCount * 3 * 6] = pSprite->iX;
         m_aVerts[m_iCount * 3 * 6 + 1] = pSprite->iY;
         m_aVerts[m_iCount * 3 * 6 + 2] = pSprite->iZ;
         m_aTexCoords[m_iCount * 2 * 6] = pSprite->iS1 / m_pTexture->GetWidth();
         m_aTexCoords[m_iCount * 2 * 6 + 1] = pSprite->iT1 / m_pTexture->GetHeight();
-        // wierzcho쿮k 2
+        // vertex 2
         m_aVerts[m_iCount * 3 * 6 + 3] = pSprite->iX + pSprite->iW;
         m_aVerts[m_iCount * 3 * 6 + 4] = pSprite->iY;
         m_aVerts[m_iCount * 3 * 6 + 5] = pSprite->iZ;
         m_aTexCoords[m_iCount * 2 * 6 + 2] = pSprite->iS2 / m_pTexture->GetWidth();
         m_aTexCoords[m_iCount * 2 * 6 + 3] = pSprite->iT1 / m_pTexture->GetHeight();
-        // wierzcho쿮k 3
+        // vertex 3
         m_aVerts[m_iCount * 3 * 6 + 6] = pSprite->iX;
         m_aVerts[m_iCount * 3 * 6 + 7] = pSprite->iY + pSprite->iH;
         m_aVerts[m_iCount * 3 * 6 + 8] = pSprite->iZ;
         m_aTexCoords[m_iCount * 2 * 6 + 4] = pSprite->iS1 / m_pTexture->GetWidth();
         m_aTexCoords[m_iCount * 2 * 6 + 5] = pSprite->iT2 / m_pTexture->GetHeight();
-        // wierzcho쿮k 4
+        // vertex 4
         m_aVerts[m_iCount * 3 * 6 + 9] = pSprite->iX;
         m_aVerts[m_iCount * 3 * 6 + 10] = pSprite->iY + pSprite->iH;
         m_aVerts[m_iCount * 3 * 6 + 11] = pSprite->iZ;
         m_aTexCoords[m_iCount * 2 * 6 + 6] = pSprite->iS1 / m_pTexture->GetWidth();
         m_aTexCoords[m_iCount * 2 * 6 + 7] = pSprite->iT2 / m_pTexture->GetHeight();
-        // wierzcho쿮k 5
+        // vertex 5
         m_aVerts[m_iCount * 3 * 6 + 12] = pSprite->iX + pSprite->iW;
         m_aVerts[m_iCount * 3 * 6 + 13] = pSprite->iY + pSprite->iH;
         m_aVerts[m_iCount * 3 * 6 + 14] = pSprite->iZ;
         m_aTexCoords[m_iCount * 2 * 6 + 8] = pSprite->iS2 / m_pTexture->GetWidth();
         m_aTexCoords[m_iCount * 2 * 6 + 9] = pSprite->iT2 / m_pTexture->GetHeight();
-        // wierzcho쿮k 6
+        // vertex 6
         m_aVerts[m_iCount * 3 * 6 + 15] = pSprite->iX + pSprite->iW;
         m_aVerts[m_iCount * 3 * 6 + 16] = pSprite->iY;
         m_aVerts[m_iCount * 3 * 6 + 17] = pSprite->iZ;

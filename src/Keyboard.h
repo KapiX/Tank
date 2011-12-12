@@ -39,7 +39,7 @@ public:
 
     u8 IsKeyDown(SDLKey key) { return m_iKeystate[key]; }
     u8 IsKeyUp(SDLKey key) { return !m_iKeystate[key]; }
-    bool KeyPressed(SDLKey key) // jednorazowe wciœniêcie
+    bool KeyPressed(SDLKey key) // only one 'keypress' message is sent
     {
         if(IsKeyDown(key) && !m_bPressed[key])
         {
@@ -64,7 +64,7 @@ public:
             return SDLK_UNKNOWN;
     }
 
-    char *GetKeyName(SDLKey key)
+    const char *GetKeyName(SDLKey key)
     {
         switch(key) {
         case SDLK_BACKSPACE: return "Backspace";

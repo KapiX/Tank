@@ -17,6 +17,8 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstdlib>
+#include <cstring>
 #include "Config.h"
 
 using namespace std;
@@ -29,10 +31,10 @@ CONFIG_ITEM Config::ParseLine(const char *strLine)
     int len;
 
     len = strlen(strLine);
-    pos = (int) strchr(strLine, '=');
+    pos = (long) strchr(strLine, '=');
     if(pos != NULL)
     {
-        pos = pos - (int) strLine + 1;
+        pos = pos - (long) strLine + 1;
         strncpy(identifier, strLine, pos - 1);
         identifier[pos - 1] = 0;
         strncpy(value, &strLine[pos], len - pos);

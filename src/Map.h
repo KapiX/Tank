@@ -67,7 +67,7 @@ struct MapInfo
 	SpawnPoint eagle;
 };
 
-// pierwszy bajt - x, kolejny - y
+// first byte - x, next one - y
 enum BLOCK_TYPE
 {
 	BT_EMPTY = 48,
@@ -95,7 +95,7 @@ enum BLOCK_TYPE
     BT_DEADEAGLERTOP = 6176,
     BT_DEADEAGLERBOT = 6184,
 	BT_EDGE = 4112,
-	BT_DUMMY = 49 // random totalny, potrzebne aby za pierwszym razem wyczyœciæ obszar wype³niony BT_EMPTY
+	BT_DUMMY = 49 // totally random, needed to clear BT_EMPTY space
 };
 
 

@@ -113,7 +113,7 @@ void Window::Loop()
         fLastUpdateTime += fDelta;
         fDelta = std::max(0.0f, fDelta);
         fAccumulator += fDelta;
-		// przyciêcie wartoci
+		// clamping the value
         fAccumulator = std::min(m_fMaxAccumulatedTime, std::max(fAccumulator, 0.0f));
 
         if(IsEventPending())

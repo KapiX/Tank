@@ -549,7 +549,8 @@ void Game::UpdateLevelCompleted(f32 fDelta)
 		}
 		else
 		{
-			// ¿ycia odejmuja sie przy spawnowaniu, bez tego po przejsciu na kolejna mape tracimy zycie
+			// lives are lost when spawning, so without this we would have
+			// 1 life loss when starting new level
 			if(m_pMap->GetPlayer1()->IsAlive()) m_pMap->GetPlayer1()->AddLifes(1);
 			if(m_bPlayer2 && m_pMap->GetPlayer2()->IsAlive()) m_pMap->GetPlayer2()->AddLifes(1);
 
@@ -690,10 +691,10 @@ void Game::RenderLevelStarting()
     {
         m_pMap->Render();
 
-        // górna belka
+        // top bar
         pVD->FillRectangle(0, 0, 800, 24, 1, 255, 255, 255, 255);
         pVD->PrintText(m_pGameFont, 6, 6, 2, m_pMap->GetMapInfo()->strName, 1.0f, 0, 0, 0);
-        // dolna belka
+        // bottom bar
 	    RenderHUD();
     }
 }
@@ -704,10 +705,10 @@ void Game::RenderLevelPlaying()
 	
     m_pMap->Render();
 
-    // górna belka
+    // top bar
     pVD->FillRectangle(0, 0, 800, 24, 1, 255, 255, 255, 255);
     pVD->PrintText(m_pGameFont, 6, 6, 2, m_pMap->GetMapInfo()->strName, 1.0f, 0, 0, 0);
-    // dolna belka
+    // bottom bar
 	RenderHUD();
 }
 
@@ -728,13 +729,13 @@ void Game::RenderHUD()
     static char lifes1[4], score1[9], enemies[3];
 	
     pVD->FillRectangle(0, 568, 800, 32, 1, 255, 255, 255, 255);
-	// Gracz 1
+	// Player 1
     sprintf(lifes1, "%d", m_pMap->GetPlayer1()->GetLifes());
     sprintf(score1, "%08d", m_pMap->GetPlayer1()->GetScore());
 	pVD->PrintText(m_pGameFont, 6, 572, 2, score1, 2.0f, 0, 0, 0);
 	pVD->DrawSprite(m_pHUDP1, 6 + (14 + 2) * 8 + 4 - 2, 571, 2, 0, 0, 26, 26, 1.0f);
 	pVD->PrintText(m_pGameFont, 6 + (14 + 2) * 8 + 4 + 26 + 4 - 2, 572, 2, lifes1, 2.0f, 0, 0, 0);
-	// Gracz 2
+	// Player 2
     if(m_bPlayer2)
     {
         static char lifes2[4], score2[9];
@@ -744,7 +745,7 @@ void Game::RenderHUD()
 	    pVD->DrawSprite(m_pHUDP2, 800 - (6 + (14 + 2) * 8 + 4) - 26, 571, 2, 0, 0, 26, 26, 1.0f);
 	    pVD->PrintText(m_pGameFont, 800 - (6 + (14 + 2) * 8 + 4 + 26 + 4) - 14, 572, 2, lifes2, 2.0f, 0, 0, 0);
     }
-    // Liczba wrogów
+    // Enemies count
     sprintf(enemies, "%d", Enemy::GetEnemiesLeft());
     pVD->PrintText(m_pGameFont, 400 - (strlen(enemies) / 2 * (14 + 2)), 572, 2, enemies, 2.0f, 0, 0, 0);
 	pVD->DrawSprite(m_pEnemyTexture, 400 - (strlen(enemies) / 2 * (14 + 2)) - 32, 568, 2, 128, 0, 32, 32, 1.0f);
@@ -756,10 +757,10 @@ void Game::RenderLevelCompleted()
 	
     m_pMap->Render();
 
-    // górna belka
+    // top bar
     pVD->FillRectangle(0, 0, 800, 24, 1, 255, 255, 255, 255);
     pVD->PrintText(m_pGameFont, 6, 6, 2, m_pMap->GetMapInfo()->strName, 1.0f, 0, 0, 0);
-    // dolna belka
+    // bottom bar
 	RenderHUD();
 }
 
@@ -769,10 +770,10 @@ void Game::RenderGameOver()
 
     m_pMap->Render();
 
-    // górna belka
+    // top bar
     pVD->FillRectangle(0, 0, 800, 24, 1, 255, 255, 255, 255);
     pVD->PrintText(m_pGameFont, 6, 6, 2, m_pMap->GetMapInfo()->strName, 1.0f, 0, 0, 0);
-    // dolna belka
+    // bottom bar
 	RenderHUD();
 
 	pVD->PrintText(m_pGameFont, 384, m_iGameOverY, 64, "GAME", 1.0f, 255, 0, 0, 255);

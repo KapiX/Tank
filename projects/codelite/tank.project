@@ -46,6 +46,8 @@
     <File Name="../../src/VideoDriver.h"/>
     <File Name="../../src/Window.cpp"/>
     <File Name="../../src/Window.h"/>
+    <File Name="../../src/Config.cpp"/>
+    <File Name="../../src/Config.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="7z">
     <File Name="../../src/7z/7z.h"/>
@@ -133,7 +135,8 @@
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="./../../bin/Debug/$(ProjectName)" IntermediateDirectory="./../../obj/Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="./../../bin/Debug" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
-        <![CDATA[]]>
+        <![CDATA[
+      ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
@@ -175,7 +178,8 @@
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="./../../bin/Release/$(ProjectName)" IntermediateDirectory="./../../obj/Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="./../../bin/Release" PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
-        <![CDATA[]]>
+        <![CDATA[
+      ]]>
       </Environment>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>

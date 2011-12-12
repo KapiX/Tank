@@ -51,7 +51,7 @@ void Render(VideoDriver *pVD)
 
     pVD->Clear(0, 0, 0);
     Game::GetInstance()->Render();
-	// Rysowanie FPS
+	// Drawing FPS
 	sprintf(temp, "FPS:%d", (int) Window::GetInstance()->GetFPS());
 	pVD->PrintText(pFont, 730, 6, 64, temp, 1, 0, 255, 0);
 

@@ -42,7 +42,7 @@ static void Free(void *p, void *address)
 class LevelPack
 {
 private:
-	int *m_piIndex; // tablica z indeksami plików zawieraj¹cych kolejne poziomy
+	int *m_piIndex; // file indexes within archive
 	int m_iCurrentLevel;
 	int m_iLevelCount;
 

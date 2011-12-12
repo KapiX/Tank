@@ -156,7 +156,7 @@ Tank::Tank(VideoDriver *pVD, Texture *pTankTexture, Texture *pMiscTexture, TANKL
     m_pkSpawnAnim = new Animation();
 	m_pkSpawnAnim->SetFrames(frames);
     m_pkSpawnAnim->SetFrameRate(0.07f);
-    m_pkSpawnAnim->SetMaxFrames(15 + 1); // aby wykryæ czy animacja sie skonczyla
+    m_pkSpawnAnim->SetMaxFrames(15 + 1); // needed for checking whether animation is over
     m_pkSpawnAnim->SetOscillate(false);
     m_pkSpawnAnim->SetPlaying(false);
 

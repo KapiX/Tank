@@ -77,7 +77,7 @@ Map::Map(VideoDriver *pVD, const char *szBlockTextureName, const char *szPlayer1
             spr->iT2 = 1;
             m_pRenderList->AddElement(spr);
         }
-        // degeneruj¹cy quad
+        // degenerating quad
         spr->iX = (f32) i * 16;
         spr->iY = (f32) 34 * 16 + 24;
         spr->iW = 0;
@@ -192,7 +192,7 @@ bool Map::LoadMap(unsigned char *data, unsigned int size)
 	Bonus::GetInstance()->SetBonusType(BONUS_NONE);
 	Bonus::GetInstance()->GetAnimation()->Reset();
 
-	m_pAnimation->Reset(); // woda
+	m_pAnimation->Reset(); // sea
 
 	delete m_apkEnemy[0];
     m_apkEnemy[0] = NULL;
@@ -203,7 +203,7 @@ bool Map::LoadMap(unsigned char *data, unsigned int size)
     delete m_apkEnemy[3];
     m_apkEnemy[3] = NULL;
 
-	// -g_cfSpawnInterval powoduje spawnowanie natychmiast po starcie poziomu
+	// -g_cfSpawnInterval causes spawning right after level start
     m_afKillTime[0] = -g_cfSpawnInterval;
     m_afKillTime[1] = -g_cfSpawnInterval;
     m_afKillTime[2] = -g_cfSpawnInterval;
@@ -651,7 +651,7 @@ void Map::HandleCollisions(f32 fDelta)
                 if((m_aBlocks[i][j - 1] != BT_EMPTY && m_aBlocks[i][j - 1] != BT_ICE && m_aBlocks[i][j - 1] != BT_JUNGLE) ||
                    (m_aBlocks[i + 1][j - 1] != BT_EMPTY && m_aBlocks[i + 1][j - 1] != BT_ICE && m_aBlocks[i + 1][j - 1] != BT_JUNGLE))
 				{
-                    if(m_aBlocks[i][j - 1] == BT_SEA && m_aBlocks[i + 1][j - 1] == BT_SEA && pkPlayer->GetBoat()) ;
+                    if((m_aBlocks[i][j - 1] == BT_SEA || m_aBlocks[i + 1][j - 1] == BT_SEA) && pkPlayer->GetBoat()) ;
 					else
 					{
 						pkPlayer->SetY(bottom2);
@@ -669,7 +669,7 @@ void Map::HandleCollisions(f32 fDelta)
                 if((m_aBlocks[i][j + 2] != BT_EMPTY && m_aBlocks[i][j + 2] != BT_ICE && m_aBlocks[i][j + 2] != BT_JUNGLE) ||
                    (m_aBlocks[i + 1][j + 2] != BT_EMPTY && m_aBlocks[i + 1][j + 2] != BT_ICE && m_aBlocks[i + 1][j + 2] != BT_JUNGLE))
 				{
-                    if(m_aBlocks[i][j + 2] == BT_SEA && m_aBlocks[i + 1][j + 2] == BT_SEA && pkPlayer->GetBoat()) ;
+                    if((m_aBlocks[i][j + 2] == BT_SEA || m_aBlocks[i + 1][j + 2] == BT_SEA) && pkPlayer->GetBoat()) ;
 					else
 					{
 						pkPlayer->SetY(top2 - 32);
@@ -687,7 +687,7 @@ void Map::HandleCollisions(f32 fDelta)
                 if((m_aBlocks[i + 2][j] != BT_EMPTY && m_aBlocks[i + 2][j] != BT_ICE && m_aBlocks[i + 2][j] != BT_JUNGLE) ||
                    (m_aBlocks[i + 2][j + 1] != BT_EMPTY && m_aBlocks[i + 2][j + 1] != BT_ICE && m_aBlocks[i + 2][j + 1] != BT_JUNGLE))
 				{
-                    if(m_aBlocks[i + 2][j] == BT_SEA && m_aBlocks[i + 2][j + 1] == BT_SEA && pkPlayer->GetBoat()) ;
+                    if((m_aBlocks[i + 2][j] == BT_SEA || m_aBlocks[i + 2][j + 1] == BT_SEA) && pkPlayer->GetBoat()) ;
 					else
 					{
 						pkPlayer->SetX(left2 - 32);
@@ -705,7 +705,7 @@ void Map::HandleCollisions(f32 fDelta)
                 if((m_aBlocks[i - 1][j] != BT_EMPTY && m_aBlocks[i - 1][j] != BT_ICE && m_aBlocks[i - 1][j] != BT_JUNGLE) ||
                    (m_aBlocks[i - 1][j + 1] != BT_EMPTY && m_aBlocks[i - 1][j + 1] != BT_ICE && m_aBlocks[i - 1][j + 1] != BT_JUNGLE))
 				{
-                    if(m_aBlocks[i - 1][j] == BT_SEA && m_aBlocks[i - 1][j + 1] == BT_SEA && pkPlayer->GetBoat()) // do nothing
+                    if((m_aBlocks[i - 1][j] == BT_SEA || m_aBlocks[i - 1][j + 1] == BT_SEA) && pkPlayer->GetBoat()) // do nothing
 						;
 					else
 					{
@@ -1343,7 +1343,7 @@ void Map::HandleCollisions(f32 fDelta)
                     top2 = m_apkEnemy[(e + 1) % 4]->GetY();
                     right1 = m_apkEnemy[e]->GetX() + 32;
                     left2 = m_apkEnemy[(e + 1) % 4]->GetX();
-                    if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2) && !m_apkEnemy[(e + 1) % 4]->IsOnSpawn())
+                    if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2) && !m_apkEnemy[(e + 1) % 4]->IsOnSpawn() && m_apkEnemy[(e + 1) % 4]->IsAlive())
                     {
                         switch(m_apkEnemy[e]->GetDirection())
                         {
@@ -1366,7 +1366,7 @@ void Map::HandleCollisions(f32 fDelta)
                     right2 = m_apkEnemy[(e + 2) % 4]->GetX() + 32;
                     top2 = m_apkEnemy[(e + 2) % 4]->GetY();
                     left2 = m_apkEnemy[(e + 2) % 4]->GetX();
-                    if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2) && !m_apkEnemy[(e + 2) % 4]->IsOnSpawn())
+                    if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2) && !m_apkEnemy[(e + 2) % 4]->IsOnSpawn() && m_apkEnemy[(e + 2) % 4]->IsAlive())
                     {
                         switch(m_apkEnemy[e]->GetDirection())
                         {
@@ -1389,7 +1389,7 @@ void Map::HandleCollisions(f32 fDelta)
                     right2 = m_apkEnemy[(e + 3) % 4]->GetX() + 32;
                     top2 = m_apkEnemy[(e + 3) % 4]->GetY();
                     left2 = m_apkEnemy[(e + 3) % 4]->GetX();
-                    if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2) && !m_apkEnemy[(e + 3) % 4]->IsOnSpawn())
+                    if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2) && !m_apkEnemy[(e + 3) % 4]->IsOnSpawn() && m_apkEnemy[(e + 3) % 4]->IsAlive())
                     {
                         switch(m_apkEnemy[e]->GetDirection())
                         {
@@ -1424,7 +1424,7 @@ void Map::HandleCollisions(f32 fDelta)
                         if((m_aBlocks[i][j - 1] != BT_EMPTY && m_aBlocks[i][j - 1] != BT_ICE && m_aBlocks[i][j - 1] != BT_JUNGLE) ||
                            (m_aBlocks[i + 1][j - 1] != BT_EMPTY && m_aBlocks[i + 1][j - 1] != BT_ICE && m_aBlocks[i + 1][j - 1] != BT_JUNGLE))
                         {
-                            DIRECTION dir = (DIRECTION) (rand() % 3 + 2); // bez DIR_UP
+                            DIRECTION dir = (DIRECTION) (rand() % 3 + 2); // w/o DIR_UP
 							m_apkEnemy[e]->SetY(bottom2);
                             m_apkEnemy[e]->SetDirection(dir);
                         }
@@ -1439,7 +1439,7 @@ void Map::HandleCollisions(f32 fDelta)
                            (m_aBlocks[i + 1][j + 2] != BT_EMPTY && m_aBlocks[i + 1][j + 2] != BT_ICE && m_aBlocks[i + 1][j + 2] != BT_JUNGLE))
                         {
                             DIRECTION dir = (DIRECTION) (rand() % 3 + 1);
-                            if(dir == 3) dir = (DIRECTION) 4; // bez DIR_DOWN
+                            if(dir == 3) dir = (DIRECTION) 4; // w/o DIR_DOWN
 							m_apkEnemy[e]->SetY(top2 - 32);
                             m_apkEnemy[e]->SetDirection(dir);
                         }
@@ -1454,7 +1454,7 @@ void Map::HandleCollisions(f32 fDelta)
                            (m_aBlocks[i + 2][j + 1] != BT_EMPTY && m_aBlocks[i + 2][j + 1] != BT_ICE && m_aBlocks[i + 2][j + 1] != BT_JUNGLE))
                         {
                             DIRECTION dir = (DIRECTION) (rand() % 3 + 2);
-                            if(dir == 2) dir = (DIRECTION) 1; // bez DIR_RIGHT
+                            if(dir == 2) dir = (DIRECTION) 1; // w/o DIR_RIGHT
 							m_apkEnemy[e]->SetX(left2 - 32);
                             m_apkEnemy[e]->SetDirection(dir);
                         }
@@ -1468,7 +1468,7 @@ void Map::HandleCollisions(f32 fDelta)
                         if((m_aBlocks[i - 1][j] != BT_EMPTY && m_aBlocks[i - 1][j] != BT_ICE && m_aBlocks[i - 1][j] != BT_JUNGLE) ||
                            (m_aBlocks[i - 1][j + 1] != BT_EMPTY && m_aBlocks[i - 1][j + 1] != BT_ICE && m_aBlocks[i - 1][j + 1] != BT_JUNGLE))
                         {
-                            DIRECTION dir = (DIRECTION) (rand() % 3 + 1); // bez DIR_LEFT
+                            DIRECTION dir = (DIRECTION) (rand() % 3 + 1); // w/o DIR_LEFT
 							m_apkEnemy[e]->SetX(right2);
                             m_apkEnemy[e]->SetDirection(dir);
                         }
@@ -1863,7 +1863,7 @@ void Map::Reset()
     delete m_apkEnemy[3];
     m_apkEnemy[3] = NULL;
 
-	// -g_cfSpawnInterval powoduje spawnowanie natychmiast po starcie poziomu
+	// -g_cfSpawnInterval causes spawning right after level start
     m_afKillTime[0] = -g_cfSpawnInterval;
     m_afKillTime[1] = -g_cfSpawnInterval;
     m_afKillTime[2] = -g_cfSpawnInterval;

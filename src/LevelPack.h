@@ -20,23 +20,14 @@
 #ifndef _LEVELPACK_H_
 #define _LEVELPACK_H_
 
+#define _7ZIP_PPMD_SUPPPORT
+
+extern "C" {
 #include "7z/7z.h"
 #include "7z/7zAlloc.h"
 #include "7z/7zCrc.h"
 #include "7z/7zFile.h"
 #include "7z/7zVersion.h"
-
-static void *Alloc(void *p, size_t size) {
-	p = p;
-	if (size == 0)
-		return 0;
-	return malloc(size);
-}
-static void Free(void *p, void *address)
-{
-	p = p;
-
-	free(address);
 }
 
 class LevelPack
@@ -68,8 +59,8 @@ private:
 public:
 	LevelPack()
 	{
-		g_Alloc.Alloc = ::Alloc;
-		g_Alloc.Free = ::Free;
+        g_Alloc.Alloc = ::SzAlloc;
+		g_Alloc.Free = ::SzFree;
 #ifndef _WIN32
 		kUtf8Limits[0] = 0xC0;
 		kUtf8Limits[1] = 0xE0;

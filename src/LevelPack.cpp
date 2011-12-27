@@ -24,11 +24,11 @@ void LevelPack::Init(const char *strFilename)
 {
 	ResetCurrentLevel();
 
-	allocImp.Alloc = ::Alloc;
-	allocImp.Free = ::Free;
+	allocImp.Alloc = ::SzAlloc;
+	allocImp.Free = ::SzFree;
 
-	allocTempImp.Alloc = ::Alloc;
-	allocTempImp.Free = ::Free;
+	allocTempImp.Alloc = ::SzAllocTemp;
+	allocTempImp.Free = ::SzFreeTemp;
 
 	int error = InFile_Open(&packStream.file, strFilename);
 
@@ -56,9 +56,9 @@ void LevelPack::Init(const char *strFilename)
 
 		if(len > tempSize)
 		{
-			::Free(NULL, temp);
+			::SzFree(NULL, temp);
 			tempSize = len;
-			temp = (UInt16 *) ::Alloc(NULL, tempSize * sizeof(temp[0]));
+			temp = (UInt16 *) ::SzAlloc(NULL, tempSize * sizeof(temp[0]));
 			if(temp == 0)
 			{
 				res = SZ_ERROR_MEM;
@@ -75,7 +75,7 @@ void LevelPack::Init(const char *strFilename)
 		
 		m_piIndex[iLevelNum] = i;
 
-		::Free(NULL, temp);
+		::SzFree(NULL, temp);
 	}
 }
 

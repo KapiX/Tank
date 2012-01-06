@@ -8,6 +8,8 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="../../src/7ZipArchive.cpp"/>
+    <File Name="../../src/7ZipArchive.h"/>
     <File Name="../../src/Animation.cpp"/>
     <File Name="../../src/Animation.h"/>
     <File Name="../../src/Bonus.cpp"/>

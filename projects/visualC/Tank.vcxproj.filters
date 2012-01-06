@@ -129,6 +129,9 @@
     <ClCompile Include="..\..\src\Config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\7ZipArchive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Animation.h">
@@ -238,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\7z\Types.h">
       <Filter>7z</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\7ZipArchive.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

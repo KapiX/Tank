@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\7ZipArchive.cpp" />
     <ClCompile Include="..\..\src\7z\7zAlloc.c" />
     <ClCompile Include="..\..\src\7z\7zBuf.c" />
     <ClCompile Include="..\..\src\7z\7zBuf2.c" />
@@ -75,6 +76,7 @@
     <ClInclude Include="..\..\src\OGLVideoDriver.h" />
     <ClInclude Include="..\..\src\Player.h" />
     <ClInclude Include="..\..\src\RenderList.h" />
+    <ClInclude Include="..\..\src\7ZipArchive.h" />
     <ClInclude Include="..\..\src\Singleton.h" />
     <ClInclude Include="..\..\src\SoundManager.h" />
     <ClInclude Include="..\..\src\Tank.h" />
@@ -94,13 +96,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

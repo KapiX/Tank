@@ -20,55 +20,17 @@
 #ifndef _LEVELPACK_H_
 #define _LEVELPACK_H_
 
-#define _7ZIP_PPMD_SUPPPORT
-
-extern "C" {
-#include "7z/7z.h"
-#include "7z/7zAlloc.h"
-#include "7z/7zCrc.h"
-#include "7z/7zFile.h"
-#include "7z/7zVersion.h"
-}
+#include "7ZipArchive.h"
 
 class LevelPack
 {
 private:
-	int *m_piIndex; // file indexes within archive
 	int m_iCurrentLevel;
 	int m_iLevelCount;
-
-	CFileInStream packStream;
-	CLookToRead lookStream;
-	CSzArEx db;
-	ISzAlloc allocImp;
-	ISzAlloc allocTempImp;
-	
-	ISzAlloc g_Alloc;
-
-	int Buf_EnsureSize(CBuf *dest, size_t size);
-#ifndef _WIN32
-	Byte kUtf8Limits[5];
-
-	Bool Utf16_To_Utf8(Byte *dest, size_t *destLen, const UInt16 *src, size_t srcLen);
-	SRes Utf16_To_Utf8Buf(CBuf *dest, const UInt16 *src, size_t srcLen);
-#endif
-	SRes Utf16_To_Char(CBuf *buf, const UInt16 *s, int fileMode);
-	char *ReturnChar(const UInt16 *s);
-	
+    SevenZipArchive m_kArchive;
 
 public:
-	LevelPack()
-	{
-        g_Alloc.Alloc = ::SzAlloc;
-		g_Alloc.Free = ::SzFree;
-#ifndef _WIN32
-		kUtf8Limits[0] = 0xC0;
-		kUtf8Limits[1] = 0xE0;
-		kUtf8Limits[2] = 0xF0;
-		kUtf8Limits[3] = 0xF8;
-		kUtf8Limits[4] = 0xFC;
-#endif
-	}
+	LevelPack()	{}
 
 	void Init(const char *strFilename);
 	void Free();

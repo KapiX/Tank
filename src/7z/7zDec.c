@@ -3,7 +3,7 @@
 
 #include <string.h>
 
-/* #define _7ZIP_PPMD_SUPPPORT */
+#define _7ZIP_PPMD_SUPPPORT
 
 #include "7z.h"
 

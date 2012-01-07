@@ -19,8 +19,6 @@
 
 #include "OGLRenderList.h"
 
-//#define GLEW_ARB_vertex_buffer_object false
-
 OGLRenderList::OGLRenderList(RENDERLIST_TYPE rlt, u32 iElements) :
     RenderList(rlt, iElements),
     m_iCount(0),
@@ -38,11 +36,11 @@ OGLRenderList::~OGLRenderList(void)
 {
     if(GLEW_ARB_vertex_buffer_object)
     {
-        glDeleteBuffers(1, &m_iVBOVCID);
-        glDeleteBuffers(1, &m_iVBOTCID);
+        glDeleteBuffersARB(1, &m_iVBOVCID);
+        glDeleteBuffersARB(1, &m_iVBOTCID);
         if(m_bUseColors)
         {
-            glDeleteBuffers(1, &m_iVBOCID);
+            glDeleteBuffersARB(1, &m_iVBOCID);
         }
     }
     delete [] m_aVerts;

@@ -166,11 +166,13 @@ public:
         {
         case DIR_UP:
         case DIR_DOWN:
+            // round
             mult = (int) (m_iX + 8) / 16;
             m_iX = mult * 16;
             break;
         case DIR_RIGHT:
         case DIR_LEFT:
+            // round
             mult = (int) (m_iY + 8 - 24) / 16;
             m_iY = mult * 16 + 24;
             break;

@@ -23,8 +23,8 @@
 void LevelPack::Init(const char *strFilename)
 {
     ResetCurrentLevel();
-    m_iLevelCount = m_kArchive.GetFilesCount();
     m_kArchive.Open(strFilename);
+    m_iLevelCount = m_kArchive.GetFilesCount();
 }
 
 void LevelPack::Free()
@@ -35,7 +35,7 @@ void LevelPack::Free()
 void LevelPack::GetLevelData(int iLevel, Byte **data, unsigned int *size)
 {
     char *name = new char[16];
-    itoa(iLevel, name, 10);
+    sprintf(name, "%d", iLevel);
     name = strcat(name, ".tlv");
     m_kArchive.Extract(name, data, size);
     delete [] name;

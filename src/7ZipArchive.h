@@ -46,7 +46,7 @@ private:
 
     bool m_bOpened;
 
-    (uchar *) *m_astrFiles;
+    uchar **m_astrFiles;
     u32 m_iFilesCount;
 
 public:

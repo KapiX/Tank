@@ -18,6 +18,7 @@
 */
 
 #include "7ZipArchive.h"
+#include <cstring>
 
 bool SevenZipArchive::m_sbInitialized = false;
 ISzAlloc SevenZipArchive::m_skAlloc;
@@ -207,7 +208,7 @@ void SevenZipArchive::GetFileName(u32 iIndex, uchar *strFileName, u32 *piLength)
     u16 *strTmp = new u16[iLen];
     SzArEx_GetFileNameUtf16(&m_kDB, iIndex, strTmp);
 
-    SevenZipArchive::Utf16ToUtf8(strFileName, piLength, strTmp, iLen);
+    SevenZipArchive::Utf16ToUtf8(strFileName, (size_t *) piLength, strTmp, (size_t) iLen);
 
     delete [] strTmp;
 }
@@ -225,5 +226,7 @@ u32 SevenZipArchive::GetFileIndex(uchar *strFileName)
 
 SRes SevenZipArchive::GetFile(u32 iIndex, u32 &riOffset, u32 &riOutSizeProcessed)
 {
-    return SzArEx_Extract(&m_kDB, &m_kLookStream.s, iIndex, &m_iBlockIndex, &m_pOutBuffer, &m_iOutBufferSize, &riOffset, &riOutSizeProcessed, &m_skAlloc, &m_skAlloc);
+    return SzArEx_Extract(&m_kDB, &m_kLookStream.s, iIndex, &m_iBlockIndex,
+        &m_pOutBuffer, &m_iOutBufferSize, (size_t *) &riOffset,
+        (size_t *) &riOutSizeProcessed, &m_skAlloc, &m_skAlloc);
 }

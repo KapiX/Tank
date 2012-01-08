@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -41,29 +41,29 @@ const u16 g_ciMaxLevels = 1024;
 
 enum GAMESTATE
 {
-	GS_SPLASH = 1,
-	GS_MAINMENU,
-	GS_CONTROLSMENU,
+    GS_SPLASH = 1,
+    GS_MAINMENU,
+    GS_CONTROLSMENU,
     GS_CONTROLSWAITING,
-	GS_LEVELSTARTING,
-	GS_LEVELPLAYING,
-	GS_LEVELPAUSE,
-	GS_LEVELCOMPLETED,
+    GS_LEVELSTARTING,
+    GS_LEVELPLAYING,
+    GS_LEVELPAUSE,
+    GS_LEVELCOMPLETED,
     GS_GAMEOVER
 };
 
 enum MAINMENU {
-	MM_1PLAYER = 0,
-	MM_2PLAYERS,
-	MM_CONTROLS,
-	//MM_EDITOR,
-	MM_EXIT
+    MM_1PLAYER = 0,
+    MM_2PLAYERS,
+    MM_CONTROLS,
+    //MM_EDITOR,
+    MM_EXIT
 };
 
 enum INGAMEMENU {
-	IM_BACK_TO_GAME = 0,
-	IM_EXIT_TO_MENU,
-	IM_EXIT_TO_SYSTEM
+    IM_BACK_TO_GAME = 0,
+    IM_EXIT_TO_MENU,
+    IM_EXIT_TO_SYSTEM
 };
 
 enum CONTROLSPLAYERMENU {
@@ -98,34 +98,34 @@ class Game :
     public Singleton<Game>
 {
 private:
-	Animation *m_pMenuPointerAnim;
+    Animation *m_pMenuPointerAnim;
 
     Texture *m_pGameFont;
-	Texture *m_pLogo;
-	Texture *m_pMenuPointer;
-	Texture *m_pInGameMenuPointer;
-	Texture *m_pHUDP1;
-	Texture *m_pHUDP2;
-	Texture *m_pPlayerTexture;
-	Texture *m_pEnemyTexture;
+    Texture *m_pLogo;
+    Texture *m_pMenuPointer;
+    Texture *m_pInGameMenuPointer;
+    Texture *m_pHUDP1;
+    Texture *m_pHUDP2;
+    Texture *m_pPlayerTexture;
+    Texture *m_pEnemyTexture;
 
-	Menu *m_pMainMenu;
-	Menu *m_pInGameMenu;
+    Menu *m_pMainMenu;
+    Menu *m_pInGameMenu;
 
     f32 m_fTimer;
-	f32 m_fOldTimer;
+    f32 m_fOldTimer;
 
-	Map *m_pMap;
+    Map *m_pMap;
 
-	GAMESTATE m_GameState;
+    GAMESTATE m_GameState;
 
-	LevelPack m_LP;
+    LevelPack m_LP;
 
     bool m_bPlayer2;
 
-	// SPLASH
-	f32 m_iSplashAlpha;
-	f32 m_iSplashLogoY;
+    // SPLASH
+    f32 m_iSplashAlpha;
+    f32 m_iSplashLogoY;
 
     // LEVELSTARTING
     f32 m_iLevelStartOpeningY;
@@ -147,31 +147,31 @@ public:
     void FreeResources();
 
     void Update(float fDelta);
-	void UpdateSplash(float fDelta);
-	void UpdateMainMenu(float fDelta);
+    void UpdateSplash(float fDelta);
+    void UpdateMainMenu(float fDelta);
     void UpdateControlsMenu(float fDelta);
     void UpdateControlsWaiting(float fDelta);
-	void UpdateLevelStarting(float fDelta);
-	void UpdateLevelPlaying(float fDelta);
-	void UpdateLevelPause(float fDelta);
-	void UpdateLevelCompleted(float fDelta);
-	void UpdateGameOver(float fDelta);
+    void UpdateLevelStarting(float fDelta);
+    void UpdateLevelPlaying(float fDelta);
+    void UpdateLevelPause(float fDelta);
+    void UpdateLevelCompleted(float fDelta);
+    void UpdateGameOver(float fDelta);
 
     void Render();
-	void RenderSplash();
-	void RenderMainMenu();
+    void RenderSplash();
+    void RenderMainMenu();
     void RenderControlsMenu();
     void RenderControlsWaiting();
-	void RenderLevelStarting();
-	void RenderLevelPlaying();
-	void RenderLevelPause();
-	void RenderLevelCompleted();
-	void RenderGameOver();
+    void RenderLevelStarting();
+    void RenderLevelPlaying();
+    void RenderLevelPause();
+    void RenderLevelCompleted();
+    void RenderGameOver();
 
     void RenderHUD();
 
-	void Pause();
-	void Unpause();
+    void Pause();
+    void Unpause();
 };
 
-#endif
+#endif // _GAME_H_

@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,25 +24,25 @@ template<class T>
 class Singleton
 {
 private:
-	static T *m_pInstance;
+    static T *m_pInstance;
 
 public:
-	virtual ~Singleton<T>()
+    virtual ~Singleton<T>()
     {
-		if(m_pInstance)
-			m_pInstance = 0;
-	}
+        if(m_pInstance)
+            m_pInstance = 0;
+    }
 
-	static T *GetInstance()
+    static T *GetInstance()
     {
-		if(!m_pInstance)
+        if(!m_pInstance)
         {
-			m_pInstance = new T;
+            m_pInstance = new T;
         }
-		return m_pInstance;
-	}
+        return m_pInstance;
+    }
 };
 
 template<class T> T *Singleton<T>::m_pInstance = 0;
 
-#endif
+#endif // _SINGLETON_H_

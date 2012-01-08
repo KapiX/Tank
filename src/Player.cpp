@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ Player::Player(VideoDriver *pVD, u8 iNum, Texture *pTankTexture, Texture *pMiscT
     m_pkShieldAnim->SetPlaying(true);
     m_bShield = false;
     m_bSpawn = false;
-	m_iNum = iNum;
+    m_iNum = iNum;
     m_bBoat = false;
 }
 
@@ -37,17 +37,17 @@ Player::~Player()
 {
     if(m_pkShieldAnim)
     {
-		delete m_pkShieldAnim;
-		m_pkShieldAnim = NULL;
-	}
+        delete m_pkShieldAnim;
+        m_pkShieldAnim = NULL;
+    }
 }
 
 void Player::Spawn()
 {
-    if(!m_bExplode && !m_bSpawn && !m_bIsAlive && m_iLifes > 0)
+    if(!m_bExplode && !m_bSpawn && !m_bIsAlive && m_iLives > 0)
     {
         Tank::Spawn(DIR_UP, m_kTL);
-        m_iLifes--;
+        m_iLives--;
     }
 }
 
@@ -80,7 +80,7 @@ void Player::Shoot()
                 break;
             }
             m_apkBullets[0]->m_bIsAlive = true;
-			SoundManager::GetInstance()->Play(SND_SHOOT);
+            SoundManager::GetInstance()->Play(SND_SHOOT);
             return;
         }
         else if (!m_apkBullets[1]->m_bIsAlive && !m_apkBullets[1]->m_bExplode && (m_kTL == TL_3 || m_kTL == TL_4))
@@ -107,7 +107,7 @@ void Player::Shoot()
                 break;
             }
             m_apkBullets[1]->m_bIsAlive = true;
-			SoundManager::GetInstance()->Play(SND_SHOOT);
+            SoundManager::GetInstance()->Play(SND_SHOOT);
             return;
         }
     }
@@ -117,64 +117,64 @@ void Player::Update(f32 fDelta)
 {
     Tank::Update(fDelta);
 
-	// prevent change of direction
-	if(m_fSlide > 0)
-	{
-		m_bIsMoving = false;
-		m_kDir = m_kSlidingDir;
-	}
-	else
-	{
-		m_bSliding = false;
-	}
+    // prevent change of direction
+    if(m_fSlide > 0)
+    {
+        m_bIsMoving = false;
+        m_kDir = m_kSlidingDir;
+    }
+    else
+    {
+        m_bSliding = false;
+    }
 
-	if(m_bIsAlive)
-	{
-		if(m_bIsMoving)
-		{
-			m_pkAnim->Animate();
-			switch(m_kDir)
-			{
-				case DIR_LEFT:
-					m_iX -= m_iSpeed * fDelta;
-					break;
-				case DIR_RIGHT:
-					m_iX += m_iSpeed * fDelta;
-					break;
-				case DIR_UP:
-					m_iY -= m_iSpeed * fDelta;
-					break;
-				case DIR_DOWN:
-					m_iY += m_iSpeed * fDelta;
-					break;
-			}
-		}
-		if(m_bSliding && !m_bIsMoving)
-		{
-			m_pkAnim->Animate();
-			m_fSlide -= m_iSpeed * fDelta;
-			switch(m_kSlidingDir)
-			{
-				case DIR_LEFT:
-					m_iX -= m_iSpeed * fDelta;
-					break;
-				case DIR_RIGHT:
-					m_iX += m_iSpeed * fDelta;
-					break;
-				case DIR_UP:
-					m_iY -= m_iSpeed * fDelta;
-					break;
-				case DIR_DOWN:
-					m_iY += m_iSpeed * fDelta;
-					break;
-			}
-		}
+    if(m_bIsAlive)
+    {
+        if(m_bIsMoving)
+        {
+            m_pkAnim->Animate();
+            switch(m_kDir)
+            {
+            case DIR_LEFT:
+                m_iX -= m_iSpeed * fDelta;
+                break;
+            case DIR_RIGHT:
+                m_iX += m_iSpeed * fDelta;
+                break;
+            case DIR_UP:
+                m_iY -= m_iSpeed * fDelta;
+                break;
+            case DIR_DOWN:
+                m_iY += m_iSpeed * fDelta;
+                break;
+            }
+        }
+        if(m_bSliding && !m_bIsMoving)
+        {
+            m_pkAnim->Animate();
+            m_fSlide -= m_iSpeed * fDelta;
+            switch(m_kSlidingDir)
+            {
+            case DIR_LEFT:
+                m_iX -= m_iSpeed * fDelta;
+                break;
+            case DIR_RIGHT:
+                m_iX += m_iSpeed * fDelta;
+                break;
+            case DIR_UP:
+                m_iY -= m_iSpeed * fDelta;
+                break;
+            case DIR_DOWN:
+                m_iY += m_iSpeed * fDelta;
+                break;
+            }
+        }
 
-		if(m_bShield)
-		{
-			m_pkShieldAnim->Animate();
-		}
-	}
+        if(m_bShield)
+        {
+            m_pkShieldAnim->Animate();
+        }
+    }
     if(m_bSpawn && m_pkSpawnAnim->GetFrameIterator() == 14)
     {
         ActivateShield(5.0f);
@@ -227,10 +227,10 @@ void Player::Render()
         {
             m_pVD->DrawSprite(m_pMiscTexture, m_iX, m_iY, 4.0f, m_pkShieldAnim->GetCurrentFrame() * 32, 32, 32, 32);
         }
-		if(m_bBoat)
-		{
-			m_pVD->DrawSprite(m_pMiscTexture, m_iX, m_iY, 3.0f, 256 + 32 * (m_iNum - 1), 32, 32, 32);
-		}
+        if(m_bBoat)
+        {
+            m_pVD->DrawSprite(m_pMiscTexture, m_iX, m_iY, 3.0f, 256 + 32 * (m_iNum - 1), 32, 32, 32);
+        }
     }
 }
 
@@ -241,7 +241,7 @@ void Player::OnExplode()
         m_bExplode = false;
         m_pkExplAnim->SetPlaying(false);
         m_apkBullets[0]->m_bDestroyJungle = false;
-		m_apkBullets[1]->m_bDestroyJungle = false;
+        m_apkBullets[1]->m_bDestroyJungle = false;
     }
 }
 
@@ -254,7 +254,7 @@ void Player::ActivateShield(f32 iTime)
 
 void Player::Slide(f32 fSlide)
 {
-	m_bSliding = true;
-	m_fSlide = fSlide;
-	m_kSlidingDir = m_kDir;
+    m_bSliding = true;
+    m_fSlide = fSlide;
+    m_kSlidingDir = m_kDir;
 }

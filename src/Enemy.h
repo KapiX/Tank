@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -59,34 +59,20 @@ public:
 
     void OnExplode();
 
-    inline static void SetEnemiesLeft(int i) { m_iEnemiesLeft = i; }
-    inline static void SetBonusesLeft(int i) { m_iBonusesLeft = i; }
+    static void SetEnemiesLeft(int i) { m_iEnemiesLeft = i; }
+    static void SetBonusesLeft(int i) { m_iBonusesLeft = i; }
 
-	inline void SetShieldLevel(SHIELDLEVEL kSL) { m_kSL = kSL; }
-    inline void SetHasBonus(bool bHasBonus) { m_bHasBonus = bHasBonus; m_pkBonusAnim->SetPlaying(bHasBonus); }
+    void SetShieldLevel(SHIELDLEVEL kSL) { m_kSL = kSL; }
+    void SetHasBonus(bool bHasBonus) { m_bHasBonus = bHasBonus; m_pkBonusAnim->SetPlaying(bHasBonus); }
+    void SetTankLevel(TANKLEVEL tl);
 
-    inline void SetTankLevel(TANKLEVEL tl)
-	{
-        Tank::SetTankLevel(tl);
-        m_iSpeed = 50.0f;
-        m_apkBullets[0]->SetSpeed(m_iSpeed * 3);
-		if(tl == TL_2)
-        {
-            m_iSpeed *= 2;
-        }
-        else if(tl == TL_3)
-        {
-            m_apkBullets[0]->SetSpeed(m_apkBullets[0]->GetSpeed() * 2);
-        }
-	}
+    SHIELDLEVEL GetShieldLevel() const { return m_kSL; }
+    bool GetHasBonus() const { return m_bHasBonus; }
+    bool GetIsSpawning() const { return m_bSpawn; }
+    bool GetStopped() const { return m_bStopped; }
 
-    inline SHIELDLEVEL GetShieldLevel() const { return m_kSL; }
-	inline bool GetHasBonus() const { return m_bHasBonus; }
-	inline bool GetIsSpawning() const { return m_bSpawn; }
-    inline bool GetStopped() const { return m_bStopped; }
-
-    inline static int GetEnemiesLeft() { return m_iEnemiesLeft; }
-    inline static int GetBonusesLeft() { return m_iBonusesLeft; }
+    static int GetEnemiesLeft() { return m_iEnemiesLeft; }
+    static int GetBonusesLeft() { return m_iBonusesLeft; }
 };
 
-#endif
+#endif // _ENEMY_H_

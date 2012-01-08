@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ Enemy::Enemy(VideoDriver *pVD, Texture *pTankTexture, Texture *pMiscTexture, boo
     m_pkBonusAnim->SetPlaying(m_bHasBonus);
     m_kSL = kSL;
     m_bSpawn = false;
-	m_bStopped = false;
+    m_bStopped = false;
     SetIsMoving(true);
 }
 
@@ -43,9 +43,9 @@ Enemy::~Enemy()
 {
     if(m_pkBonusAnim)
     {
-		delete m_pkBonusAnim;
-		m_pkBonusAnim = NULL;
-	}
+        delete m_pkBonusAnim;
+        m_pkBonusAnim = NULL;
+    }
 }
 
 void Enemy::Stop()
@@ -101,28 +101,28 @@ void Enemy::Update(f32 fDelta)
 {
     Tank::Update(fDelta);
 
-	// Checking if time bonus is over
+    // Checking if time bonus is over
     if(*m_pfTimer - m_fStopTime > 10.0f)
         m_bStopped = false;
 
     if(m_bIsAlive && m_bIsMoving && !m_bStopped)
     {
-		switch(m_kDir)
+        switch(m_kDir)
         {
-			case DIR_LEFT:
-				m_iX -= m_iSpeed * fDelta;
-				break;
-			case DIR_RIGHT:
-				m_iX += m_iSpeed * fDelta;
-				break;
-			case DIR_UP:
-				m_iY -= m_iSpeed * fDelta;
-				break;
-			case DIR_DOWN:
-				m_iY += m_iSpeed * fDelta;
-				break;
-		}
-	}
+        case DIR_LEFT:
+            m_iX -= m_iSpeed * fDelta;
+            break;
+        case DIR_RIGHT:
+            m_iX += m_iSpeed * fDelta;
+            break;
+        case DIR_UP:
+            m_iY -= m_iSpeed * fDelta;
+            break;
+        case DIR_DOWN:
+            m_iY += m_iSpeed * fDelta;
+            break;
+        }
+    }
 
     m_pkBonusAnim->Animate();
 
@@ -131,7 +131,7 @@ void Enemy::Update(f32 fDelta)
         m_pkAnim->Animate();
 
         static bool shot = false;
-		static bool chdir = false;
+        static bool chdir = false;
 
         f32 time1 = (int) *m_pfTimer % 3;
         f32 time2 = (int) *m_pfTimer % ((rand() % 5) + 1);
@@ -139,12 +139,12 @@ void Enemy::Update(f32 fDelta)
         if(time1 == 0 && !chdir)
         {
             SetDirection((DIRECTION) (rand() % 4 + 1));
-			chdir = true;
+            chdir = true;
         }
-		else if(time1 != 0 && chdir)
-		{
-			chdir = false;
-		}
+        else if(time1 != 0 && chdir)
+        {
+            chdir = false;
+        }
         if(time2 == 0 && !shot)
         {
             Shoot();
@@ -196,5 +196,20 @@ void Enemy::OnExplode()
     {
         m_bExplode = false;
         m_pkExplAnim->SetPlaying(false);
+    }
+}
+
+void Enemy::SetTankLevel(TANKLEVEL tl)
+{
+    Tank::SetTankLevel(tl);
+    m_iSpeed = 50.0f;
+    m_apkBullets[0]->SetSpeed(m_iSpeed * 3);
+    if(tl == TL_2)
+    {
+        m_iSpeed *= 2;
+    }
+    else if(tl == TL_3)
+    {
+        m_apkBullets[0]->SetSpeed(m_apkBullets[0]->GetSpeed() * 2);
     }
 }

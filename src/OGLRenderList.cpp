@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #include "OGLRenderList.h"
 
 OGLRenderList::OGLRenderList(RENDERLIST_TYPE rlt, u32 iElements) :
-    RenderList(rlt, iElements),
+RenderList(rlt, iElements),
     m_iCount(0),
     m_bUseColors(false),
     m_aColors(NULL)
@@ -196,7 +196,7 @@ void OGLRenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData, Color *pUp
             m_aVerts[aUpdateData[i].iNum * 3 * iVertsPerSprite + 2] = aUpdateData[i].iZ;
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite] = aUpdateData[i].iS1 / m_pTexture->GetWidth();
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 1] = aUpdateData[i].iT1 / m_pTexture->GetHeight();
-            
+
             if(m_bUseColors && pUpdateColor != NULL)
             {
                 m_aColors[aUpdateData[i].iNum * 4 * 4 + 4] = pUpdateColor->iR / 255.0f;
@@ -209,7 +209,7 @@ void OGLRenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData, Color *pUp
             m_aVerts[aUpdateData[i].iNum * 3 * iVertsPerSprite + 5] = aUpdateData[i].iZ;
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 2] = aUpdateData[i].iS2 / m_pTexture->GetWidth();
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 3] = aUpdateData[i].iT1 / m_pTexture->GetHeight();
-            
+
             if(m_bUseColors && pUpdateColor != NULL)
             {
                 m_aColors[aUpdateData[i].iNum * 4 * 4 + 8] = pUpdateColor->iR / 255.0f;
@@ -222,7 +222,7 @@ void OGLRenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData, Color *pUp
             m_aVerts[aUpdateData[i].iNum * 3 * iVertsPerSprite + 8] = aUpdateData[i].iZ;
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 4] = aUpdateData[i].iS1 / m_pTexture->GetWidth();
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 5] = aUpdateData[i].iT2 / m_pTexture->GetHeight();
-            
+
             if(m_bUseColors && pUpdateColor != NULL)
             {
                 m_aColors[aUpdateData[i].iNum * 4 * 4 + 12] = pUpdateColor->iR / 255.0f;
@@ -250,7 +250,7 @@ void OGLRenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData, Color *pUp
             m_aVerts[aUpdateData[i].iNum * 3 * iVertsPerSprite + 2] = aUpdateData[i].iZ;
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite] = aUpdateData[i].iS1 / m_pTexture->GetWidth();
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 1] = aUpdateData[i].iT1 / m_pTexture->GetHeight();
-            
+
             if(m_bUseColors && pUpdateColor != NULL)
             {
                 m_aColors[aUpdateData[i].iNum * 4 * 6 + 4] = pUpdateColor->iR / 255.0f;
@@ -263,7 +263,7 @@ void OGLRenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData, Color *pUp
             m_aVerts[aUpdateData[i].iNum * 3 * iVertsPerSprite + 5] = aUpdateData[i].iZ;
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 2] = aUpdateData[i].iS2 / m_pTexture->GetWidth();
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 3] = aUpdateData[i].iT1 / m_pTexture->GetHeight();
-            
+
             if(m_bUseColors && pUpdateColor != NULL)
             {
                 m_aColors[aUpdateData[i].iNum * 4 * 6 + 8] = pUpdateColor->iR / 255.0f;
@@ -276,7 +276,7 @@ void OGLRenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData, Color *pUp
             m_aVerts[aUpdateData[i].iNum * 3 * iVertsPerSprite + 8] = aUpdateData[i].iZ;
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 4] = aUpdateData[i].iS1 / m_pTexture->GetWidth();
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 5] = aUpdateData[i].iT2 / m_pTexture->GetHeight();
-            
+
             if(m_bUseColors && pUpdateColor != NULL)
             {
                 m_aColors[aUpdateData[i].iNum * 4 * 6 + 12] = pUpdateColor->iR / 255.0f;
@@ -289,7 +289,7 @@ void OGLRenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData, Color *pUp
             m_aVerts[aUpdateData[i].iNum * 3 * iVertsPerSprite + 11] = aUpdateData[i].iZ;
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 6] = aUpdateData[i].iS1 / m_pTexture->GetWidth();
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 7] = aUpdateData[i].iT2 / m_pTexture->GetHeight();
-            
+
             if(m_bUseColors && pUpdateColor != NULL)
             {
                 m_aColors[aUpdateData[i].iNum * 4 * 6 + 16] = pUpdateColor->iR / 255.0f;
@@ -302,7 +302,7 @@ void OGLRenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData, Color *pUp
             m_aVerts[aUpdateData[i].iNum * 3 * iVertsPerSprite + 14] = aUpdateData[i].iZ;
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 8] = aUpdateData[i].iS2 / m_pTexture->GetWidth();
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 9] = aUpdateData[i].iT2 / m_pTexture->GetHeight();
-            
+
             if(m_bUseColors && pUpdateColor != NULL)
             {
                 m_aColors[aUpdateData[i].iNum * 4 * 6 + 20] = pUpdateColor->iR / 255.0f;
@@ -376,10 +376,10 @@ void OGLRenderList::Render()
             {
                 glColor4f(m_aColors[0], m_aColors[1], m_aColors[2], m_aColors[3]);
             }
-			else
-			{
-				glColor4f(1, 1, 1, 1);
-			}
+            else
+            {
+                glColor4f(1, 1, 1, 1);
+            }
             for(u32 i = 0; i < m_iElements; i++)
             {
                 glTexCoord2f(m_aTexCoords[i * 2 * 4], m_aTexCoords[i * 2 * 4 + 1]);
@@ -400,10 +400,10 @@ void OGLRenderList::Render()
             {
                 glColor4f(m_aColors[0], m_aColors[1], m_aColors[2], m_aColors[3]);
             }
-			else
-			{
-				glColor4f(1, 1, 1, 1);
-			}
+            else
+            {
+                glColor4f(1, 1, 1, 1);
+            }
             for(u32 i = 0; i < m_iElements; i++)
             {
                 glTexCoord2f(m_aTexCoords[i * 2 * 6], m_aTexCoords[i * 2 * 6 + 1]);

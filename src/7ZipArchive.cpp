@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ void SevenZipArchive::Open(const char *strFilename)
 
     // Make sure all is ready to go
     SevenZipArchive::Init();
-    
+
     SRes result;
     // Open file
     result = InFile_Open(&m_kInStream.file, strFilename);
@@ -153,50 +153,50 @@ bool SevenZipArchive::Utf16ToUtf8(u8 *pDest, size_t *pDestLen, const u16 *pSrc, 
     static const u8 saUtf8Limits[5] = { 0xC0, 0xE0, 0xF0, 0xF8, 0xFC };
 
     size_t destPos = 0, srcPos = 0;
-	for (;;)
-	{
-		u32 numAdds;
-		u32 value;
-		if (srcPos == iSrcLen)
-		{
-			*pDestLen = destPos;
-			return true;
-		}
-		value = pSrc[srcPos++];
-		if (value < 0x80)
-		{
-			if (pDest)
-				pDest[destPos] = (char)value;
-			destPos++;
-			continue;
-		}
-		if (value >= 0xD800 && value < 0xE000)
-		{
-			UInt32 c2;
-			if (value >= 0xDC00 || srcPos == iSrcLen)
-				break;
-			c2 = pSrc[srcPos++];
-			if (c2 < 0xDC00 || c2 >= 0xE000)
-				break;
-			value = (((value - 0xD800) << 10) | (c2 - 0xDC00)) + 0x10000;
-		}
-		for (numAdds = 1; numAdds < 5; numAdds++)
-			if (value < (((u32)1) << (numAdds * 5 + 6)))
-				break;
-		if (pDest)
-			pDest[destPos] = (char)(saUtf8Limits[numAdds - 1] + (value >> (6 * numAdds)));
-		destPos++;
-		do
-		{
-			numAdds--;
-			if (pDest)
-				pDest[destPos] = (char)(0x80 + ((value >> (6 * numAdds)) & 0x3F));
-			destPos++;
-		}
-		while (numAdds != 0);
-	}
-	*pDestLen = destPos;
-	return false;
+    for (;;)
+    {
+        u32 numAdds;
+        u32 value;
+        if (srcPos == iSrcLen)
+        {
+            *pDestLen = destPos;
+            return true;
+        }
+        value = pSrc[srcPos++];
+        if (value < 0x80)
+        {
+            if (pDest)
+                pDest[destPos] = (char)value;
+            destPos++;
+            continue;
+        }
+        if (value >= 0xD800 && value < 0xE000)
+        {
+            UInt32 c2;
+            if (value >= 0xDC00 || srcPos == iSrcLen)
+                break;
+            c2 = pSrc[srcPos++];
+            if (c2 < 0xDC00 || c2 >= 0xE000)
+                break;
+            value = (((value - 0xD800) << 10) | (c2 - 0xDC00)) + 0x10000;
+        }
+        for (numAdds = 1; numAdds < 5; numAdds++)
+            if (value < (((u32)1) << (numAdds * 5 + 6)))
+                break;
+        if (pDest)
+            pDest[destPos] = (char)(saUtf8Limits[numAdds - 1] + (value >> (6 * numAdds)));
+        destPos++;
+        do
+        {
+            numAdds--;
+            if (pDest)
+                pDest[destPos] = (char)(0x80 + ((value >> (6 * numAdds)) & 0x3F));
+            destPos++;
+        }
+        while (numAdds != 0);
+    }
+    *pDestLen = destPos;
+    return false;
 }
 
 void SevenZipArchive::GetFileName(u32 iIndex, uchar *strFileName, u32 *piLength)

@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,17 +30,17 @@ private:
     Animation *m_pkShieldAnim;
     bool m_bShield;
     f32 m_iShieldTime;
-	bool m_bBoat;
-    u32 m_iLifes;
+    bool m_bBoat;
+    u32 m_iLives;
     u32 m_iScore;
 
-	u8 m_iNum;
+    u8 m_iNum;
 
     f32 m_fOldTime; // shield
 
-	f32 m_fSlide;
-	bool m_bSliding;
-	DIRECTION m_kSlidingDir;
+    f32 m_fSlide;
+    bool m_bSliding;
+    DIRECTION m_kSlidingDir;
 
 public:
     Player(VideoDriver *pVD, u8 iNum, Texture *pTankTexture, Texture *pMiscTexture, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 85.0f);
@@ -56,24 +56,22 @@ public:
     void OnExplode();
 
     void ActivateShield(f32 iTime);
-	void Slide(f32 fSlide);
+    void Slide(f32 fSlide);
 
-	inline void ResetAnimations() { Tank::ResetAnimations(); m_pkShieldAnim->Reset(); }
+    void ResetAnimations() { Tank::ResetAnimations(); m_pkShieldAnim->Reset(); }
 
-	inline void SetBoat(bool bBoat) { m_bBoat = bBoat; }
-    inline void SetLifes(u32 iLifes) { m_iLifes = iLifes; }
-	inline void AddLifes(s32 iLifes) { m_iLifes += iLifes; }
-	inline void SetScore(u32 iScore) { m_iScore = iScore; }
-	inline void AddScore(s32 iScore) { m_iScore += iScore; }
-	//inline void SetColor(PLAYER_COLOR pc) { m_kColor = pc; }
-	
-	inline bool GetShield() const { return m_bShield; }
-	inline bool GetBoat() const { return m_bBoat; }
-	inline u32 GetLifes() const { return m_iLifes; }
-	inline u32 GetScore() const { return m_iScore; }
-	//inline PLAYER_COLOR GetColor() const { return m_kColor; }
+    void SetBoat(bool bBoat) { m_bBoat = bBoat; }
+    void SetLives(u32 iLives) { m_iLives = iLives; }
+    void AddLives(s32 iLives) { m_iLives += iLives; }
+    void SetScore(u32 iScore) { m_iScore = iScore; }
+    void AddScore(s32 iScore) { m_iScore += iScore; }
 
-	inline void SetIsMoving(bool bIsMoving) { Tank::SetIsMoving(bIsMoving); SoundManager::GetInstance()->Play(bIsMoving ? SND_MOVING : SND_NMOVING); }
+    bool GetShield() const { return m_bShield; }
+    bool GetBoat() const { return m_bBoat; }
+    u32 GetLives() const { return m_iLives; }
+    u32 GetScore() const { return m_iScore; }
+
+    void SetIsMoving(bool bIsMoving) { Tank::SetIsMoving(bIsMoving); SoundManager::GetInstance()->Play(bIsMoving ? SND_MOVING : SND_NMOVING); }
 };
 
-#endif
+#endif // _PLAYER_H_

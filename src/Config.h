@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,11 +25,11 @@
 #include "Types.h"
 
 /*
-  In case of more than one gamepad/joystick use these values as follows:
-  X360GAMEPAD + 0 - for gamepad 1
-  X360GAMEPAD + 1 - for gamepad 2
-  X360GAMEPAD + 2 - for gamepad 3
-  ... etc.
+In case of more than one gamepad/joystick use these values as follows:
+X360GAMEPAD + 0 - for gamepad 1
+X360GAMEPAD + 1 - for gamepad 2
+X360GAMEPAD + 2 - for gamepad 3
+... etc.
 */
 enum CONTROLLER
 {
@@ -76,4 +76,4 @@ public:
     bool GetFullscreen() const { return m_bFullscreen; }
 };
 
-#endif
+#endif // _CONFIG_H_

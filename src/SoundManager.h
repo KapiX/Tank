@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,46 +28,46 @@
 
 enum SOUND
 {
-	SND_BONUS = 0,
-	SND_BRICKHIT,
-	SND_EEXPLOSION,
-	SND_FEXPLOSION,
-	SND_GAMEOVER,
-	SND_ICE,
-	SND_LEVELSTARTING,
-	SND_LIFE,
-	SND_MOVING,
-	SND_NMOVING,
-	SND_PAUSE,
-	SND_SHIELDHIT,
-	SND_SHOOT,
-	SND_STEELHIT,
-	SND_TBONUSHIT,
+    SND_BONUS = 0,
+    SND_BRICKHIT,
+    SND_EEXPLOSION,
+    SND_FEXPLOSION,
+    SND_GAMEOVER,
+    SND_ICE,
+    SND_LEVELSTARTING,
+    SND_LIFE,
+    SND_MOVING,
+    SND_NMOVING,
+    SND_PAUSE,
+    SND_SHIELDHIT,
+    SND_SHOOT,
+    SND_STEELHIT,
+    SND_TBONUSHIT,
 
-	SND_COUNT,
+    SND_COUNT,
 };
 
 enum CHANNEL
 {
-	CNL_LEVELSTARTING = 0,
-	CNL_EXPLOSIONS,
-	CNL_MOVING,
-	CNL_PAUSE,
-	CNL_EFFECTS,
+    CNL_LEVELSTARTING = 0,
+    CNL_EXPLOSIONS,
+    CNL_MOVING,
+    CNL_PAUSE,
+    CNL_EFFECTS,
 };
 
 class SoundManager :
-	public Singleton<SoundManager>
+    public Singleton<SoundManager>
 {
 private:
-	Mix_Chunk *m_pSounds[SND_COUNT];
+    Mix_Chunk *m_pSounds[SND_COUNT];
 
 public:
-	SoundManager();
+    SoundManager();
 
-	void Free();
-	void Play(SOUND sound);
-	void Stop();
+    void Free();
+    void Play(SOUND sound);
+    void Stop();
 };
 
-#endif
+#endif // _SOUNDMANAGER_H_

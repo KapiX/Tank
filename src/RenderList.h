@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ protected:
 
 public:
     RenderList(RENDERLIST_TYPE rlt, u32 iElements): m_kRLT(rlt), m_iElements(iElements) {}
-	virtual ~RenderList(void) {}
+    virtual ~RenderList(void) {}
 
     virtual void AddElement(Sprite *pSprite, Color *pColor = 0) = 0;
 
@@ -72,4 +72,4 @@ public:
     virtual void Render() = 0;
 };
 
-#endif
+#endif // _RENDERLIST_H_

@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,22 +25,22 @@
 class LevelPack
 {
 private:
-	int m_iCurrentLevel;
-	int m_iLevelCount;
+    int m_iCurrentLevel;
+    int m_iLevelCount;
     SevenZipArchive m_kArchive;
 
 public:
-	LevelPack()	{}
+    LevelPack()	{}
 
-	void Init(const char *strFilename);
-	void Free();
+    void Init(const char *strFilename);
+    void Free();
 
-	void GetLevelData(int iLevel, Byte **data, unsigned int *size);
-	inline int GetCurrentLevel() { return m_iCurrentLevel; }
-	inline int GetNextLevel() { return m_iCurrentLevel + 1; }
-	inline int GetLevelCount() { return m_iLevelCount; }
-	inline int NextLevel() { m_iCurrentLevel += 1; return m_iCurrentLevel; }
-	inline void ResetCurrentLevel() { m_iCurrentLevel = 1; }
+    void GetLevelData(int iLevel, Byte **data, unsigned int *size);
+    int GetCurrentLevel() { return m_iCurrentLevel; }
+    int GetNextLevel() { return m_iCurrentLevel + 1; }
+    int GetLevelCount() { return m_iLevelCount; }
+    int NextLevel() { m_iCurrentLevel += 1; return m_iCurrentLevel; }
+    void ResetCurrentLevel() { m_iCurrentLevel = 1; }
 };
 
-#endif
+#endif // _LEVELPACK_H_

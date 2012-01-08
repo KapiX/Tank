@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,8 +42,8 @@ public:
 
     u32 GetTicks() const;
 
-    inline bool IsStarted() const { return m_bStarted; }
-    inline bool IsPaused() const { return m_bPaused; }
+    bool IsStarted() const { return m_bStarted; }
+    bool IsPaused() const { return m_bPaused; }
 };
 
-#endif
+#endif // _TIMER_H_

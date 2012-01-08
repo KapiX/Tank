@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -54,38 +54,38 @@ protected:
         DIRECTION m_kDir;
         TANKLEVEL m_kTL;
         Animation *m_pkExplAnim;
-	    bool m_bExplode;
-	    bool m_bDestroyJungle;
+        bool m_bExplode;
+        bool m_bDestroyJungle;
         bool m_bIsAlive;
         f32 m_iSpeed;
         f32 m_iX;
         f32 m_iY;
-	    f32 m_iExplX;
-	    f32 m_iExplY;
+        f32 m_iExplX;
+        f32 m_iExplY;
 
         VideoDriver *m_pVD;
 
         Texture *m_pBulletTexture;
-	    Texture *m_pMiscTexture;
+        Texture *m_pMiscTexture;
 
         Bullet(VideoDriver *pVD, Texture *pBulletTexture, Texture *pMiscTexture, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed);
         ~Bullet();
 
-	    void Update(f32 fDelta);
-	    void Render();
+        void Update(f32 fDelta);
+        void Render();
 
     public:
         void Destroy(bool bExplode = true);
 
-	    inline void SetSpeed(f32 iSpeed) { m_iSpeed = iSpeed; }
+        void SetSpeed(f32 iSpeed) { m_iSpeed = iSpeed; }
 
-        inline f32 GetX() const { return m_iX; }
-	    inline f32 GetY() const { return m_iY; }
-        inline f32 GetSpeed() const { return m_iSpeed; }
-	    inline DIRECTION GetDirection() const { return m_kDir; }
-        inline TANKLEVEL GetTankLevel() const { return m_kTL; }
-        inline bool GetDestroyJungle() const { return m_bDestroyJungle; }
-        inline bool IsAlive() const { return m_bIsAlive; }
+        f32 GetX() const { return m_iX; }
+        f32 GetY() const { return m_iY; }
+        f32 GetSpeed() const { return m_iSpeed; }
+        DIRECTION GetDirection() const { return m_kDir; }
+        TANKLEVEL GetTankLevel() const { return m_kTL; }
+        bool GetDestroyJungle() const { return m_bDestroyJungle; }
+        bool IsAlive() const { return m_bIsAlive; }
     };
 
     Animation *m_pkAnim;
@@ -125,41 +125,41 @@ public:
 
     virtual void OnExplode() = 0;
 
-	inline void ResetAnimations()
-	{
-		m_pkAnim->Reset();
-		m_pkSpawnAnim->Reset();
-		m_pkExplAnim->Reset();
-		if(m_apkBullets[0] != NULL) m_apkBullets[0]->m_pkExplAnim->Reset();
-		if(m_apkBullets[1] != NULL) m_apkBullets[1]->m_pkExplAnim->Reset();
-	}
+    void ResetAnimations()
+    {
+        m_pkAnim->Reset();
+        m_pkSpawnAnim->Reset();
+        m_pkExplAnim->Reset();
+        if(m_apkBullets[0] != NULL) m_apkBullets[0]->m_pkExplAnim->Reset();
+        if(m_apkBullets[1] != NULL) m_apkBullets[1]->m_pkExplAnim->Reset();
+    }
 
-    inline void SetX(f32 iX) { m_iX = iX; }
-	inline void SetY(f32 iY) { m_iY = iY; }
-    inline void SetPosition(f32 iX, f32 iY) { m_iX = iX; m_iY = iY; }
-    inline void SetTankLevel(TANKLEVEL tl)
-	{
-		if(tl != TL_4)
-		{
-			m_apkBullets[0]->m_bDestroyJungle = false;
-			m_apkBullets[1]->m_bDestroyJungle = false;
-		}
+    void SetX(f32 iX) { m_iX = iX; }
+    void SetY(f32 iY) { m_iY = iY; }
+    void SetPosition(f32 iX, f32 iY) { m_iX = iX; m_iY = iY; }
+    void SetTankLevel(TANKLEVEL tl)
+    {
+        if(tl != TL_4)
+        {
+            m_apkBullets[0]->m_bDestroyJungle = false;
+            m_apkBullets[1]->m_bDestroyJungle = false;
+        }
         else
         {
             if(m_kTL == TL_4 && m_apkBullets[0]->m_bDestroyJungle && m_apkBullets[1]->m_bDestroyJungle)
             {
-			    m_apkBullets[0]->m_bDestroyJungle = false;
-			    m_apkBullets[1]->m_bDestroyJungle = false;
+                m_apkBullets[0]->m_bDestroyJungle = false;
+                m_apkBullets[1]->m_bDestroyJungle = false;
             }
             else if(m_kTL == TL_4 && !m_apkBullets[0]->m_bDestroyJungle && !m_apkBullets[1]->m_bDestroyJungle)
             {
-			    m_apkBullets[0]->m_bDestroyJungle = true;
-			    m_apkBullets[1]->m_bDestroyJungle = true;
+                m_apkBullets[0]->m_bDestroyJungle = true;
+                m_apkBullets[1]->m_bDestroyJungle = true;
             }
         }
-		m_kTL = tl;
-	}
-	inline void SetDirection(DIRECTION Dir)
+        m_kTL = tl;
+    }
+    void SetDirection(DIRECTION Dir)
     {
         int mult;
         switch(Dir)
@@ -179,30 +179,30 @@ public:
         }
         m_kDir = Dir;
     }
-	inline void SetSpeed(f32 iSpeed) { m_iSpeed = iSpeed; }
-	inline void SetSpawnPoint(u8 iX, u8 iY) { m_iSpawnX = iX; m_iSpawnY = iY; }
-    inline void SetIsMoving(bool bIsMoving) { m_bIsMoving = bIsMoving; m_pkAnim->SetPlaying(bIsMoving); }
-	inline void SetIsAlive(bool bIsAlive) { m_bIsAlive = bIsAlive; }
+    void SetSpeed(f32 iSpeed) { m_iSpeed = iSpeed; }
+    void SetSpawnPoint(u8 iX, u8 iY) { m_iSpawnX = iX; m_iSpawnY = iY; }
+    void SetIsMoving(bool bIsMoving) { m_bIsMoving = bIsMoving; m_pkAnim->SetPlaying(bIsMoving); }
+    void SetIsAlive(bool bIsAlive) { m_bIsAlive = bIsAlive; }
 
-    inline f32 GetX() const { return m_iX; }
-	inline f32 GetY() const { return m_iY; }
-    inline bool IsAlive() const { return m_bIsAlive; }
-    inline TANKLEVEL GetTankLevel() const { return m_kTL; }
-	inline DIRECTION GetDirection() const { return m_kDir; }
-	inline f32 GetSpeed() const { return m_iSpeed; }
-	inline Texture *GetTankTexture() const { return m_pTankTexture; }
-	inline Texture *GetMiscTexture() const { return m_pMiscTexture; }
-	inline u8 GetSpawnX() const { return m_iSpawnX; }
-	inline u8 GetSpawnY() const { return m_iSpawnY; }
-	inline bool IsMoving() const { return m_bIsMoving; }
-	inline bool IsSpawning() const { return m_bSpawn; }
-	inline bool IsExploding() const { return m_bExplode; }
-	inline Animation *GetAnimation() const { return m_pkAnim; }
-	inline bool GetExplode() const { return m_bExplode; }
-    inline Bullet *GetBullet(int i) const { i = (i > 0) ? 1 : 0; return m_apkBullets[i]; }
-    inline bool IsOnSpawn() const { return ((m_iX < m_iSpawnX * 32 + 32) && (m_iX + 32 > m_iSpawnX * 32) && (m_iY < m_iSpawnY * 32 + 32) && (m_iY + 32 > m_iSpawnY * 32)); }
+    f32 GetX() const { return m_iX; }
+    f32 GetY() const { return m_iY; }
+    bool IsAlive() const { return m_bIsAlive; }
+    TANKLEVEL GetTankLevel() const { return m_kTL; }
+    DIRECTION GetDirection() const { return m_kDir; }
+    f32 GetSpeed() const { return m_iSpeed; }
+    Texture *GetTankTexture() const { return m_pTankTexture; }
+    Texture *GetMiscTexture() const { return m_pMiscTexture; }
+    u8 GetSpawnX() const { return m_iSpawnX; }
+    u8 GetSpawnY() const { return m_iSpawnY; }
+    bool IsMoving() const { return m_bIsMoving; }
+    bool IsSpawning() const { return m_bSpawn; }
+    bool IsExploding() const { return m_bExplode; }
+    Animation *GetAnimation() const { return m_pkAnim; }
+    bool GetExplode() const { return m_bExplode; }
+    Bullet *GetBullet(int i) const { i = (i > 0) ? 1 : 0; return m_apkBullets[i]; }
+    bool IsOnSpawn() const { return ((m_iX < m_iSpawnX * 32 + 32) && (m_iX + 32 > m_iSpawnX * 32) && (m_iY < m_iSpawnY * 32 + 32) && (m_iY + 32 > m_iSpawnY * 32)); }
 
-    inline static void SetTimer(f32 *pfTimer) { m_pfTimer = pfTimer; }
+    static void SetTimer(f32 *pfTimer) { m_pfTimer = pfTimer; }
 };
 
-#endif
+#endif // _TANK_H_

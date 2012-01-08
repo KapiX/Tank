@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,15 +30,15 @@
 
 enum BONUS_TYPE
 {
-	BONUS_NONE = 0,
-	BONUS_GRENADE,
-	BONUS_HELMET,
-	BONUS_TIME,
-	BONUS_DIG,
-	BONUS_LIFE,
-	BONUS_STAR,
-	BONUS_PISTOL,
-	BONUS_BOAT
+    BONUS_NONE = 0,
+    BONUS_GRENADE,
+    BONUS_HELMET,
+    BONUS_TIME,
+    BONUS_DIG,
+    BONUS_LIFE,
+    BONUS_STAR,
+    BONUS_PISTOL,
+    BONUS_BOAT
 };
 
 class Bonus : public Singleton<Bonus>
@@ -61,16 +61,16 @@ public:
     void Update();
     void Render(VideoDriver *pVD);
 
-    inline void SetBonusType(BONUS_TYPE bt) { m_bt = bt; }
-	inline void SetIsAlive(bool bIsAlive) { m_bIsAlive = bIsAlive; }
+    void SetBonusType(BONUS_TYPE bt) { m_bt = bt; }
+    void SetIsAlive(bool bIsAlive) { m_bIsAlive = bIsAlive; }
 
-    inline static void SetTexture(Texture *pTexture) { m_pkBonusTexture = pTexture; }
+    static void SetTexture(Texture *pTexture) { m_pkBonusTexture = pTexture; }
 
-    inline BONUS_TYPE GetBonusType() const { return m_bt; }
-    inline int GetX() const { return m_iX; }
-    inline int GetY() const { return m_iY; }
-    inline bool IsAlive() const { return m_bIsAlive; }
-	inline Animation *GetAnimation() { return m_pkAnim; }
+    BONUS_TYPE GetBonusType() const { return m_bt; }
+    int GetX() const { return m_iX; }
+    int GetY() const { return m_iY; }
+    bool IsAlive() const { return m_bIsAlive; }
+    Animation *GetAnimation() { return m_pkAnim; }
 };
 
-#endif
+#endif // _BONUS_H_

@@ -1,7 +1,7 @@
 /*
-	Copyright 2011 Kacper Kasper
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
 
-	This file is part of Tank.
+    This file is part of Tank.
 
     Tank is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@ OGLTexture::OGLTexture(const char *szFilename)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     glTexImage2D(GL_TEXTURE_2D, 0, m_pTextureData->format->BytesPerPixel,
-                 m_pTextureData->w, m_pTextureData->h, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-                 m_pTextureData->pixels);
+        m_pTextureData->w, m_pTextureData->h, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+        m_pTextureData->pixels);
 }
 
 OGLTexture::~OGLTexture()

@@ -32,6 +32,7 @@
     <ClCompile Include="..\..\src\Animation.cpp" />
     <ClCompile Include="..\..\src\Bonus.cpp" />
     <ClCompile Include="..\..\src\Config.cpp" />
+    <ClCompile Include="..\..\src\Directory.cpp" />
     <ClCompile Include="..\..\src\Enemy.cpp" />
     <ClCompile Include="..\..\src\Game.cpp" />
     <ClCompile Include="..\..\src\LevelPack.cpp" />
@@ -65,6 +66,7 @@
     <ClInclude Include="..\..\src\Animation.h" />
     <ClInclude Include="..\..\src\Bonus.h" />
     <ClInclude Include="..\..\src\Config.h" />
+    <ClInclude Include="..\..\src\Directory.h" />
     <ClInclude Include="..\..\src\Enemy.h" />
     <ClInclude Include="..\..\src\Game.h" />
     <ClInclude Include="..\..\src\Keyboard.h" />
@@ -96,7 +98,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>

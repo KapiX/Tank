@@ -49,6 +49,8 @@
     <File Name="../../src/Window.h"/>
     <File Name="../../src/Config.cpp"/>
     <File Name="../../src/Config.h"/>
+    <File Name="../../src/Directory.cpp"/>
+    <File Name="../../src/Directory.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="7z">
     <File Name="../../src/7z/7z.h"/>

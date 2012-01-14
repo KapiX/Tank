@@ -44,7 +44,7 @@ ipch/
 ############################
 *.tags
 *.mk
-*.workspace.session
+*.session
 tank.txt
 
 # Build generated directories #

@@ -25,6 +25,9 @@
     <Filter Include="7z">
       <UniqueIdentifier>{d943ce5f-7098-4d51-bd9f-4ab94ab89703}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Renderer\Direct3D8Renderer">
+      <UniqueIdentifier>{b65d2573-8aa4-4ba6-83b6-8db6ebf40070}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Animation.cpp">
@@ -134,6 +137,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Directory.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\D3D8RenderList.cpp">
+      <Filter>Renderer\Direct3D8Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\D3D8VideoDriver.cpp">
+      <Filter>Renderer\Direct3D8Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\D3D8Texture.cpp">
+      <Filter>Renderer\Direct3D8Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +262,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Directory.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\D3D8RenderList.h">
+      <Filter>Renderer\Direct3D8Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\D3D8VideoDriver.h">
+      <Filter>Renderer\Direct3D8Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\D3D8Texture.h">
+      <Filter>Renderer\Direct3D8Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

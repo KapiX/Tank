@@ -20,7 +20,7 @@
 #include "Keyboard.h"
 #include "Window.h"
 #include "OGLVideoDriver.h"
-//#include "D3D8VideoDriver.h"
+#include "D3D8VideoDriver.h"
 #include <algorithm>
 #ifdef WIN32
 #include <SDL/SDL_syswm.h>
@@ -61,6 +61,10 @@ void Window::Init(u32 iWidth, u32 iHeight, bool bFullscreen, VIDEO_DRIVER kVD)
             SDL_WM_SetCaption("Tank [OpenGL, using VBO]", NULL);
         }
     }
+    else if(kVD == VD_DIRECT3D8)
+    {
+        SDL_WM_SetCaption("Tank [Direct3D8]", NULL);
+    }
 
     SDL_ShowCursor(SDL_DISABLE);
 
@@ -69,9 +73,9 @@ void Window::Init(u32 iWidth, u32 iHeight, bool bFullscreen, VIDEO_DRIVER kVD)
     case VD_OPENGL:
         m_pVD = new OGLVideoDriver(iWidth, iHeight);
         break;
-        //case VD_DIRECT3D8:
-        //    m_pVD = new D3D8VideoDriver(iWidth, iHeight, GetHwnd());
-        //    break;
+    case VD_DIRECT3D8:
+        m_pVD = new D3D8VideoDriver(iWidth, iHeight, GetHwnd());
+        break;
     default:
         return;
     }

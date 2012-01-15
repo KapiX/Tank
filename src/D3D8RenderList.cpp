@@ -1,4 +1,24 @@
+/*
+    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
+
+    This file is part of Tank.
+
+    Tank is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Tank is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Tank.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "D3D8RenderList.h"
+#include "D3D8Texture.h"
 
 D3D8RenderList::D3D8RenderList(RENDERLIST_TYPE rlt, u32 iElements, LPDIRECT3DDEVICE8 pD3DDevice) :
     RenderList(rlt, iElements),
@@ -20,22 +40,25 @@ D3D8RenderList::~D3D8RenderList(void)
     delete [] m_aVerts;
 }
 
-void D3D8RenderList::AddElement(Sprite *pSprite)
+void D3D8RenderList::AddElement(Sprite *pSprite, Color *pColor)
 {
     if(m_iCount >= m_iElements)
     {
         return;
     }
 
-    D3DSURFACE_DESC desc;
-    m_pTexture->GetLevelDesc(0, &desc);
+    u32 iColor = 0xFFFFFFFF;
+    if(pColor != NULL)
+    {
+        iColor = D3DCOLOR_RGBA(pColor->iR, pColor->iG, pColor->iB, pColor->iA);
+    }
 
     if(m_kRLT == RLT_LINKED)
     {
-        Vertex v1 = { pSprite->iX, pSprite->iY, 1.0f, 1.0f, 1.0f / (desc.Width / pSprite->iS1), 1.0f / (desc.Height / pSprite->iT1) };
-        Vertex v2 = { pSprite->iX + pSprite->iW, pSprite->iY, 1.0f, 1.0f, 1.0f / (desc.Width / pSprite->iS2), 1.0f / (desc.Height / pSprite->iT1) };
-        Vertex v3 = { pSprite->iX, pSprite->iY + pSprite->iH, 1.0f, 1.0f, 1.0f / (desc.Width / pSprite->iS1), 1.0f / (desc.Height / pSprite->iT2) };
-        Vertex v4 = { pSprite->iX + pSprite->iW, pSprite->iY + pSprite->iH, 1.0f, 1.0f, 1.0f / (desc.Width / pSprite->iS2), 1.0f / (desc.Height / pSprite->iT2) };
+        Vertex v1 = { pSprite->iX, pSprite->iY, pSprite->iZ, iColor, pSprite->iS1 / m_pTexture->GetWidth(), pSprite->iT1 / m_pTexture->GetHeight() };
+        Vertex v2 = { pSprite->iX + pSprite->iW, pSprite->iY, pSprite->iZ, iColor, pSprite->iS2 / m_pTexture->GetWidth(), pSprite->iT1 / m_pTexture->GetHeight() };
+        Vertex v3 = { pSprite->iX, pSprite->iY + pSprite->iH, pSprite->iZ, iColor, pSprite->iS1 / m_pTexture->GetWidth(), pSprite->iT2 / m_pTexture->GetHeight() };
+        Vertex v4 = { pSprite->iX + pSprite->iW, pSprite->iY + pSprite->iH, pSprite->iZ, iColor, pSprite->iS2 / m_pTexture->GetWidth(), pSprite->iT2 / m_pTexture->GetHeight() };
         m_aVerts[m_iCount * 4] = v1;
         m_aVerts[m_iCount * 4 + 1] = v2;
         m_aVerts[m_iCount * 4 + 2] = v3;
@@ -43,12 +66,12 @@ void D3D8RenderList::AddElement(Sprite *pSprite)
     }
     else if(m_kRLT == RLT_NORMAL)
     {
-        Vertex v1 = { pSprite->iX, pSprite->iY, 1.0f, 1.0f, 1.0f / (desc.Width / pSprite->iS1), 1.0f / (desc.Height / pSprite->iT1) };
-        Vertex v2 = { pSprite->iX + pSprite->iW, pSprite->iY, 1.0f, 1.0f, 1.0f / (desc.Width / pSprite->iS2), 1.0f / (desc.Height / pSprite->iT1) };
-        Vertex v3 = { pSprite->iX, pSprite->iY + pSprite->iH, 1.0f, 1.0f, 1.0f / (desc.Width / pSprite->iS1), 1.0f / (desc.Height / pSprite->iT2) };
-        Vertex v4 = { pSprite->iX, pSprite->iY + pSprite->iH, 1.0f, 1.0f, 1.0f / (desc.Width / pSprite->iS1), 1.0f / (desc.Height / pSprite->iT2) };
-        Vertex v5 = { pSprite->iX + pSprite->iW, pSprite->iY + pSprite->iH, 1.0f, 1.0f, 1.0f / (desc.Width / pSprite->iS2), 1.0f / (desc.Height / pSprite->iT2) };
-        Vertex v6 = { pSprite->iX + pSprite->iW, pSprite->iY, 1.0f, 1.0f, 1.0f / (desc.Width / pSprite->iS2), 1.0f / (desc.Height / pSprite->iT1) };
+        Vertex v1 = { pSprite->iX, pSprite->iY, pSprite->iZ, iColor, pSprite->iS1 / m_pTexture->GetWidth(), pSprite->iT1 / m_pTexture->GetHeight() };
+        Vertex v2 = { pSprite->iX + pSprite->iW, pSprite->iY, pSprite->iZ, iColor, pSprite->iS2 / m_pTexture->GetWidth(), pSprite->iT1 / m_pTexture->GetHeight() };
+        Vertex v3 = { pSprite->iX, pSprite->iY + pSprite->iH, pSprite->iZ, iColor, pSprite->iS1 / m_pTexture->GetWidth(), pSprite->iT2 / m_pTexture->GetHeight() };
+        Vertex v4 = { pSprite->iX, pSprite->iY + pSprite->iH, pSprite->iZ, iColor, pSprite->iS1 / m_pTexture->GetWidth(), pSprite->iT2 / m_pTexture->GetHeight() };
+        Vertex v5 = { pSprite->iX + pSprite->iW, pSprite->iY + pSprite->iH, pSprite->iZ, iColor, pSprite->iS2 / m_pTexture->GetWidth(), pSprite->iT2 / m_pTexture->GetHeight() };
+        Vertex v6 = { pSprite->iX + pSprite->iW, pSprite->iY, pSprite->iZ, iColor, pSprite->iS2 / m_pTexture->GetWidth(), pSprite->iT1 / m_pTexture->GetHeight() };
         m_aVerts[m_iCount * 6] = v1;
         m_aVerts[m_iCount * 6 + 1] = v2;
         m_aVerts[m_iCount * 6 + 2] = v3;
@@ -73,21 +96,24 @@ void D3D8RenderList::FillBuffer()
     pData = NULL;
 }
 
-void D3D8RenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData)
+void D3D8RenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData, Color *pUpdateColor)
 {
     int iVertsPerSprite = (m_kRLT == RLT_LINKED ? 4 : 6);
 
-    D3DSURFACE_DESC desc;
-    m_pTexture->GetLevelDesc(0, &desc);
+    u32 iColor = 0xFFFFFFFF;
+    if(pUpdateColor != NULL)
+    {
+        iColor = D3DCOLOR_RGBA(pUpdateColor->iR, pUpdateColor->iG, pUpdateColor->iB, pUpdateColor->iA);
+    }
 
     for(u32 i = 0; i < iCount; i++)
     {
         if(m_kRLT == RLT_LINKED)
         {
-            Vertex v1 = { aUpdateData[i].iX, aUpdateData[i].iY, 1.0f, 1.0f, 1.0f / (desc.Width / aUpdateData[i].iS1), 1.0f / (desc.Height / aUpdateData[i].iT1) };
-            Vertex v2 = { aUpdateData[i].iX + aUpdateData[i].iW, aUpdateData[i].iY, 1.0f, 1.0f, 1.0f / (desc.Width / aUpdateData[i].iS2), 1.0f / (desc.Height / aUpdateData[i].iT1) };
-            Vertex v3 = { aUpdateData[i].iX, aUpdateData[i].iY + aUpdateData[i].iH, 1.0f, 1.0f, 1.0f / (desc.Width / aUpdateData[i].iS1), 1.0f / (desc.Height / aUpdateData[i].iT2) };
-            Vertex v4 = { aUpdateData[i].iX + aUpdateData[i].iW, aUpdateData[i].iY + aUpdateData[i].iH, 1.0f, 1.0f, 1.0f / (desc.Width / aUpdateData[i].iS2), 1.0f / (desc.Height / aUpdateData[i].iT2) };
+            Vertex v1 = { aUpdateData[i].iX, aUpdateData[i].iY, aUpdateData[i].iZ, iColor, aUpdateData[i].iS1 / m_pTexture->GetWidth(), aUpdateData[i].iT1 / m_pTexture->GetHeight() };
+            Vertex v2 = { aUpdateData[i].iX + aUpdateData[i].iW, aUpdateData[i].iY, aUpdateData[i].iZ, iColor, aUpdateData[i].iS2 / m_pTexture->GetWidth(), aUpdateData[i].iT1 / m_pTexture->GetHeight() };
+            Vertex v3 = { aUpdateData[i].iX, aUpdateData[i].iY + aUpdateData[i].iH, aUpdateData[i].iZ, iColor, aUpdateData[i].iS1 / m_pTexture->GetWidth(), aUpdateData[i].iT2 / m_pTexture->GetHeight() };
+            Vertex v4 = { aUpdateData[i].iX + aUpdateData[i].iW, aUpdateData[i].iY + aUpdateData[i].iH, aUpdateData[i].iZ, iColor, aUpdateData[i].iS2 / m_pTexture->GetWidth(), aUpdateData[i].iT2 / m_pTexture->GetHeight() };
             m_aVerts[aUpdateData[i].iNum * 4] = v1;
             m_aVerts[aUpdateData[i].iNum * 4 + 1] = v2;
             m_aVerts[aUpdateData[i].iNum * 4 + 2] = v3;
@@ -95,12 +121,12 @@ void D3D8RenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData)
         }
         else if(m_kRLT == RLT_NORMAL)
         {
-            Vertex v1 = { aUpdateData[i].iX, aUpdateData[i].iY, 1.0f, 1.0f, (aUpdateData[i].iS1 / desc.Width), (aUpdateData[i].iT1 / desc.Height) };
-            Vertex v2 = { aUpdateData[i].iX + aUpdateData[i].iW, aUpdateData[i].iY, 1.0f, 1.0f, (aUpdateData[i].iS2 / desc.Width), (aUpdateData[i].iT1 / desc.Height) };
-            Vertex v3 = { aUpdateData[i].iX, aUpdateData[i].iY + aUpdateData[i].iH, 1.0f, 1.0f, (aUpdateData[i].iS1 / desc.Width), (aUpdateData[i].iT2 / desc.Height) };
-            Vertex v4 = { aUpdateData[i].iX, aUpdateData[i].iY + aUpdateData[i].iH, 1.0f, 1.0f, (aUpdateData[i].iS1 / desc.Width), (aUpdateData[i].iT2 / desc.Height) };
-            Vertex v5 = { aUpdateData[i].iX + aUpdateData[i].iW, aUpdateData[i].iY + aUpdateData[i].iH, 1.0f, 1.0f, (aUpdateData[i].iS2 / desc.Width), (aUpdateData[i].iT2 / desc.Height) };
-            Vertex v6 = { aUpdateData[i].iX + aUpdateData[i].iW, aUpdateData[i].iY, 1.0f, 1.0f, (aUpdateData[i].iS2 / desc.Width), (aUpdateData[i].iT1 / desc.Height) };
+            Vertex v1 = { aUpdateData[i].iX, aUpdateData[i].iY, aUpdateData[i].iZ, iColor, aUpdateData[i].iS1 / m_pTexture->GetWidth(), aUpdateData[i].iT1 / m_pTexture->GetHeight() };
+            Vertex v2 = { aUpdateData[i].iX + aUpdateData[i].iW, aUpdateData[i].iY, aUpdateData[i].iZ, iColor, aUpdateData[i].iS2 / m_pTexture->GetWidth(), aUpdateData[i].iT1 / m_pTexture->GetHeight() };
+            Vertex v3 = { aUpdateData[i].iX, aUpdateData[i].iY + aUpdateData[i].iH, aUpdateData[i].iZ, iColor, aUpdateData[i].iS1 / m_pTexture->GetWidth(), aUpdateData[i].iT2 / m_pTexture->GetHeight() };
+            Vertex v4 = { aUpdateData[i].iX, aUpdateData[i].iY + aUpdateData[i].iH, aUpdateData[i].iZ, iColor, aUpdateData[i].iS1 / m_pTexture->GetWidth(), aUpdateData[i].iT2 / m_pTexture->GetHeight() };
+            Vertex v5 = { aUpdateData[i].iX + aUpdateData[i].iW, aUpdateData[i].iY + aUpdateData[i].iH, aUpdateData[i].iZ, iColor, aUpdateData[i].iS2 / m_pTexture->GetWidth(), aUpdateData[i].iT2 / m_pTexture->GetHeight() };
+            Vertex v6 = { aUpdateData[i].iX + aUpdateData[i].iW, aUpdateData[i].iY, aUpdateData[i].iZ, iColor, aUpdateData[i].iS2 / m_pTexture->GetWidth(), aUpdateData[i].iT1 / m_pTexture->GetHeight() };
             m_aVerts[aUpdateData[i].iNum * 6] = v1;
             m_aVerts[aUpdateData[i].iNum * 6 + 1] = v2;
             m_aVerts[aUpdateData[i].iNum * 6 + 2] = v3;
@@ -116,32 +142,19 @@ void D3D8RenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData)
     pData = NULL;
 }
 
-void D3D8RenderList::LoadTexture(const char *szFilename)
-{
-    D3DXCreateTextureFromFile(m_pD3DDevice, szFilename, &m_pTexture);
-}
-
-void D3D8RenderList::FreeTexture()
-{
-    if(m_pTexture != NULL)
-    {
-        m_pTexture->Release();
-        m_pTexture = NULL;
-    }
-}
-
 void D3D8RenderList::Render()
 {
-    m_pD3DDevice->SetTexture(0, m_pTexture);
+    static_cast<D3D8Texture *>(m_pTexture)->Set(m_pD3DDevice);
     m_pD3DDevice->SetStreamSource(0, m_pVB, sizeof(Vertex));
     m_pD3DDevice->SetVertexShader(D3DFVF_CUSTOMVERTEX);
 
     if(m_kRLT == RLT_LINKED)
     {
-        m_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, m_iElements * 4);
+        m_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, m_iElements * 4 - 2);
     }
     else if(m_kRLT == RLT_NORMAL)
     {
         m_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLELIST, 0, m_iElements * 2);
     }
+    m_pD3DDevice->SetTexture(0, NULL);
 }

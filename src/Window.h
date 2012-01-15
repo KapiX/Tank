@@ -30,7 +30,7 @@
 enum VIDEO_DRIVER
 {
     VD_OPENGL = 1,
-    //VD_DIRECT3D8,
+    VD_DIRECT3D8,
 
     VD_FORCE32 = 0xffffffff
 };

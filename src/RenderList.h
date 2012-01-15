@@ -32,7 +32,7 @@ struct Sprite
 
 struct Color
 {
-    f32 iR, iG, iB, iA;
+    u32 iR, iG, iB, iA;
 };
 
 struct UpdateData

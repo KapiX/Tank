@@ -38,7 +38,7 @@ enum CONTROLLER
     JOYSTICK = 6,
 };
 
-struct CONTROLS
+struct Controls
 {
     u32 iUp;
     u32 iDown;
@@ -47,10 +47,18 @@ struct CONTROLS
     u32 iShoot;
 };
 
-struct CONFIG_ITEM
+enum CONFIGITEM_TYPE
 {
-    char strIdentifier[64];
-    char strValue[64];
+    CIT_INT = 1,
+    CIT_BOOL,
+    CIT_STRING,
+};
+
+struct ConfigItem
+{
+    const char *strIdentifier;
+    void *pValue;
+    CONFIGITEM_TYPE kType;
 };
 
 class Config :
@@ -59,21 +67,27 @@ class Config :
 private:
     CONTROLLER m_kP1Controller;
     CONTROLLER m_kP2Controller;
-    CONTROLS m_kP1Controls;
-    CONTROLS m_kP2Controls;
+    Controls m_kP1Controls;
+    Controls m_kP2Controls;
     bool m_bFullscreen;
+    u32 m_iVideoDriver;
 
-    CONFIG_ITEM ParseLine(const char *strLine);
+    ConfigItem *m_akItems;
+    u32 m_iItemCount;
 
 public:
+    Config();
+    ~Config();
+
     void ReadFromFile(const char *strFilename);
     void SaveToFile(const char *strFilename);
 
     CONTROLLER GetP1Controller() const { return m_kP1Controller; }
     CONTROLLER GetP2Controller() const { return m_kP2Controller; }
-    CONTROLS *GetP1Controls() { return &m_kP1Controls; }
-    CONTROLS *GetP2Controls() { return &m_kP2Controls; }
+    Controls *GetP1Controls() { return &m_kP1Controls; }
+    Controls *GetP2Controls() { return &m_kP2Controls; }
     bool GetFullscreen() const { return m_bFullscreen; }
+    u32 GetVideoDriver() const { return m_iVideoDriver; }
 };
 
 #endif // _CONFIG_H_

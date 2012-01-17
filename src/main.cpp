@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     Window::GetInstance()->Focus = Focus;
     Window::GetInstance()->Unfocus = Unfocus;
 
-    Window::GetInstance()->Init(800, 600, Config::GetInstance()->GetFullscreen(), VD_OPENGL);
+    Window::GetInstance()->Init(800, 600, Config::GetInstance()->GetFullscreen(), (VIDEO_DRIVER) Config::GetInstance()->GetVideoDriver());
 
     pFont = Window::GetInstance()->GetVideoDriver()->CreateTexture("graphics/font.png");
     Game::GetInstance()->LoadResources(pFont);

@@ -23,34 +23,11 @@
 
 using namespace std;
 
-CONFIG_ITEM Config::ParseLine(const char *strLine)
-{
-    char identifier[64];
-    char value[64];
-    int pos;
-    int len;
-
-    len = strlen(strLine);
-    pos = (long) strchr(strLine, '=');
-    if(pos != NULL)
-    {
-        pos = pos - (long) strLine + 1;
-        strncpy(identifier, strLine, pos - 1);
-        identifier[pos - 1] = 0;
-        strncpy(value, &strLine[pos], len - pos);
-        value[len - pos] = 0;
-    }
-
-    CONFIG_ITEM ci;
-    strcpy(ci.strIdentifier, identifier);
-    strcpy(ci.strValue, value);
-    return ci;
-}
-
-void Config::ReadFromFile(const char *strFilename)
+Config::Config()
 {
     // Default values
     m_bFullscreen = false;
+    m_iVideoDriver = 1; // OpenGL
     m_kP1Controller = KEYBOARD;
     m_kP1Controls.iUp = 273; // up arrow
     m_kP1Controls.iDown = 274; // down arrow
@@ -64,6 +41,38 @@ void Config::ReadFromFile(const char *strFilename)
     m_kP2Controls.iRight = 100; // d
     m_kP2Controls.iShoot = 113; // q
 
+    ConfigItem akItems[] = {
+        { "fullscreen",         &m_bFullscreen,         CIT_BOOL },
+        { "videodriver",        &m_iVideoDriver,        CIT_INT },
+        { "p1controller",       &m_kP1Controller,       CIT_INT },
+        { "p1up",               &m_kP1Controls.iUp,     CIT_INT },
+        { "p1down",             &m_kP1Controls.iDown,   CIT_INT },
+        { "p1left",             &m_kP1Controls.iLeft,   CIT_INT },
+        { "p1right",            &m_kP1Controls.iRight,  CIT_INT },
+        { "p1shoot",            &m_kP1Controls.iShoot,  CIT_INT },
+        { "p2controller",       &m_kP2Controller,       CIT_INT },
+        { "p2up",               &m_kP2Controls.iUp,     CIT_INT },
+        { "p2down",             &m_kP2Controls.iDown,   CIT_INT },
+        { "p2left",             &m_kP2Controls.iLeft,   CIT_INT },
+        { "p2right",            &m_kP2Controls.iRight,  CIT_INT },
+        { "p2shoot",            &m_kP2Controls.iShoot,  CIT_INT },
+    };
+    m_iItemCount = sizeof(akItems) / sizeof(akItems[0]);
+    m_akItems = new ConfigItem[m_iItemCount];
+    memcpy(m_akItems, &akItems, sizeof(akItems));
+}
+
+Config::~Config()
+{
+    if(m_akItems != NULL)
+    {
+        delete [] m_akItems;
+        m_akItems = NULL;
+    }
+}
+
+void Config::ReadFromFile(const char *strFilename)
+{
     ifstream kFile;
 
     kFile.open(strFilename);
@@ -75,61 +84,40 @@ void Config::ReadFromFile(const char *strFilename)
 
             kFile.getline(line, 128);
 
-            CONFIG_ITEM ci;
+            // Line parsing
+            char identifier[64] = "";
+            char value[64] = "";
+            int pos;
+            int len;
 
-            ci = ParseLine(line);
+            len = strlen(line);
+            pos = (long) strchr(line, '=');
+            if(pos != NULL)
+            {
+                pos = pos - (long) line + 1;
+                strncpy(identifier, line, pos - 1);
+                identifier[pos - 1] = 0;
+                strncpy(value, &line[pos], len - pos);
+                value[len - pos] = 0;
+            }
 
-            if(strcmp(ci.strIdentifier, "fullscreen") == 0)
+            for(int i = 0; i < m_iItemCount; i++)
             {
-                m_bFullscreen = (bool) atoi(ci.strValue);
-            }
-            else if(strcmp(ci.strIdentifier, "p1controller") == 0)
-            {
-                m_kP1Controller = (CONTROLLER) atoi(ci.strValue);
-            }
-            else if(strcmp(ci.strIdentifier, "p2controller") == 0)
-            {
-                m_kP2Controller = (CONTROLLER) atoi(ci.strValue);
-            }
-            else if(strcmp(ci.strIdentifier, "p1up") == 0)
-            {
-                m_kP1Controls.iUp = atoi(ci.strValue);
-            }
-            else if(strcmp(ci.strIdentifier, "p1down") == 0)
-            {
-                m_kP1Controls.iDown = atoi(ci.strValue);
-            }
-            else if(strcmp(ci.strIdentifier, "p1left") == 0)
-            {
-                m_kP1Controls.iLeft = atoi(ci.strValue);
-            }
-            else if(strcmp(ci.strIdentifier, "p1right") == 0)
-            {
-                m_kP1Controls.iRight = atoi(ci.strValue);
-            }
-            else if(strcmp(ci.strIdentifier, "p1shoot") == 0)
-            {
-                m_kP1Controls.iShoot = atoi(ci.strValue);
-            }
-            else if(strcmp(ci.strIdentifier, "p2up") == 0)
-            {
-                m_kP2Controls.iUp = atoi(ci.strValue);
-            }
-            else if(strcmp(ci.strIdentifier, "p2down") == 0)
-            {
-                m_kP2Controls.iDown = atoi(ci.strValue);
-            }
-            else if(strcmp(ci.strIdentifier, "p2left") == 0)
-            {
-                m_kP2Controls.iLeft = atoi(ci.strValue);
-            }
-            else if(strcmp(ci.strIdentifier, "p2right") == 0)
-            {
-                m_kP2Controls.iRight = atoi(ci.strValue);
-            }
-            else if(strcmp(ci.strIdentifier, "p2shoot") == 0)
-            {
-                m_kP2Controls.iShoot = atoi(ci.strValue);
+                if(strcmp(identifier, m_akItems[i].strIdentifier) == 0)
+                {
+                    switch(m_akItems[i].kType)
+                    {
+                    case CIT_INT:
+                        *((int *) m_akItems[i].pValue) = atoi(value);
+                        break;
+                    case CIT_BOOL:
+                        *((bool *) m_akItems[i].pValue) = (bool) atoi(value);
+                        break;
+                    case CIT_STRING:
+                        *((char **) m_akItems[i].pValue) = value;
+                        break;
+                    }
+                }
             }
         }
         kFile.close();
@@ -145,35 +133,24 @@ void Config::SaveToFile(const char *strFilename)
     if(kFile.is_open())
     {
         char line[128];
-
+        
         kFile << "#Generated by Tank. DO NOT modify." << endl;
-        sprintf(line, "fullscreen=%d", (int) m_bFullscreen);
-        kFile << line << endl;
-        sprintf(line, "p1controller=%d", (int) m_kP1Controller);
-        kFile << line << endl;
-        sprintf(line, "p1up=%d", m_kP1Controls.iUp);
-        kFile << line << endl;
-        sprintf(line, "p1down=%d", m_kP1Controls.iDown);
-        kFile << line << endl;
-        sprintf(line, "p1left=%d", m_kP1Controls.iLeft);
-        kFile << line << endl;
-        sprintf(line, "p1right=%d", m_kP1Controls.iRight);
-        kFile << line << endl;
-        sprintf(line, "p1shoot=%d", m_kP1Controls.iShoot);
-        kFile << line << endl;
-        sprintf(line, "p2controller=%d", (int) m_kP2Controller);
-        kFile << line << endl;
-        sprintf(line, "p2up=%d", m_kP2Controls.iUp);
-        kFile << line << endl;
-        sprintf(line, "p2down=%d", m_kP2Controls.iDown);
-        kFile << line << endl;
-        sprintf(line, "p2left=%d", m_kP2Controls.iLeft);
-        kFile << line << endl;
-        sprintf(line, "p2right=%d", m_kP2Controls.iRight);
-        kFile << line << endl;
-        sprintf(line, "p2shoot=%d", m_kP2Controls.iShoot);
-        kFile << line << endl;
-
+        for(int i = 0; i < m_iItemCount; i++)
+        {
+            switch(m_akItems[i].kType)
+            {
+            case CIT_INT:
+                sprintf(line, "%s=%d", m_akItems[i].strIdentifier, *((int *) m_akItems[i].pValue));
+                break;
+            case CIT_BOOL:
+                sprintf(line, "%s=%d", m_akItems[i].strIdentifier, *((bool *) m_akItems[i].pValue));
+                break;
+            case CIT_STRING:
+                sprintf(line, "%s=%s", m_akItems[i].strIdentifier, *((char **) m_akItems[i].pValue));
+                break;
+            }
+            kFile << line << endl;
+        }
         kFile.close();
     }
 }

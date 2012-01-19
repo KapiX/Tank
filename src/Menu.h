@@ -39,13 +39,15 @@ private:
     std::vector<std::string> m_Items;
     Texture *m_pPointer;
     Texture *m_pFont;
+    u32 m_iPointerOffsetX;
+    u32 m_iPointerOffsetY;
     u8 m_iCurrent;
     MENU_ORIENTATION m_Orient;
     VideoDriver *m_pVD;
     Animation *m_pPointerAnim;
 
 public:
-    Menu(VideoDriver *pVD, Texture *pFont, Texture *pPointer);
+    Menu(VideoDriver *pVD, Texture *pFont, Texture *pPointer, u32 iPointerOffsetX = 0, u32 iPointerOffsetY = 0);
     ~Menu();
 
     void Render(int iX, int iY, int iZ = 64, int iR = 255, int iG = 255, int iB = 255);

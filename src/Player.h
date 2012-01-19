@@ -43,7 +43,7 @@ private:
     DIRECTION m_kSlidingDir;
 
 public:
-    Player(VideoDriver *pVD, u8 iNum, Texture *pTankTexture, Texture *pMiscTexture, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 85.0f);
+    Player(VideoDriver *pVD, u8 iNum, Texture *pTexture, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 85.0f);
     ~Player();
 
     void Spawn();

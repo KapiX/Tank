@@ -118,12 +118,7 @@ private:
     bool m_bEagleDestroyed;
 
     MapInfo *m_pMapInfo;
-    Texture *m_pBlockTexture;
-    Texture *m_pPlayer1Texture;
-    Texture *m_pPlayer2Texture;
-    Texture *m_pEnemyTexture;
-    Texture *m_pMiscTexture;
-    Texture *m_pBonusTexture;
+    Texture *m_pAtlasTexture;
 
     static Animation *m_pAnimation;
     static f32 *m_pfTimer;
@@ -133,12 +128,7 @@ private:
     bool m_b2PlayerMode;
 
 public:
-    Map(VideoDriver *pVD,
-        const char *szBlockTextureName,
-        const char *szPlayer1TextureName,
-        const char *szPlayer2TextureName,
-        const char *szEnemyTextureName,
-        const char *szMiscTextureName);
+    Map(VideoDriver *pVD, Texture *pAtlasTexture);
     ~Map(void);
 
     bool LoadMap(unsigned char *data, unsigned int size);

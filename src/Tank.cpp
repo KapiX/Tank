@@ -19,12 +19,11 @@
 
 #include "Tank.h"
 
-Tank::Bullet::Bullet(VideoDriver *pVD, Texture *pBulletTexture, Texture *pMiscTexture, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed)
+Tank::Bullet::Bullet(VideoDriver *pVD, Texture *pTexture, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed)
 {
     m_pVD = pVD;
 
-    m_pBulletTexture = pBulletTexture;
-    m_pMiscTexture = pMiscTexture;
+    m_pTexture = pTexture;
     m_kTL = kTL;
     m_iSpeed = iSpeed;
     m_kDir = kDir;
@@ -84,9 +83,9 @@ void Tank::Bullet::Render()
     if(m_bIsAlive)
     {
         u32 iX2, iY2;
-        iX2 = (m_kDir - 1) * 8 + 64;
-        iY2 = 32;
-        m_pVD->DrawSprite(m_pBulletTexture, m_iX, m_iY, 4.0f, iX2, iY2, 8, 8);
+        iX2 = (m_kDir - 1) * 8 + 292;
+        iY2 = 288;
+        m_pVD->DrawSprite(m_pTexture, m_iX, m_iY, 4.0f, iX2, iY2, 8, 8);
     }
     else if(m_bExplode)
     {
@@ -104,7 +103,7 @@ void Tank::Bullet::Render()
             iY += 4;
             break;
         }
-        m_pVD->DrawSprite(m_pMiscTexture, iX, iY, 44.0f, m_pkExplAnim->GetCurrentFrame() * 32, 0, iW, iH);
+        m_pVD->DrawSprite(m_pTexture, iX, iY, 44.0f, 228 + m_pkExplAnim->GetCurrentFrame() * 32, 256, iW, iH);
     }
 }
 
@@ -117,17 +116,16 @@ void Tank::Bullet::Destroy(bool bExplode)
 
 f32 *Tank::m_pfTimer = NULL;
 
-Tank::Tank(VideoDriver *pVD, Texture *pTankTexture, Texture *pMiscTexture, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed)
+Tank::Tank(VideoDriver *pVD, Texture *pTexture, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed)
 {
     m_pVD = pVD;
     m_kTL = kTL;
     m_kDir = kDir;
     m_iSpeed = iSpeed;
-    m_pTankTexture = pTankTexture;
-    m_pMiscTexture = pMiscTexture;
+    m_pTexture = pTexture;
 
-    m_apkBullets[0] = new Bullet(pVD, pMiscTexture, pMiscTexture, kTL, kDir, iSpeed * 3);
-    m_apkBullets[1] = new Bullet(pVD, pMiscTexture, pMiscTexture, kTL, kDir, iSpeed * 3);
+    m_apkBullets[0] = new Bullet(pVD, pTexture, kTL, kDir, iSpeed * 3);
+    m_apkBullets[1] = new Bullet(pVD, pTexture, kTL, kDir, iSpeed * 3);
 
     m_pkAnim = new Animation();
     m_pkAnim->SetFrameRate(0.05f);

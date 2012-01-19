@@ -19,10 +19,12 @@
 
 #include "Menu.h"
 
-Menu::Menu(VideoDriver *pVD, Texture *pFont, Texture *pPointer)
+Menu::Menu(VideoDriver *pVD, Texture *pFont, Texture *pPointer, u32 iPointerOffsetX, u32 iPointerOffsetY)
 {
     m_pFont = pFont;
     m_pPointer = pPointer;
+    m_iPointerOffsetX = iPointerOffsetX;
+    m_iPointerOffsetY = iPointerOffsetY;
     m_iCurrent = 0;
     m_Orient = MO_VERTICAL;
     m_pVD = pVD;
@@ -37,7 +39,7 @@ void Menu::Render(int iX, int iY, int iZ, int iR, int iG, int iB)
 {
     if(m_Orient == MO_VERTICAL)
     {
-        m_pVD->DrawSprite(m_pPointer, iX, iY + (m_iCurrent * 13), iZ, 0 + (m_pPointerAnim == NULL ? 0 : m_pPointerAnim->GetCurrentFrame() * 13), 0, 13, 13);
+        m_pVD->DrawSprite(m_pPointer, iX, iY + (m_iCurrent * 13), iZ, m_iPointerOffsetX + (m_pPointerAnim == NULL ? 0 : m_pPointerAnim->GetCurrentFrame() * 13), m_iPointerOffsetY, 13, 13);
         for(int i = 0; i < m_Items.size(); i++)
         {
             m_pVD->PrintText(m_pFont, iX + 13 + 3, iY + (i * 13) + 1, iZ, m_Items[i].c_str(), 1.0f, iR, iG, iB);
@@ -55,7 +57,7 @@ void Menu::Render(int iX, int iY, int iZ, int iR, int iG, int iB)
             m_pVD->PrintText(m_pFont, x + shift, iY, iZ, m_Items[i].c_str(), 1.0f, iR, iG, iB);
             if(m_iCurrent == i)
             {
-                m_pVD->DrawSprite(m_pPointer, x + shift - 13 - 3, iY, iZ, 0 + (m_pPointerAnim == NULL ? 0 : m_pPointerAnim->GetCurrentFrame() * 13), 0, 13, 13);
+                m_pVD->DrawSprite(m_pPointer, x + shift - 13 - 3, iY, iZ, m_iPointerOffsetX + (m_pPointerAnim == NULL ? 0 : m_pPointerAnim->GetCurrentFrame() * 13), m_iPointerOffsetY, 13, 13);
             }
         }
     }

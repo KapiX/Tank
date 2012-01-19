@@ -19,8 +19,8 @@
 
 #include "Player.h"
 
-Player::Player(VideoDriver *pVD, u8 iNum, Texture *pTankTexture, Texture *pMiscTexture, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed)
-    : Tank(pVD, pTankTexture, pMiscTexture, kTL, kDir, iSpeed)
+Player::Player(VideoDriver *pVD, u8 iNum, Texture *pTexture, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed)
+    : Tank(pVD, pTexture, kTL, kDir, iSpeed)
 {
     m_pkShieldAnim = new Animation();
     m_pkShieldAnim->SetFrameRate(0.025f);
@@ -193,13 +193,13 @@ void Player::Render()
     if(m_bIsAlive)
     {
         u32 iX2, iY2;
-        iX2 = (m_kDir - 1) * 32;
+        iX2 = 640 + (m_iNum - 1) * 32 + (m_kDir - 1) * 32;
         iY2 = (m_kTL - 1) * 64 + m_pkAnim->GetCurrentFrame() * 32;
-        m_pVD->DrawSprite(m_pTankTexture, m_iX, m_iY, 2.0f, iX2, iY2, 32, 32);
+        m_pVD->DrawSprite(m_pTexture, m_iX, m_iY, 2.0f, iX2, iY2, 32, 32);
     }
     else if(m_bSpawn)
     {
-        m_pVD->DrawSprite(m_pMiscTexture, m_iX, m_iY, 2.0f, m_pkSpawnAnim->GetCurrentFrame() * 32, 64, 32, 32);
+        m_pVD->DrawSprite(m_pTexture, m_iX, m_iY, 2.0f, 228 + m_pkSpawnAnim->GetCurrentFrame() * 32, 320, 32, 32);
     }
     else if(m_bExplode)
     {
@@ -216,7 +216,7 @@ void Player::Render()
             iX = m_iX;
             iY = m_iY;
         }
-        m_pVD->DrawSprite(m_pMiscTexture, iX, iY, 44.0f, (m_pkExplAnim->GetCurrentFrame() < 4 ? m_pkExplAnim->GetCurrentFrame() : m_pkExplAnim->GetCurrentFrame() + 1) * 32, 0, iW, iH);
+        m_pVD->DrawSprite(m_pTexture, iX, iY, 44.0f, 228 + (m_pkExplAnim->GetCurrentFrame() < 4 ? m_pkExplAnim->GetCurrentFrame() : m_pkExplAnim->GetCurrentFrame() + 1) * 32, 256, iW, iH);
     }
     m_apkBullets[0]->Render();
     m_apkBullets[1]->Render();
@@ -225,11 +225,11 @@ void Player::Render()
     {
         if(m_bShield)
         {
-            m_pVD->DrawSprite(m_pMiscTexture, m_iX, m_iY, 4.0f, m_pkShieldAnim->GetCurrentFrame() * 32, 32, 32, 32);
+            m_pVD->DrawSprite(m_pTexture, m_iX, m_iY, 4.0f, 228 + m_pkShieldAnim->GetCurrentFrame() * 32, 288, 32, 32);
         }
         if(m_bBoat)
         {
-            m_pVD->DrawSprite(m_pMiscTexture, m_iX, m_iY, 3.0f, 256 + 32 * (m_iNum - 1), 32, 32, 32);
+            m_pVD->DrawSprite(m_pTexture, m_iX, m_iY, 3.0f, 484 + 32 * (m_iNum - 1), 288, 32, 32);
         }
     }
 }

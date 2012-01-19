@@ -101,13 +101,7 @@ private:
     Animation *m_pMenuPointerAnim;
 
     Texture *m_pGameFont;
-    Texture *m_pLogo;
-    Texture *m_pMenuPointer;
-    Texture *m_pInGameMenuPointer;
-    Texture *m_pHUDP1;
-    Texture *m_pHUDP2;
-    Texture *m_pPlayerTexture;
-    Texture *m_pEnemyTexture;
+    Texture *m_pAtlasTexture;
 
     Menu *m_pMainMenu;
     Menu *m_pInGameMenu;

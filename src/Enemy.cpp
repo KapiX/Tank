@@ -22,8 +22,8 @@
 int Enemy::m_iEnemiesLeft = 0;
 int Enemy::m_iBonusesLeft = 0;
 
-Enemy::Enemy(VideoDriver *pVD, Texture *pTankTexture, Texture *pMiscTexture, bool bHasBonus, SHIELDLEVEL kSL, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed)
-    : Tank(pVD, pTankTexture, pMiscTexture, kTL, kDir, iSpeed)
+Enemy::Enemy(VideoDriver *pVD, Texture *pTexture, bool bHasBonus, SHIELDLEVEL kSL, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed)
+    : Tank(pVD, pTexture, kTL, kDir, iSpeed)
 {
     if(kTL == TL_2) m_iSpeed *= 2;
     else if(kTL == TL_3) m_apkBullets[0]->SetSpeed(m_apkBullets[0]->GetSpeed() * 2);
@@ -164,11 +164,11 @@ void Enemy::Render()
         u32 iX2, iY2;
         iX2 = (m_bHasBonus ? m_pkBonusAnim->GetCurrentFrame() * 128 : m_kSL * 128) + (m_kDir - 1) * 32;
         iY2 = (m_kTL - 1) * 64 + m_pkAnim->GetCurrentFrame() * 32;
-        m_pVD->DrawSprite(m_pTankTexture, m_iX, m_iY, 2.0f, iX2, iY2, 32, 32);
+        m_pVD->DrawSprite(m_pTexture, m_iX, m_iY, 2.0f, iX2, iY2, 32, 32);
     }
     else if(m_bSpawn)
     {
-        m_pVD->DrawSprite(m_pMiscTexture, m_iX, m_iY, 2.0f, m_pkSpawnAnim->GetCurrentFrame() * 32, 64, 32, 32);
+        m_pVD->DrawSprite(m_pTexture, m_iX, m_iY, 2.0f, 228 + m_pkSpawnAnim->GetCurrentFrame() * 32, 320, 32, 32);
     }
     else if(m_bExplode)
     {
@@ -185,7 +185,7 @@ void Enemy::Render()
             iX = m_iX;
             iY = m_iY;
         }
-        m_pVD->DrawSprite(m_pMiscTexture, iX, iY, 44.0f, (m_pkExplAnim->GetCurrentFrame() < 4 ? m_pkExplAnim->GetCurrentFrame() : m_pkExplAnim->GetCurrentFrame() + 1) * 32, 0, iW, iH);
+        m_pVD->DrawSprite(m_pTexture, iX, iY, 44.0f, 228 + (m_pkExplAnim->GetCurrentFrame() < 4 ? m_pkExplAnim->GetCurrentFrame() : m_pkExplAnim->GetCurrentFrame() + 1) * 32, 256, iW, iH);
     }
     m_apkBullets[0]->Render();
 }

@@ -58,8 +58,8 @@ void Bonus::Render(VideoDriver *pVD)
     if(m_bIsAlive)
     {
         u32 iX2, iY2;
-        iX2 = m_bt * 32;
-        iY2 = m_pkAnim->GetCurrentFrame() * 32;
+        iX2 = 960 + m_pkAnim->GetCurrentFrame() * 32;
+        iY2 = m_bt * 32;
         pVD->DrawSprite(m_pkBonusTexture, m_iX, m_iY, 58.0f, iX2, iY2, 32, 32);
     }
 }

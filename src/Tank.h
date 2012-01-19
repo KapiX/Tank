@@ -65,10 +65,9 @@ protected:
 
         VideoDriver *m_pVD;
 
-        Texture *m_pBulletTexture;
-        Texture *m_pMiscTexture;
+        Texture *m_pTexture;
 
-        Bullet(VideoDriver *pVD, Texture *pBulletTexture, Texture *pMiscTexture, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed);
+        Bullet(VideoDriver *pVD, Texture *pTexture, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed);
         ~Bullet();
 
         void Update(f32 fDelta);
@@ -94,8 +93,7 @@ protected:
     Bullet *m_apkBullets[2];
     TANKLEVEL m_kTL;
     DIRECTION m_kDir;
-    Texture *m_pTankTexture;
-    Texture *m_pMiscTexture;
+    Texture *m_pTexture;
     f32 m_iSpeed;
     f32 m_iX;
     f32 m_iY;
@@ -111,7 +109,7 @@ protected:
     VideoDriver *m_pVD;
 
 public:
-    Tank(VideoDriver *pVD, Texture *pTankTexture, Texture *pMiscTexture, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 85.0f);
+    Tank(VideoDriver *pVD, Texture *pTexture, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 85.0f);
     virtual ~Tank();
 
     void Spawn(DIRECTION kDir = DIR_UP, TANKLEVEL kTL = TL_1);
@@ -190,8 +188,7 @@ public:
     TANKLEVEL GetTankLevel() const { return m_kTL; }
     DIRECTION GetDirection() const { return m_kDir; }
     f32 GetSpeed() const { return m_iSpeed; }
-    Texture *GetTankTexture() const { return m_pTankTexture; }
-    Texture *GetMiscTexture() const { return m_pMiscTexture; }
+    Texture *GetTexture() const { return m_pTexture; }
     u8 GetSpawnX() const { return m_iSpawnX; }
     u8 GetSpawnY() const { return m_iSpawnY; }
     bool IsMoving() const { return m_bIsMoving; }

@@ -45,7 +45,7 @@ private:
     static int m_iBonusesLeft;
 
 public:
-    Enemy(VideoDriver *pVD, Texture *pEnemyTexture, Texture *pMiscTexture, bool bHasBonus, SHIELDLEVEL kSL, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 50.0f);
+    Enemy(VideoDriver *pVD, Texture *pTexture, bool bHasBonus, SHIELDLEVEL kSL, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 50.0f);
     ~Enemy();
 
     void Stop();

@@ -52,15 +52,9 @@ void Game::LoadResources(Texture *pFont)
     m_pMenuPointerAnim->SetOscillate(true);
 
     m_pGameFont = pFont;
-    m_pLogo = Window::GetInstance()->GetVideoDriver()->CreateTexture("graphics/logo.png");
-    m_pMenuPointer = Window::GetInstance()->GetVideoDriver()->CreateTexture("graphics/menuPointer.png");
-    m_pInGameMenuPointer = Window::GetInstance()->GetVideoDriver()->CreateTexture("graphics/menuPointer2.png");
-    m_pHUDP1 = Window::GetInstance()->GetVideoDriver()->CreateTexture("graphics/hud_p1.png");
-    m_pHUDP2 = Window::GetInstance()->GetVideoDriver()->CreateTexture("graphics/hud_p2.png");
-    m_pPlayerTexture = Window::GetInstance()->GetVideoDriver()->CreateTexture("graphics/player_yellow.png");
-    m_pEnemyTexture = Window::GetInstance()->GetVideoDriver()->CreateTexture("graphics/enemy.png");
+    m_pAtlasTexture = Window::GetInstance()->GetVideoDriver()->CreateTexture("graphics/graphics.png");
 
-    m_pMainMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pMenuPointer);
+    m_pMainMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pAtlasTexture, 896, 128);
     m_pMainMenu->SetPointerAnim(m_pMenuPointerAnim);
     m_pMainMenu->SetTitle("MAIN MENU");
     m_pMainMenu->AddItem("1 PLAYER");
@@ -69,21 +63,21 @@ void Game::LoadResources(Texture *pFont)
     //m_pMainMenu->AddItem("EDITOR");
     m_pMainMenu->AddItem("EXIT");
 
-    m_pInGameMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pInGameMenuPointer);
+    m_pInGameMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pAtlasTexture, 896, 141);
     m_pInGameMenu->SetOrientation(MO_HORIZONTAL);
     m_pInGameMenu->SetTitle("PAUSE");
     m_pInGameMenu->AddItem("BACK TO GAME");
     m_pInGameMenu->AddItem("EXIT TO MENU");
     m_pInGameMenu->AddItem("EXIT TO SYSTEM");
 
-    m_pPlayerSelectMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pMenuPointer);
+    m_pPlayerSelectMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pAtlasTexture, 896, 128);
     m_pPlayerSelectMenu->SetPointerAnim(m_pMenuPointerAnim);
     m_pPlayerSelectMenu->SetOrientation(MO_HORIZONTAL);
     m_pPlayerSelectMenu->SetTitle("PLAYER");
     m_pPlayerSelectMenu->AddItem("1");
     m_pPlayerSelectMenu->AddItem("2");
 
-    m_pP1ControlsMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pMenuPointer);
+    m_pP1ControlsMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pAtlasTexture, 896, 128);
     m_pP1ControlsMenu->SetPointerAnim(m_pMenuPointerAnim);
     m_pP1ControlsMenu->SetTitle("PLAYER 1 CONTROLS");
     m_pP1ControlsMenu->AddItem("CONTROLLER: ");
@@ -94,7 +88,7 @@ void Game::LoadResources(Texture *pFont)
     m_pP1ControlsMenu->AddItem("SHOOT:      ");
     m_pP1ControlsMenu->AddItem("BACK");
 
-    m_pP2ControlsMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pMenuPointer);
+    m_pP2ControlsMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pAtlasTexture, 896, 128);
     m_pP2ControlsMenu->SetPointerAnim(m_pMenuPointerAnim);
     m_pP2ControlsMenu->SetTitle("PLAYER 2 CONTROLS");
     m_pP2ControlsMenu->AddItem("CONTROLLER: ");
@@ -105,7 +99,7 @@ void Game::LoadResources(Texture *pFont)
     m_pP2ControlsMenu->AddItem("SHOOT:      ");
     m_pP2ControlsMenu->AddItem("BACK");
 
-    m_pMap = new Map(Window::GetInstance()->GetVideoDriver(), "graphics/blocks.png", "graphics/player_yellow.png", "graphics/player_green.png", "graphics/enemy.png", "graphics/misc.png");
+    m_pMap = new Map(Window::GetInstance()->GetVideoDriver(), m_pAtlasTexture);
 
     m_fTimer = 0;
     m_iSplashAlpha = 0;
@@ -625,7 +619,7 @@ void Game::Render()
 void Game::RenderSplash()
 {
     VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
-    pVD->DrawSprite(m_pLogo, 286, m_iSplashLogoY, 64, 0, 0);
+    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, 64, 0, 256, 228, 204);
     pVD->PrintText(m_pGameFont, 210, 261, 64, "                      TANK                       ", 1.0f, 255, 255, 255, m_iSplashAlpha);
     pVD->PrintText(m_pGameFont, 210, 289, 64, "    ORIGINAL SOUNDS AND GRAPHICS - NAMCO, Ltd.   ", 1.0f, 255, 255, 255, m_iSplashAlpha);
     pVD->PrintText(m_pGameFont, 210, 303, 64, "BINARIES AND SOURCE LICENSED UNDER GNU GPL VER. 3", 1.0f, 255, 255, 255, m_iSplashAlpha);
@@ -634,14 +628,14 @@ void Game::RenderSplash()
 void Game::RenderMainMenu()
 {
     VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
-    pVD->DrawSprite(m_pLogo, 286, m_iSplashLogoY, 64, 0, 0);
+    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, 64, 0, 256, 228, 204);
     m_pMainMenu->Render(350, 300);
 }
 
 void Game::RenderControlsMenu()
 {
     VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
-    pVD->DrawSprite(m_pLogo, 286, m_iSplashLogoY, 64, 0, 0);
+    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, 64, 0, 256, 228, 204);
     m_pPlayerSelectMenu->Render(350, 300);
 
     if(m_pPlayerSelectMenu->GetCurrentItem() == CPM_1P)
@@ -657,7 +651,7 @@ void Game::RenderControlsMenu()
 void Game::RenderControlsWaiting()
 {
     VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
-    pVD->DrawSprite(m_pLogo, 286, m_iSplashLogoY, 62, 0, 0);
+    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, 62, 0, 256, 228, 204);
     m_pPlayerSelectMenu->Render(350, 300, 62);
 
     if(m_pPlayerSelectMenu->GetCurrentItem() == CPM_1P)
@@ -732,8 +726,8 @@ void Game::RenderHUD()
     sprintf(lifes1, "%d", m_pMap->GetPlayer1()->GetLives());
     sprintf(score1, "%08d", m_pMap->GetPlayer1()->GetScore());
     pVD->PrintText(m_pGameFont, 6, 572, 2, score1, 2.0f, 0, 0, 0);
-    pVD->DrawSprite(m_pHUDP1, 6 + (14 + 2) * 8 + 4 - 2, 571, 2, 0, 0, 26, 26, 1.0f);
-    pVD->PrintText(m_pGameFont, 6 + (14 + 2) * 8 + 4 + 26 + 4 - 2, 572, 2, lifes1, 2.0f, 0, 0, 0);
+    pVD->DrawSprite(m_pAtlasTexture, 6 + (14 + 2) * 8 + 4 - 2, 568, 2, 640, 0, 32, 32, 1.0f);
+    pVD->PrintText(m_pGameFont, 6 + (14 + 2) * 8 + 4 + 32 + 4 - 2, 572, 2, lifes1, 2.0f, 0, 0, 0);
     // Player 2
     if(m_bPlayer2)
     {
@@ -741,13 +735,13 @@ void Game::RenderHUD()
         sprintf(lifes2, "%d", m_pMap->GetPlayer2()->GetLives());
         sprintf(score2, "%08d", m_pMap->GetPlayer2()->GetScore());
         pVD->PrintText(m_pGameFont, 800 - 6 - (14 + 2) * 8, 572, 2, score2, 2.0f, 0, 0, 0);
-        pVD->DrawSprite(m_pHUDP2, 800 - (6 + (14 + 2) * 8 + 4) - 26, 571, 2, 0, 0, 26, 26, 1.0f);
-        pVD->PrintText(m_pGameFont, 800 - (6 + (14 + 2) * 8 + 4 + 26 + 4) - 14, 572, 2, lifes2, 2.0f, 0, 0, 0);
+        pVD->DrawSprite(m_pAtlasTexture, 800 - (6 + (14 + 2) * 8 + 4) - 32, 568, 2, 768, 0, 32, 32, 1.0f);
+        pVD->PrintText(m_pGameFont, 800 - (6 + (14 + 2) * 8 + 4 + 32 + 4) - 14, 572, 2, lifes2, 2.0f, 0, 0, 0);
     }
     // Enemies count
     sprintf(enemies, "%d", Enemy::GetEnemiesLeft());
     pVD->PrintText(m_pGameFont, 400 - (strlen(enemies) / 2 * (14 + 2)), 572, 2, enemies, 2.0f, 0, 0, 0);
-    pVD->DrawSprite(m_pEnemyTexture, 400 - (strlen(enemies) / 2 * (14 + 2)) - 32, 568, 2, 128, 0, 32, 32, 1.0f);
+    pVD->DrawSprite(m_pAtlasTexture, 400 - (strlen(enemies) / 2 * (14 + 2)) - 32, 568, 2, 128, 0, 32, 32, 1.0f);
 }
 
 void Game::RenderLevelCompleted()

@@ -18,12 +18,12 @@
 */
 
 #include "Map.h"
-#include <math.h>
+#include <cmath>
 
 Animation *Map::m_pAnimation = NULL;
 f32 *Map::m_pfTimer = NULL;
 
-Map::Map(VideoDriver *pVD, const char *szBlockTextureName, const char *szPlayer1TextureName, const char *szPlayer2TextureName, const char *szEnemyTextureName, const char *szMiscTextureName)
+Map::Map(VideoDriver *pVD, Texture *pAtlasTexture)
 {
     m_pVD = pVD;
 
@@ -31,22 +31,17 @@ Map::Map(VideoDriver *pVD, const char *szBlockTextureName, const char *szPlayer1
         m_pAnimation = Map::SetupAnimation();
 
     m_b2PlayerMode = false;
-    m_pBlockTexture = pVD->CreateTexture(szBlockTextureName);
-    m_pPlayer1Texture = pVD->CreateTexture(szPlayer1TextureName);
-    m_pPlayer2Texture = pVD->CreateTexture(szPlayer2TextureName);
-    m_pEnemyTexture = pVD->CreateTexture(szEnemyTextureName);
-    m_pMiscTexture = pVD->CreateTexture(szMiscTextureName);
-    m_pBonusTexture = pVD->CreateTexture("graphics/bonuses.png");
+    m_pAtlasTexture = pAtlasTexture;
     m_pRenderList = pVD->CreateRenderList(RLT_LINKED, 1750);
-    m_pRenderList->SetTexture(m_pBlockTexture);
+    m_pRenderList->SetTexture(m_pAtlasTexture);
 
-    Bonus::SetTexture(m_pBonusTexture);
+    Bonus::SetTexture(m_pAtlasTexture);
 
-    m_pkPlayer1 = new Player(pVD, 1, m_pPlayer1Texture, m_pMiscTexture);
+    m_pkPlayer1 = new Player(pVD, 1, m_pAtlasTexture);
     m_pkPlayer1->SetLives(3);
     m_pkPlayer1->SetScore(0);
 
-    m_pkPlayer2 = new Player(pVD, 2, m_pPlayer2Texture, m_pMiscTexture);
+    m_pkPlayer2 = new Player(pVD, 2, m_pAtlasTexture);
     m_pkPlayer2->SetLives(3);
     m_pkPlayer2->SetScore(0);
 
@@ -119,36 +114,6 @@ Map::~Map(void)
     {
         delete m_pRenderList;
         m_pRenderList = NULL;
-    }
-    if(m_pBlockTexture != NULL)
-    {
-        delete m_pBlockTexture;
-        m_pBlockTexture = NULL;
-    }
-    if(m_pPlayer1Texture != NULL)
-    {
-        delete m_pPlayer1Texture;
-        m_pPlayer1Texture = NULL;
-    }
-    if(m_pPlayer2Texture != NULL)
-    {
-        delete m_pPlayer2Texture;
-        m_pPlayer2Texture = NULL;
-    }
-    if(m_pEnemyTexture != NULL)
-    {
-        delete m_pEnemyTexture;
-        m_pEnemyTexture = NULL;
-    }
-    if(m_pMiscTexture != NULL)
-    {
-        delete m_pMiscTexture;
-        m_pMiscTexture = NULL;
-    }
-    if(m_pBonusTexture != NULL)
-    {
-        delete m_pBonusTexture;
-        m_pBonusTexture = NULL;
     }
 }
 
@@ -1610,10 +1575,10 @@ void Map::UpdateBlocks()
             ud.iZ = (m_aBlocks[i][j] != BT_JUNGLE ? 1.0f : 16.0f);
             ud.iW = 16;
             ud.iH = 16;
-            ud.iS1 = (u8) (m_aBlocks[i][j] >> 8);
-            ud.iT1 = (u8) m_aBlocks[i][j] + (m_aBlocks[i][j] == BT_SEA ? m_pAnimation->GetCurrentFrame() * 8 : 0);
-            ud.iS2 = ud.iS1 + 8;
-            ud.iT2 = ud.iT1 + 8;
+            ud.iS1 = (u32) 896 + (m_aBlocks[i][j] >> 8) * 2;
+            ud.iT1 = (u32) (m_aBlocks[i][j] + (m_aBlocks[i][j] == BT_SEA ? m_pAnimation->GetCurrentFrame() * 8 : 0)) * 2;
+            ud.iS2 = ud.iS1 + 16;
+            ud.iT2 = ud.iT1 + 16;
             m_aOldBlocks[i][j] = m_aBlocks[i][j];
 
             m_pRenderList->UpdateBuffer(1, &ud);
@@ -1637,10 +1602,10 @@ void Map::Update(f32 fDelta, bool bGetInput)
                 ud.iZ = (m_aBlocks[i][j] != BT_JUNGLE ? 1.0f : 16.0f);
                 ud.iW = 16;
                 ud.iH = 16;
-                ud.iS1 = (u8) (m_aBlocks[i][j] >> 8);
-                ud.iT1 = (u8) m_aBlocks[i][j] + (m_aBlocks[i][j] == BT_SEA ? m_pAnimation->GetCurrentFrame() * 8 : 0);
-                ud.iS2 = ud.iS1 + 8;
-                ud.iT2 = ud.iT1 + 8;
+                ud.iS1 = (u32) 896 + (m_aBlocks[i][j] >> 8) * 2;
+                ud.iT1 = (u32) (m_aBlocks[i][j] + (m_aBlocks[i][j] == BT_SEA ? m_pAnimation->GetCurrentFrame() * 8 : 0)) * 2;
+                ud.iS2 = ud.iS1 + 16;
+                ud.iT2 = ud.iT1 + 16;
                 m_aOldBlocks[i][j] = m_aBlocks[i][j];
 
                 m_pRenderList->UpdateBuffer(1, &ud);
@@ -1682,13 +1647,13 @@ void Map::Update(f32 fDelta, bool bGetInput)
     srand(std::time(NULL) % 100 + std::time(NULL) % 10 + std::time(NULL) * 2);
 
     if(m_apkEnemy[0] == NULL)
-        m_apkEnemy[0] = new Enemy(m_pVD, m_pEnemyTexture, m_pMiscTexture, (bool) (rand() % 2), (SHIELDLEVEL) (rand() % 4 + 1), (TANKLEVEL) (rand() % 4 + 1));
+        m_apkEnemy[0] = new Enemy(m_pVD, m_pAtlasTexture, (bool) (rand() % 2), (SHIELDLEVEL) (rand() % 4 + 1), (TANKLEVEL) (rand() % 4 + 1));
     if(m_apkEnemy[1] == NULL)
-        m_apkEnemy[1] = new Enemy(m_pVD, m_pEnemyTexture, m_pMiscTexture, (bool) (rand() % 2), (SHIELDLEVEL) (rand() % 4 + 1), (TANKLEVEL) (rand() % 4 + 1));
+        m_apkEnemy[1] = new Enemy(m_pVD, m_pAtlasTexture, (bool) (rand() % 2), (SHIELDLEVEL) (rand() % 4 + 1), (TANKLEVEL) (rand() % 4 + 1));
     if(m_apkEnemy[2] == NULL)
-        m_apkEnemy[2] = new Enemy(m_pVD, m_pEnemyTexture, m_pMiscTexture, (bool) (rand() % 2), (SHIELDLEVEL) (rand() % 4 + 1), (TANKLEVEL) (rand() % 4 + 1));
+        m_apkEnemy[2] = new Enemy(m_pVD, m_pAtlasTexture, (bool) (rand() % 2), (SHIELDLEVEL) (rand() % 4 + 1), (TANKLEVEL) (rand() % 4 + 1));
     if(m_apkEnemy[3] == NULL)
-        m_apkEnemy[3] = new Enemy(m_pVD, m_pEnemyTexture, m_pMiscTexture, (bool) (rand() % 2), (SHIELDLEVEL) (rand() % 4 + 1), (TANKLEVEL) (rand() % 4 + 1));
+        m_apkEnemy[3] = new Enemy(m_pVD, m_pAtlasTexture, (bool) (rand() % 2), (SHIELDLEVEL) (rand() % 4 + 1), (TANKLEVEL) (rand() % 4 + 1));
 
     if(m_apkEnemy[0] != NULL && *m_pfTimer - m_afKillTime[0] >= g_cfSpawnInterval && !m_apkEnemy[0]->IsAlive() && !m_apkEnemy[0]->GetIsSpawning())
     {
@@ -1848,12 +1813,12 @@ void Map::Render()
 void Map::Reset()
 {
     delete m_pkPlayer1;
-    m_pkPlayer1 = new Player(m_pVD, 1, m_pPlayer1Texture, m_pMiscTexture);
+    m_pkPlayer1 = new Player(m_pVD, 1, m_pAtlasTexture);
     m_pkPlayer1->SetLives(3);
     m_pkPlayer1->SetScore(0);
 
     delete m_pkPlayer2;
-    m_pkPlayer2 = new Player(m_pVD, 2, m_pPlayer2Texture, m_pMiscTexture);
+    m_pkPlayer2 = new Player(m_pVD, 2, m_pAtlasTexture);
     m_pkPlayer2->SetLives(3);
     m_pkPlayer2->SetScore(0);
 

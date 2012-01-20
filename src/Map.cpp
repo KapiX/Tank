@@ -619,7 +619,15 @@ void Map::HandleCollisions(f32 fDelta)
                 if((m_aBlocks[i][j - 1] != BT_EMPTY && m_aBlocks[i][j - 1] != BT_ICE && m_aBlocks[i][j - 1] != BT_JUNGLE) ||
                     (m_aBlocks[i + 1][j - 1] != BT_EMPTY && m_aBlocks[i + 1][j - 1] != BT_ICE && m_aBlocks[i + 1][j - 1] != BT_JUNGLE))
                 {
-                    if((m_aBlocks[i][j - 1] == BT_SEA || m_aBlocks[i + 1][j - 1] == BT_SEA) && pkPlayer->GetBoat()) ;
+                    if((m_aBlocks[i][j - 1] == BT_EMPTY ||
+                        m_aBlocks[i][j - 1] == BT_ICE || 
+                        m_aBlocks[i][j - 1] == BT_JUNGLE || 
+                        m_aBlocks[i][j - 1] == BT_SEA) &&
+                       (m_aBlocks[i + 1][j - 1] == BT_SEA ||
+                        m_aBlocks[i + 1][j - 1] == BT_EMPTY ||
+                        m_aBlocks[i + 1][j - 1] == BT_ICE ||
+                        m_aBlocks[i + 1][j - 1] == BT_JUNGLE)
+                       && pkPlayer->GetBoat()) ;
                     else
                     {
                         pkPlayer->SetY(bottom2);
@@ -637,7 +645,15 @@ void Map::HandleCollisions(f32 fDelta)
                 if((m_aBlocks[i][j + 2] != BT_EMPTY && m_aBlocks[i][j + 2] != BT_ICE && m_aBlocks[i][j + 2] != BT_JUNGLE) ||
                     (m_aBlocks[i + 1][j + 2] != BT_EMPTY && m_aBlocks[i + 1][j + 2] != BT_ICE && m_aBlocks[i + 1][j + 2] != BT_JUNGLE))
                 {
-                    if((m_aBlocks[i][j + 2] == BT_SEA || m_aBlocks[i + 1][j + 2] == BT_SEA) && pkPlayer->GetBoat()) ;
+                    if((m_aBlocks[i][j + 2] == BT_EMPTY ||
+                        m_aBlocks[i][j + 2] == BT_ICE || 
+                        m_aBlocks[i][j + 2] == BT_JUNGLE || 
+                        m_aBlocks[i][j + 2] == BT_SEA) &&
+                       (m_aBlocks[i + 1][j + 2] == BT_SEA ||
+                        m_aBlocks[i + 1][j + 2] == BT_EMPTY ||
+                        m_aBlocks[i + 1][j + 2] == BT_ICE ||
+                        m_aBlocks[i + 1][j + 2] == BT_JUNGLE)
+                       && pkPlayer->GetBoat()) ;
                     else
                     {
                         pkPlayer->SetY(top2 - 32);
@@ -655,7 +671,15 @@ void Map::HandleCollisions(f32 fDelta)
                 if((m_aBlocks[i + 2][j] != BT_EMPTY && m_aBlocks[i + 2][j] != BT_ICE && m_aBlocks[i + 2][j] != BT_JUNGLE) ||
                     (m_aBlocks[i + 2][j + 1] != BT_EMPTY && m_aBlocks[i + 2][j + 1] != BT_ICE && m_aBlocks[i + 2][j + 1] != BT_JUNGLE))
                 {
-                    if((m_aBlocks[i + 2][j] == BT_SEA || m_aBlocks[i + 2][j + 1] == BT_SEA) && pkPlayer->GetBoat()) ;
+                    if((m_aBlocks[i + 2][j] == BT_EMPTY ||
+                        m_aBlocks[i + 2][j] == BT_ICE || 
+                        m_aBlocks[i + 2][j] == BT_JUNGLE || 
+                        m_aBlocks[i + 2][j] == BT_SEA) &&
+                       (m_aBlocks[i + 2][j + 1] == BT_SEA ||
+                        m_aBlocks[i + 2][j + 1] == BT_EMPTY ||
+                        m_aBlocks[i + 2][j + 1] == BT_ICE ||
+                        m_aBlocks[i + 2][j + 1] == BT_JUNGLE)
+                       && pkPlayer->GetBoat()) ;
                     else
                     {
                         pkPlayer->SetX(left2 - 32);
@@ -673,8 +697,15 @@ void Map::HandleCollisions(f32 fDelta)
                 if((m_aBlocks[i - 1][j] != BT_EMPTY && m_aBlocks[i - 1][j] != BT_ICE && m_aBlocks[i - 1][j] != BT_JUNGLE) ||
                     (m_aBlocks[i - 1][j + 1] != BT_EMPTY && m_aBlocks[i - 1][j + 1] != BT_ICE && m_aBlocks[i - 1][j + 1] != BT_JUNGLE))
                 {
-                    if((m_aBlocks[i - 1][j] == BT_SEA || m_aBlocks[i - 1][j + 1] == BT_SEA) && pkPlayer->GetBoat()) // do nothing
-                        ;
+                    if((m_aBlocks[i - 1][j] == BT_EMPTY ||
+                        m_aBlocks[i - 1][j] == BT_ICE || 
+                        m_aBlocks[i - 1][j] == BT_JUNGLE || 
+                        m_aBlocks[i - 1][j] == BT_SEA) &&
+                       (m_aBlocks[i - 1][j + 1] == BT_SEA ||
+                        m_aBlocks[i - 1][j + 1] == BT_EMPTY ||
+                        m_aBlocks[i - 1][j + 1] == BT_ICE ||
+                        m_aBlocks[i - 1][j + 1] == BT_JUNGLE)
+                       && pkPlayer->GetBoat()) ;
                     else
                     {
                         pkPlayer->SetX(right2);

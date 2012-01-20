@@ -53,7 +53,7 @@ void Menu::Render(int iX, int iY, int iZ, int iR, int iG, int iB)
         m_pVD->DrawLine(x, iY - 1, x, iY + 13 + 1, iZ, iR, iG, iB);
         for(int i = 0; i < m_Items.size(); i++)
         {
-            shift += 3 + (i == 0 ? 0 : m_Items[i - 1].length() * (7 + 1)) + m_pPointer->GetWidth() + 3;
+            shift += 3 + (i == 0 ? 0 : m_Items[i - 1].length() * (7 + 1)) + 13 + 3;
             m_pVD->PrintText(m_pFont, x + shift, iY, iZ, m_Items[i].c_str(), 1.0f, iR, iG, iB);
             if(m_iCurrent == i)
             {

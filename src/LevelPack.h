@@ -32,7 +32,7 @@ private:
 public:
     LevelPack()	{}
 
-    void Init(const char *strFilename);
+    void Open(const char *strFilename);
     void Free();
 
     void GetLevelData(int iLevel, Byte **data, unsigned int *size);

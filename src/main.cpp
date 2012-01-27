@@ -74,6 +74,7 @@ int main(int argc, char *argv[])
     Window::GetInstance()->Loop();
 
     Game::GetInstance()->FreeResources();
+    delete pFont;
 
     Window::GetInstance()->Shutdown();
 

@@ -25,6 +25,7 @@
 #include <fstream>
 #include <vector>
 #include "Config.h"
+#include "Directory.h"
 #include "Map.h"
 #include "RenderList.h"
 #include "Singleton.h"
@@ -45,6 +46,8 @@ enum GAMESTATE
     GS_MAINMENU,
     GS_CONTROLSMENU,
     GS_CONTROLSWAITING,
+    GS_LEVELPACKSELECTION,
+    GS_LEVELSELECTION, // not used yet
     GS_LEVELSTARTING,
     GS_LEVELPLAYING,
     GS_LEVELPAUSE,
@@ -121,6 +124,10 @@ private:
     f32 m_iSplashAlpha;
     f32 m_iSplashLogoY;
 
+    // LEVELPACK
+    Menu *m_pLevelPackMenu;
+    Menu *m_pLevelMenu; // not used yet
+
     // LEVELSTARTING
     f32 m_iLevelStartOpeningY;
 
@@ -145,6 +152,8 @@ public:
     void UpdateMainMenu(float fDelta);
     void UpdateControlsMenu(float fDelta);
     void UpdateControlsWaiting(float fDelta);
+    void UpdateLevelPackSelection(float fDelta);
+    void UpdateLevelSelection(float fDelta);
     void UpdateLevelStarting(float fDelta);
     void UpdateLevelPlaying(float fDelta);
     void UpdateLevelPause(float fDelta);
@@ -156,6 +165,8 @@ public:
     void RenderMainMenu();
     void RenderControlsMenu();
     void RenderControlsWaiting();
+    void RenderLevelPackSelection();
+    void RenderLevelSelection();
     void RenderLevelStarting();
     void RenderLevelPlaying();
     void RenderLevelPause();

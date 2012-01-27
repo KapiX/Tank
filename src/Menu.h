@@ -45,6 +45,7 @@ private:
     MENU_ORIENTATION m_Orient;
     VideoDriver *m_pVD;
     Animation *m_pPointerAnim;
+    bool m_bDrawTitle;
 
 public:
     Menu(VideoDriver *pVD, Texture *pFont, Texture *pPointer, u32 iPointerOffsetX = 0, u32 iPointerOffsetY = 0);
@@ -56,11 +57,18 @@ public:
     void PrevItem();
     void SetCurrentItem(u8 item);
     u8 GetCurrentItem() { return m_iCurrent; }
-    void AddItem(std::string szText);
-    void ChangeItem(u8 item, std::string szText);
+    void AddItem(std::string szText) { m_Items.push_back(szText); }
+    void InsertItem(u8 item, std::string szText) { std::vector<std::string>::iterator i = m_Items.begin() + item; m_Items.insert(i, szText); }
+    void ChangeItem(u8 item, std::string szText) { m_Items[item] = szText; }
+    std::string GetItem(u8 item) const { return m_Items[item]; }
+    void RemoveAllItems() { m_Items.clear(); }
+    u32 ItemCount() { return m_Items.size(); }
 
     void SetTitle(std::string szTitle) { m_szTitle = szTitle; }
     char *GetTitle() { return (char *) m_szTitle.c_str(); }
+
+    void SetDrawTitle(bool bDrawTitle) { m_bDrawTitle = bDrawTitle; }
+    bool GetDrawTitle() const { return m_bDrawTitle; }
 
     void SetPointerAnim(Animation *pAnimation) { m_pPointerAnim = pAnimation; }
 

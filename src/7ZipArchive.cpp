@@ -121,6 +121,8 @@ void SevenZipArchive::Close()
     SzArEx_Free(&m_kDB, &m_skAlloc);
     // Close file
     File_Close(&m_kInStream.file);
+
+    m_bOpened = false;
 }
 
 bool SevenZipArchive::Extract(char *strFileName, u8 **ppData, u32 *piSize)

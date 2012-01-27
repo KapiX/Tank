@@ -193,7 +193,7 @@ void Player::Render()
     if(m_bIsAlive)
     {
         u32 iX2, iY2;
-        iX2 = 640 + (m_iNum - 1) * 32 + (m_kDir - 1) * 32;
+        iX2 = 640 + (m_iNum - 1) * 128 + (m_kDir - 1) * 32;
         iY2 = (m_kTL - 1) * 64 + m_pkAnim->GetCurrentFrame() * 32;
         m_pVD->DrawSprite(m_pTexture, m_iX, m_iY, 2.0f, iX2, iY2, 32, 32);
     }

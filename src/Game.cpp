@@ -25,11 +25,6 @@ Game::Game(void)
 
 Game::~Game(void)
 {
-    if(m_pMap != NULL)
-    {
-        delete m_pMap;
-        m_pMap = NULL;
-    }
 }
 
 void Game::LoadResources(Texture *pFont)
@@ -43,8 +38,6 @@ void Game::LoadResources(Texture *pFont)
     SoundManager::GetInstance();
 
     m_bPlayer2 = false;
-
-    m_LP.Init("levels/battlecity.tlp");
 
     m_pMenuPointerAnim = new Animation();
     m_pMenuPointerAnim->SetFrameRate(0.1f);
@@ -69,6 +62,20 @@ void Game::LoadResources(Texture *pFont)
     m_pInGameMenu->AddItem("BACK TO GAME");
     m_pInGameMenu->AddItem("EXIT TO MENU");
     m_pInGameMenu->AddItem("EXIT TO SYSTEM");
+
+    m_pLevelPackMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pAtlasTexture, 896, 128);
+    m_pLevelPackMenu->SetPointerAnim(m_pMenuPointerAnim);
+    m_pLevelPackMenu->SetDrawTitle(true);
+    m_pLevelPackMenu->SetTitle("SELECT LEVEL PACK");
+    m_pLevelPackMenu->AddItem("BACK");
+
+    /* not used yet
+    m_pLevelMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pAtlasTexture, 896, 128);
+    m_pLevelMenu->SetPointerAnim(m_pMenuPointerAnim);
+    m_pLevelMenu->SetDrawTitle(true);
+    m_pLevelMenu->SetTitle("SELECT LEVEL");
+    m_pLevelMenu->AddItem("BACK");
+    */
 
     m_pPlayerSelectMenu = new Menu(Window::GetInstance()->GetVideoDriver(), m_pGameFont, m_pAtlasTexture, 896, 128);
     m_pPlayerSelectMenu->SetPointerAnim(m_pMenuPointerAnim);
@@ -109,6 +116,59 @@ void Game::LoadResources(Texture *pFont)
 
 void Game::FreeResources()
 {
+    if(m_pMap != NULL)
+    {
+        delete m_pMap;
+        m_pMap = NULL;
+    }
+    if(m_pMenuPointerAnim != NULL)
+    {
+        delete m_pMenuPointerAnim;
+        m_pMenuPointerAnim = NULL;
+    }
+    if(m_pAtlasTexture != NULL)
+    {
+        delete m_pAtlasTexture;
+        m_pAtlasTexture = NULL;
+    }
+    if(m_pMainMenu != NULL)
+    {
+        delete m_pMainMenu;
+        m_pMainMenu = NULL;
+    }
+    if(m_pInGameMenu != NULL)
+    {
+        delete m_pInGameMenu;
+        m_pInGameMenu = NULL;
+    }
+    if(m_pLevelPackMenu != NULL)
+    {
+        delete m_pLevelPackMenu;
+        m_pLevelPackMenu = NULL;
+    }
+    /* not used yet
+    if(m_pLevelMenu != NULL)
+    {
+        delete m_pLevelMenu;
+        m_pLevelMenu = NULL;
+    }
+    */
+    if(m_pPlayerSelectMenu != NULL)
+    {
+        delete m_pPlayerSelectMenu;
+        m_pPlayerSelectMenu = NULL;
+    }
+    if(m_pP1ControlsMenu != NULL)
+    {
+        delete m_pP1ControlsMenu;
+        m_pP1ControlsMenu = NULL;
+    }
+    if(m_pP2ControlsMenu != NULL)
+    {
+        delete m_pP2ControlsMenu;
+        m_pP2ControlsMenu = NULL;
+    }
+
     m_LP.Free();
     SoundManager::GetInstance()->Free();
 }
@@ -129,6 +189,12 @@ void Game::Update(float fDelta)
         break;
     case GS_CONTROLSWAITING:
         UpdateControlsWaiting(fDelta);
+        break;
+    case GS_LEVELPACKSELECTION:
+        UpdateLevelPackSelection(fDelta);
+        break;
+    case GS_LEVELSELECTION:
+        UpdateLevelSelection(fDelta);
         break;
     case GS_LEVELSTARTING:
         UpdateLevelStarting(fDelta);
@@ -217,15 +283,21 @@ void Game::UpdateMainMenu(float fDelta)
                 m_bPlayer2 = false;
             }
             m_pMap->Set2PlayerMode(m_bPlayer2);
-            unsigned int size = 0;
-            unsigned char *data = 0;
-            m_LP.GetLevelData(1, &data, &size);
-            m_pMap->LoadMap(data, size);
-            delete [] data;
-            m_pMap->UpdateBlocks();
-            m_iLevelStartOpeningY = 300;
-            m_pInGameMenu->SetCurrentItem(0);
-            m_GameState = GS_LEVELSTARTING;
+            
+            // GS_LEVELPACKSELECTION
+            std::vector<std::string> kFiles;
+            Directory::GetInstance()->ListFiles("levels", &kFiles);
+
+            for(int i = 0; i < kFiles.size(); i++)
+            {
+                // only level packs
+                if(kFiles[i].compare(kFiles[i].length() - 3, 3, "tlp") != 0)
+                {
+                    continue;
+                }
+                m_pLevelPackMenu->InsertItem(0, kFiles[i].substr(0, kFiles[i].length() - 4)); // w/o extension
+            }
+            m_GameState = GS_LEVELPACKSELECTION;
         }
         else if(m_pMainMenu->GetCurrentItem() == MM_CONTROLS)
         {
@@ -425,6 +497,54 @@ void Game::UpdateControlsWaiting(float fDelta)
     m_GameState = GS_CONTROLSMENU;
 }
 
+void Game::UpdateLevelPackSelection(float fDelta)
+{
+    m_pMenuPointerAnim->Animate();
+
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_UP))
+    {
+        m_pLevelPackMenu->PrevItem();
+    }
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_DOWN))
+    {
+        m_pLevelPackMenu->NextItem();
+    }
+    if(Keyboard::GetInstance()->KeyPressed(SDLK_RETURN))
+    {
+        if(m_pLevelPackMenu->GetCurrentItem() == m_pLevelPackMenu->ItemCount() - 1)
+        {
+            m_pLevelPackMenu->RemoveAllItems();
+            m_pLevelPackMenu->AddItem("BACK");
+            m_GameState = GS_MAINMENU;
+        }
+        else
+        {
+            std::string szLevelPack;
+            szLevelPack = "levels/";
+            szLevelPack += m_pLevelPackMenu->GetItem(m_pLevelPackMenu->GetCurrentItem());
+            szLevelPack += ".tlp";
+            m_LP.Open(szLevelPack.c_str());
+            m_LP.ResetCurrentLevel();
+
+            // load level and start the game
+            u32 size = 0;
+            uchar *data = 0;
+            m_LP.GetLevelData(1, &data, &size);
+            m_pMap->LoadMap(data, size);
+            delete [] data;
+            m_pMap->UpdateBlocks();
+            m_iLevelStartOpeningY = 300;
+            m_pInGameMenu->SetCurrentItem(0);
+            m_GameState = GS_LEVELSTARTING;
+        }
+    }
+}
+
+void Game::UpdateLevelSelection(float fDelta)
+{
+    m_pMenuPointerAnim->Animate();
+}
+
 void Game::UpdateLevelStarting(float fDelta)
 {
     if(m_fTimer > 2.0f)
@@ -510,6 +630,8 @@ void Game::UpdateLevelPause(float fDelta)
             m_pMainMenu->SetCurrentItem(0);
             m_pMap->Reset();
             m_LP.ResetCurrentLevel();
+            m_pLevelPackMenu->RemoveAllItems();
+            m_pLevelPackMenu->AddItem("BACK");
             m_GameState = GS_MAINMENU;
             SoundManager::GetInstance()->Stop();
         }
@@ -538,6 +660,8 @@ void Game::UpdateLevelCompleted(f32 fDelta)
             m_pMainMenu->SetCurrentItem(0);
             m_pMap->Reset();
             m_LP.ResetCurrentLevel();
+            m_pLevelPackMenu->RemoveAllItems();
+            m_pLevelPackMenu->AddItem("BACK");
             m_GameState = GS_MAINMENU;
         }
         else
@@ -577,6 +701,8 @@ void Game::UpdateGameOver(f32 fDelta)
             m_pMainMenu->SetCurrentItem(0);
             m_pMap->Reset();
             m_LP.ResetCurrentLevel();
+            m_pLevelPackMenu->RemoveAllItems();
+            m_pLevelPackMenu->AddItem("BACK");
             m_GameState = GS_MAINMENU;
         }
     }
@@ -597,6 +723,12 @@ void Game::Render()
         break;
     case GS_CONTROLSWAITING:
         RenderControlsWaiting();
+        break;
+    case GS_LEVELPACKSELECTION:
+        RenderLevelPackSelection();
+        break;
+    case GS_LEVELSELECTION:
+        RenderLevelSelection();
         break;
     case GS_LEVELSTARTING:
         RenderLevelStarting();
@@ -671,6 +803,17 @@ void Game::RenderControlsWaiting()
     pVD->PrintText(m_pGameFont, 250 + 94, 250 + 43, 64, "PRESS A KEY...");
 }
 
+void Game::RenderLevelPackSelection()
+{
+    VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
+    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, 62, 0, 256, 228, 204);
+    m_pLevelPackMenu->Render(350, 300);
+}
+
+void Game::RenderLevelSelection()
+{
+}
+
 void Game::RenderLevelStarting()
 {
     VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
@@ -716,34 +859,6 @@ void Game::RenderLevelPause()
     RenderHUD();
 }
 
-void Game::RenderHUD()
-{
-    VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
-    static char lifes1[4], score1[9], enemies[3];
-
-    pVD->FillRectangle(0, 568, 800, 32, 1, 255, 255, 255, 255);
-    // Player 1
-    sprintf(lifes1, "%d", m_pMap->GetPlayer1()->GetLives());
-    sprintf(score1, "%08d", m_pMap->GetPlayer1()->GetScore());
-    pVD->PrintText(m_pGameFont, 6, 572, 2, score1, 2.0f, 0, 0, 0);
-    pVD->DrawSprite(m_pAtlasTexture, 6 + (14 + 2) * 8 + 4 - 2, 568, 2, 640, 0, 32, 32, 1.0f);
-    pVD->PrintText(m_pGameFont, 6 + (14 + 2) * 8 + 4 + 32 + 4 - 2, 572, 2, lifes1, 2.0f, 0, 0, 0);
-    // Player 2
-    if(m_bPlayer2)
-    {
-        static char lifes2[4], score2[9];
-        sprintf(lifes2, "%d", m_pMap->GetPlayer2()->GetLives());
-        sprintf(score2, "%08d", m_pMap->GetPlayer2()->GetScore());
-        pVD->PrintText(m_pGameFont, 800 - 6 - (14 + 2) * 8, 572, 2, score2, 2.0f, 0, 0, 0);
-        pVD->DrawSprite(m_pAtlasTexture, 800 - (6 + (14 + 2) * 8 + 4) - 32, 568, 2, 768, 0, 32, 32, 1.0f);
-        pVD->PrintText(m_pGameFont, 800 - (6 + (14 + 2) * 8 + 4 + 32 + 4) - 14, 572, 2, lifes2, 2.0f, 0, 0, 0);
-    }
-    // Enemies count
-    sprintf(enemies, "%d", Enemy::GetEnemiesLeft());
-    pVD->PrintText(m_pGameFont, 400 - (strlen(enemies) / 2 * (14 + 2)), 572, 2, enemies, 2.0f, 0, 0, 0);
-    pVD->DrawSprite(m_pAtlasTexture, 400 - (strlen(enemies) / 2 * (14 + 2)) - 32, 568, 2, 128, 0, 32, 32, 1.0f);
-}
-
 void Game::RenderLevelCompleted()
 {
     VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
@@ -771,6 +886,34 @@ void Game::RenderGameOver()
 
     pVD->PrintText(m_pGameFont, 384, m_iGameOverY, 64, "GAME", 1.0f, 255, 0, 0, 255);
     pVD->PrintText(m_pGameFont, 384, m_iGameOverY + 14, 64, "OVER", 1.0f, 255, 0, 0, 255);
+}
+
+void Game::RenderHUD()
+{
+    VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
+    static char lifes1[4], score1[9], enemies[3];
+
+    pVD->FillRectangle(0, 568, 800, 32, 1, 255, 255, 255, 255);
+    // Player 1
+    sprintf(lifes1, "%d", m_pMap->GetPlayer1()->GetLives());
+    sprintf(score1, "%08d", m_pMap->GetPlayer1()->GetScore());
+    pVD->PrintText(m_pGameFont, 6, 572, 2, score1, 2.0f, 0, 0, 0);
+    pVD->DrawSprite(m_pAtlasTexture, 6 + (14 + 2) * 8 + 4 - 2, 568, 2, 640, 0, 32, 32, 1.0f);
+    pVD->PrintText(m_pGameFont, 6 + (14 + 2) * 8 + 4 + 32 + 4 - 2, 572, 2, lifes1, 2.0f, 0, 0, 0);
+    // Player 2
+    if(m_bPlayer2)
+    {
+        static char lifes2[4], score2[9];
+        sprintf(lifes2, "%d", m_pMap->GetPlayer2()->GetLives());
+        sprintf(score2, "%08d", m_pMap->GetPlayer2()->GetScore());
+        pVD->PrintText(m_pGameFont, 800 - 6 - (14 + 2) * 8, 572, 2, score2, 2.0f, 0, 0, 0);
+        pVD->DrawSprite(m_pAtlasTexture, 800 - (6 + (14 + 2) * 8 + 4) - 32, 568, 2, 768, 0, 32, 32, 1.0f);
+        pVD->PrintText(m_pGameFont, 800 - (6 + (14 + 2) * 8 + 4 + 32 + 4) - 14, 572, 2, lifes2, 2.0f, 0, 0, 0);
+    }
+    // Enemies count
+    sprintf(enemies, "%d", Enemy::GetEnemiesLeft());
+    pVD->PrintText(m_pGameFont, 400 - (strlen(enemies) / 2 * (14 + 2)), 572, 2, enemies, 2.0f, 0, 0, 0);
+    pVD->DrawSprite(m_pAtlasTexture, 400 - (strlen(enemies) / 2 * (14 + 2)) - 32, 568, 2, 128, 0, 32, 32, 1.0f);
 }
 
 void Game::Pause()

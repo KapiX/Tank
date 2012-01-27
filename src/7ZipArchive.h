@@ -64,6 +64,8 @@ public:
 
     u32 GetFilesCount() const { return m_iFilesCount; }
 
+    bool Opened() const { return m_bOpened; }
+
 protected:
     static bool Utf16ToUtf8(u8 *pDest, size_t *pDestLen, const u16 *pSrc, size_t iSrcLen);
 

@@ -21,9 +21,13 @@
 #include <cstring>
 #include <cstdio>
 
-void LevelPack::Init(const char *strFilename)
+void LevelPack::Open(const char *strFilename)
 {
     ResetCurrentLevel();
+    if(m_kArchive.Opened())
+    {
+        m_kArchive.Close();
+    }
     m_kArchive.Open(strFilename);
     m_iLevelCount = m_kArchive.GetFilesCount();
 }

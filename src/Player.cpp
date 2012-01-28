@@ -31,6 +31,8 @@ Player::Player(VideoDriver *pVD, u8 iNum, Texture *pTexture, TANKLEVEL kTL, DIRE
     m_bSpawn = false;
     m_iNum = iNum;
     m_bBoat = false;
+    m_fSlide = 0.0f;
+    m_bSliding = false;
 }
 
 Player::~Player()
@@ -50,7 +52,6 @@ void Player::Spawn()
         m_iLives--;
     }
 }
-
 
 void Player::Shoot()
 {

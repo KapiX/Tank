@@ -71,7 +71,7 @@ public:
     u32 GetLives() const { return m_iLives; }
     u32 GetScore() const { return m_iScore; }
 
-    void SetIsMoving(bool bIsMoving) { Tank::SetIsMoving(bIsMoving); SoundManager::GetInstance()->Play(bIsMoving ? SND_MOVING : SND_NMOVING); }
+    void SetIsMoving(bool bIsMoving) { Tank::SetIsMoving(bIsMoving); }
 };
 
 #endif // _PLAYER_H_

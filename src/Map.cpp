@@ -1264,7 +1264,7 @@ void Map::HandleCollisions(f32 fDelta)
     if(iPCount == 2)
     {
         // TANK-TANK collision
-        if (m_pkPlayer1->IsAlive() && m_pkPlayer1->IsMoving() && !m_pkPlayer2->IsOnSpawn())
+        if (m_pkPlayer1->IsAlive() && m_pkPlayer1->IsMoving() && !m_pkPlayer2->IsOnSpawn() && m_pkPlayer2->IsAlive())
         {
             top1 = m_pkPlayer1->GetY();
             bottom2 = m_pkPlayer2->GetY() + 32;
@@ -1293,7 +1293,7 @@ void Map::HandleCollisions(f32 fDelta)
                 }
             }
         }
-        if (m_pkPlayer2->IsAlive() && m_pkPlayer2->IsMoving() && !m_pkPlayer1->IsOnSpawn())
+        if (m_pkPlayer2->IsAlive() && m_pkPlayer2->IsMoving() && !m_pkPlayer1->IsOnSpawn() && m_pkPlayer1->IsAlive())
         {
             top1 = m_pkPlayer2->GetY();
             bottom2 = m_pkPlayer1->GetY() + 32;
@@ -1739,6 +1739,7 @@ void Map::Update(f32 fDelta, bool bGetInput)
 
     if(bGetInput)
     {
+        bool bP1NotMoving = true, bP2NotMoving = true;
         /*
         * CONTROLS
         */
@@ -1747,21 +1748,25 @@ void Map::Update(f32 fDelta, bool bGetInput)
         {
             m_pkPlayer1->SetDirection(DIR_UP);
             m_pkPlayer1->SetIsMoving(true);
+            if(m_pkPlayer1->IsAlive()) bP1NotMoving = false;
         }
         else if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP1Controls()->iRight))
         {
             m_pkPlayer1->SetDirection(DIR_RIGHT);
             m_pkPlayer1->SetIsMoving(true);
+            if(m_pkPlayer1->IsAlive()) bP1NotMoving = false;
         }
         else if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP1Controls()->iDown))
         {
             m_pkPlayer1->SetDirection(DIR_DOWN);
             m_pkPlayer1->SetIsMoving(true);
+            if(m_pkPlayer1->IsAlive()) bP1NotMoving = false;
         }
         else if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP1Controls()->iLeft))
         {
             m_pkPlayer1->SetDirection(DIR_LEFT);
             m_pkPlayer1->SetIsMoving(true);
+            if(m_pkPlayer1->IsAlive()) bP1NotMoving = false;
         }
         if(Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP1Controls()->iUp) &&
             Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP1Controls()->iRight) &&
@@ -1769,12 +1774,12 @@ void Map::Update(f32 fDelta, bool bGetInput)
             Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP1Controls()->iLeft))
         {
             m_pkPlayer1->SetIsMoving(false);
+            if(m_pkPlayer1->IsAlive()) bP1NotMoving = true;
         }
         if(Keyboard::GetInstance()->KeyPressed((SDLKey) Config::GetInstance()->GetP1Controls()->iShoot))
         {
             m_pkPlayer1->Shoot();
         }
-
         // PLAYER 2
         if(m_b2PlayerMode)
         {
@@ -1782,21 +1787,25 @@ void Map::Update(f32 fDelta, bool bGetInput)
             {
                 m_pkPlayer2->SetDirection(DIR_UP);
                 m_pkPlayer2->SetIsMoving(true);
+                if(m_pkPlayer2->IsAlive()) bP2NotMoving = false;
             }
             else if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP2Controls()->iRight))
             {
                 m_pkPlayer2->SetDirection(DIR_RIGHT);
                 m_pkPlayer2->SetIsMoving(true);
+                if(m_pkPlayer2->IsAlive()) bP2NotMoving = false;
             }
             else if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP2Controls()->iDown))
             {
                 m_pkPlayer2->SetDirection(DIR_DOWN);
                 m_pkPlayer2->SetIsMoving(true);
+                if(m_pkPlayer2->IsAlive()) bP2NotMoving = false;
             }
             else if(Keyboard::GetInstance()->IsKeyDown((SDLKey) Config::GetInstance()->GetP2Controls()->iLeft))
             {
                 m_pkPlayer2->SetDirection(DIR_LEFT);
                 m_pkPlayer2->SetIsMoving(true);
+                if(m_pkPlayer2->IsAlive()) bP2NotMoving = false;
             }
             if(Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP2Controls()->iUp) &&
                 Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP2Controls()->iRight) &&
@@ -1804,11 +1813,21 @@ void Map::Update(f32 fDelta, bool bGetInput)
                 Keyboard::GetInstance()->IsKeyUp((SDLKey) Config::GetInstance()->GetP2Controls()->iLeft))
             {
                 m_pkPlayer2->SetIsMoving(false);
+                if(m_pkPlayer2->IsAlive()) bP2NotMoving = true;
             }
             if(Keyboard::GetInstance()->KeyPressed((SDLKey) Config::GetInstance()->GetP2Controls()->iShoot))
             {
                 m_pkPlayer2->Shoot();
             }
+        }
+
+        if(bP1NotMoving && bP2NotMoving)
+        {
+            SoundManager::GetInstance()->Play(SND_NMOVING);
+        }
+        else
+        {
+            SoundManager::GetInstance()->Play(SND_MOVING);
         }
     } // bGetInput
 

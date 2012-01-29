@@ -1812,7 +1812,6 @@ void Map::Update(f32 fDelta, bool bGetInput)
         }
     } // bGetInput
 
-
     Bonus::GetInstance()->Update();
 
     m_pkPlayer1->Update(fDelta);

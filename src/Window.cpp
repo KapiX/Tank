@@ -46,7 +46,9 @@ void Window::Init(u32 iWidth, u32 iHeight, bool bFullscreen, VIDEO_DRIVER kVD)
     flags = SDL_HWSURFACE | SDL_OPENGL;
     if(bFullscreen) flags |= SDL_FULLSCREEN;
 
+#ifndef _WIN32
     SDL_WM_SetIcon(SDL_LoadBMP("icon.bmp"), NULL);
+#endif
 
     m_pScreen = SDL_SetVideoMode(iWidth, iHeight, 24, flags);
 

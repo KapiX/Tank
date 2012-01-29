@@ -49,5 +49,5 @@ tank.txt
 
 # Build generated directories #
 ###############################
-bin/
-obj/
+/bin/
+/obj/

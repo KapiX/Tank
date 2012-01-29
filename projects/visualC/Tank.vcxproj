@@ -94,6 +94,9 @@
     <ClInclude Include="..\..\src\VideoDriver.h" />
     <ClInclude Include="..\..\src\Window.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\src\resources.rc" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5E14BD41-8562-4208-B386-4DEB3A6985F3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

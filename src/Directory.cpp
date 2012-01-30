@@ -48,7 +48,7 @@ u32 Directory::ListFiles(std::string strDir, std::vector<std::string> *pastrFile
         while(m_pkFile = readdir(m_pkDir))
         {
             struct stat s;
-            stat(m_pkFile->d_name, &s);
+            stat((strDir + "/" + m_pkFile->d_name).c_str(), &s);
             if(S_ISDIR(s.st_mode))
             {
                 continue;

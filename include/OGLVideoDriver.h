@@ -20,10 +20,8 @@
 #ifndef _OGLVIDEODRIVER_H_
 #define _OGLVIDEODRIVER_H_
 
-#define GLEW_STATIC
-
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
+#include "SDL.h"
+#include "SDL_image.h"
 #include <GL/glew.h>
 #include <GL/glu.h>
 #include "VideoDriver.h"
@@ -32,9 +30,6 @@
 
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
-#pragma comment(lib, "glew32s.lib")
-
-#pragma comment(lib, "SDL_image.lib")
 
 class OGLVideoDriver :
     public VideoDriver,

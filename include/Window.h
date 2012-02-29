@@ -21,12 +21,9 @@
 #define _WINDOW_H_
 
 #include "buildconfig.h"
-#include <SDL/SDL.h>
+#include "SDL.h"
 #include "VideoDriver.h"
 #include "Singleton.h"
-
-#pragma comment(lib, "SDL.lib")
-#pragma comment(lib, "SDLmain.lib")
 
 enum VIDEO_DRIVER
 {

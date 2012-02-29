@@ -22,8 +22,6 @@
 
 #include "Texture.h"
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 #include <d3d8.h>
 #include <d3dx8.h>
 

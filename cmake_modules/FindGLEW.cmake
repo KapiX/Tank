@@ -10,33 +10,22 @@
 IF (WIN32)
 	FIND_PATH( GLEW_INCLUDE_PATH GL/glew.h
 		HINTS
-		$ENV{GLEWDIR}
+		$ENV{LIBRARYDIR}
+		PATH_SUFFIXES include
 		PATHS
 		$ENV{PROGRAMFILES}/GLEW/include
 		DOC "The directory where GL/glew.h resides")
-	IF (NV_SYSTEM_PROCESSOR STREQUAL "AMD64")
-		FIND_LIBRARY( GLEW_LIBRARY
-			NAMES glew64 glew64s
-			HINTS
-			$ENV{GLEWDIR}
-			PATHS
-			$ENV{PROGRAMFILES}/GLEW/lib
-			DOC "The GLEW library (64-bit)"
-		)
-	ELSE(NV_SYSTEM_PROCESSOR STREQUAL "AMD64")
 		FIND_LIBRARY( GLEW_LIBRARY
 			NAMES glew GLEW glew32 glew32s
 			HINTS
-			$ENV{GLEWDIR}
+			$ENV{LIBRARYDIR}
+			PATH_SUFFIXES lib64 lib
 			PATHS
 			$ENV{PROGRAMFILES}/GLEW/lib
 			DOC "The GLEW library"
 		)
-	ENDIF(NV_SYSTEM_PROCESSOR STREQUAL "AMD64")
 ELSE (WIN32)
 	FIND_PATH( GLEW_INCLUDE_PATH GL/glew.h
-		HINTS
-		$ENV{GLEWDIR}
 		PATHS
 		/usr/include
 		/usr/local/include
@@ -45,8 +34,6 @@ ELSE (WIN32)
 		DOC "The directory where GL/glew.h resides")
 	FIND_LIBRARY( GLEW_LIBRARY
 		NAMES GLEW glew
-		HINTS
-		$ENV{GLEWDIR}
 		PATHS
 		/usr/lib64
 		/usr/lib

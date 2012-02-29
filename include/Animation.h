@@ -23,7 +23,7 @@
 #ifndef _ANIMATION_H_
 #define _ANIMATION_H_
 
-#include <SDL/SDL.h>
+#include "SDL.h"
 #include "Types.h"
 
 class Animation

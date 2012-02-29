@@ -20,7 +20,7 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include <SDL/SDL.h>
+#include "SDL.h"
 #include <string>
 #include <fstream>
 #include <vector>

@@ -20,11 +20,9 @@
 #ifndef _OGLRENDERLIST_H_
 #define _OGLRENDERLIST_H_
 
-#define GLEW_STATIC
-
 #include "RenderList.h"
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
+#include "SDL.h"
+#include "SDL_image.h"
 #include <GL/glew.h>
 
 class OGLRenderList :

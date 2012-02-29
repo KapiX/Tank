@@ -17,15 +17,12 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <SDL/SDL.h>
+#include "SDL.h"
 #include <cstdio>
 
 #include "Game.h"
 #include "Window.h"
 #include "Config.h"
-
-#pragma comment(lib, "SDL.lib")
-#pragma comment(lib, "SDLmain.lib")
 
 Texture *pFont;
 char temp[16];

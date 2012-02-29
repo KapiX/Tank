@@ -25,7 +25,7 @@
 #    ifdef WITH_D3D8
 #        include "D3D8VideoDriver.h"
 #    endif // WITH_D3D8
-#    include <SDL/SDL_syswm.h>
+#    include "SDL_syswm.h"
 #    undef max
 #    undef min
 #endif // WIN32

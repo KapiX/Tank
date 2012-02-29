@@ -32,7 +32,7 @@
 #include "VideoDriver.h"
 #include "Bonus.h"
 #include "SoundManager.h"
-#include <SDL/SDL.h>
+#include "SDL.h"
 #include <ctime>
 
 const u8 g_ciMapWidth = 25;

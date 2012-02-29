@@ -20,7 +20,7 @@
 #ifndef _KEYBOARD_H_
 #define _KEYBOARD_H_
 
-#include <SDL/SDL.h>
+#include "SDL.h"
 #include "Singleton.h"
 #include "Types.h"
 

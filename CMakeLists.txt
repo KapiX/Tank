@@ -10,7 +10,7 @@ find_package(SDL_image REQUIRED)
 find_package(SDL_mixer REQUIRED)
 find_package(GLEW REQUIRED)
 
-include_directories(include)
+include_directories(include ${SDL_INCLUDE_DIR} ${GLEW_INCLUDE_PATH})
 add_subdirectory(src)
 
 option(WITH_OPENGL "Enable OpenGL renderer" ON)

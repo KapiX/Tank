@@ -20,7 +20,7 @@
 #ifndef _TIMER_H_
 #define _TIMER_H_
 
-#include <SDL/SDL.h>
+#include "SDL.h"
 #include "Types.h"
 
 class Timer

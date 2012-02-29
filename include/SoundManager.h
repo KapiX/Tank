@@ -20,11 +20,9 @@
 #ifndef _SOUNDMANAGER_H_
 #define _SOUNDMANAGER_H_
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_mixer.h>
+#include "SDL.h"
+#include "SDL_mixer.h"
 #include "Singleton.h"
-
-#pragma comment(lib, "SDL_mixer.lib")
 
 enum SOUND
 {

@@ -25,6 +25,16 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
+if(MSVC)
+  if(CMAKE_CL_64)
+    SET(LIB_SUFFIX "lib64")
+  else(CMAKE_CL_64)
+    SET(LIB_SUFFIX "lib")
+  endif(CMAKE_CL_64)
+else(MSVC)
+  SET(LIB_SUFFIX "lib64 lib")
+endif(MSVC)
+
 FIND_PATH(SDLIMAGE_INCLUDE_DIR SDL_image.h
   HINTS
   $ENV{LIBRARYDIR}
@@ -54,7 +64,7 @@ FIND_LIBRARY(SDLIMAGE_LIBRARY
   NAMES SDL_image
   HINTS
   $ENV{LIBRARYDIR}
-  PATH_SUFFIXES lib64 lib
+  PATH_SUFFIXES ${LIB_SUFFIX}
   PATHS
   ~/Library/Frameworks
   /Library/Frameworks

@@ -65,6 +65,16 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
+if(MSVC)
+  if(CMAKE_CL_64)
+    SET(LIB_SUFFIX "lib64")
+  else(CMAKE_CL_64)
+    SET(LIB_SUFFIX "lib")
+  endif(CMAKE_CL_64)
+else(MSVC)
+  SET(LIB_SUFFIX "lib64 lib")
+endif(MSVC)
+
 FIND_PATH(SDL_INCLUDE_DIR SDL.h
   HINTS
   $ENV{LIBRARYDIR}
@@ -89,7 +99,7 @@ FIND_LIBRARY(SDL_LIBRARY_TEMP
   NAMES SDL SDL-1.1
   HINTS
   $ENV{LIBRARYDIR}
-  PATH_SUFFIXES lib64 lib
+  PATH_SUFFIXES ${LIB_SUFFIX}
   PATHS
   /sw
   /opt/local
@@ -109,7 +119,7 @@ IF(NOT SDL_BUILDING_LIBRARY)
       NAMES SDLmain SDLmain-1.1
       HINTS
       $ENV{LIBRARYDIR}
-      PATH_SUFFIXES lib64 lib
+      PATH_SUFFIXES ${LIB_SUFFIX}
       PATHS
       /sw
       /opt/local

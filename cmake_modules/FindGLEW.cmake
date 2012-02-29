@@ -7,6 +7,16 @@
 # GLEW_LIBRARY
 # 
 
+if(MSVC)
+  if(CMAKE_CL_64)
+    SET(LIB_SUFFIX "lib64")
+  else(CMAKE_CL_64)
+    SET(LIB_SUFFIX "lib")
+  endif(CMAKE_CL_64)
+else(MSVC)
+  SET(LIB_SUFFIX "lib64 lib")
+endif(MSVC)
+
 IF (WIN32)
 	FIND_PATH( GLEW_INCLUDE_PATH GL/glew.h
 		HINTS
@@ -19,7 +29,7 @@ IF (WIN32)
 			NAMES glew GLEW glew32 glew32s
 			HINTS
 			$ENV{LIBRARYDIR}
-			PATH_SUFFIXES lib64 lib
+			PATH_SUFFIXES ${LIB_SUFFIX}
 			PATHS
 			$ENV{PROGRAMFILES}/GLEW/lib
 			DOC "The GLEW library"

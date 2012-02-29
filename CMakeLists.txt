@@ -15,12 +15,12 @@ add_subdirectory(src)
 
 option(WITH_OPENGL "Enable OpenGL renderer" ON)
 if(WIN32)
-  option(WITH_D3D8 "Enable Direct3D renderer" ON)
+  option(WITH_D3D8 "Enable Direct3D renderer" OFF)
 endif(WIN32)
-
+  
 configure_file(${CMAKE_SOURCE_DIR}/include/buildconfig.h.cmake ${CMAKE_SOURCE_DIR}/include/buildconfig.h)
 
-add_executable(tank ${TANK_SOURCES})
+add_executable(tank WIN32 ${TANK_SOURCES})
 target_link_libraries(tank ${SDL_LIBRARY} ${SDLIMAGE_LIBRARY} ${SDLMIXER_LIBRARY} ${GLEW_LIBRARY})
 
 add_custom_command(

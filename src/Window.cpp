@@ -20,13 +20,15 @@
 #include "Keyboard.h"
 #include "Window.h"
 #include "OGLVideoDriver.h"
-#include "D3D8VideoDriver.h"
 #include <algorithm>
 #ifdef WIN32
-#include <SDL/SDL_syswm.h>
-#undef max
-#undef min
-#endif
+#    ifdef WITH_D3D8
+#        include "D3D8VideoDriver.h"
+#    endif // WITH_D3D8
+#    include <SDL/SDL_syswm.h>
+#    undef max
+#    undef min
+#endif // WIN32
 
 Window::Window(void)
 {
@@ -46,7 +48,7 @@ void Window::Init(u32 iWidth, u32 iHeight, bool bFullscreen, VIDEO_DRIVER kVD)
     flags = SDL_HWSURFACE | SDL_OPENGL;
     if(bFullscreen) flags |= SDL_FULLSCREEN;
 
-#ifndef _WIN32
+#ifndef WIN32
     SDL_WM_SetIcon(SDL_LoadBMP("icon.bmp"), NULL);
 #endif
 
@@ -63,10 +65,12 @@ void Window::Init(u32 iWidth, u32 iHeight, bool bFullscreen, VIDEO_DRIVER kVD)
             SDL_WM_SetCaption("Tank [OpenGL, using VBO]", NULL);
         }
     }
+#if defined(WIN32) && defined(WITH_D3D8)
     else if(kVD == VD_DIRECT3D8)
     {
         SDL_WM_SetCaption("Tank [Direct3D8]", NULL);
     }
+#endif
 
     SDL_ShowCursor(SDL_DISABLE);
 
@@ -75,9 +79,11 @@ void Window::Init(u32 iWidth, u32 iHeight, bool bFullscreen, VIDEO_DRIVER kVD)
     case VD_OPENGL:
         m_pVD = new OGLVideoDriver(iWidth, iHeight);
         break;
+#if defined(WIN32) && defined(WITH_D3D8)
     case VD_DIRECT3D8:
         m_pVD = new D3D8VideoDriver(iWidth, iHeight, GetHwnd());
         break;
+#endif
     default:
         return;
     }

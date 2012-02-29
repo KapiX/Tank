@@ -9,7 +9,7 @@
 
 #include <string.h>
 
-#include "Lzma2Dec.h"
+#include "7z/Lzma2Dec.h"
 
 /*
 00000000  -  EOS

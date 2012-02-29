@@ -2,7 +2,7 @@
 2008-10-04 : Igor Pavlov : Public domain */
 
 #include <string.h>
-#include "7zBuf.h"
+#include "7z/7zBuf.h"
 
 void DynBuf_Construct(CDynBuf *p)
 {

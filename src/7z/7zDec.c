@@ -5,15 +5,15 @@
 
 #define _7ZIP_PPMD_SUPPPORT
 
-#include "7z.h"
+#include "7z/7z.h"
 
-#include "Bcj2.h"
-#include "Bra.h"
-#include "CpuArch.h"
-#include "LzmaDec.h"
-#include "Lzma2Dec.h"
+#include "7z/Bcj2.h"
+#include "7z/Bra.h"
+#include "7z/CpuArch.h"
+#include "7z/LzmaDec.h"
+#include "7z/Lzma2Dec.h"
 #ifdef _7ZIP_PPMD_SUPPPORT
-#include "Ppmd7.h"
+#include "7z/Ppmd7.h"
 #endif
 
 #define k_Copy 0

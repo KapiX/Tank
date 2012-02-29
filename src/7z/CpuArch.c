@@ -1,7 +1,7 @@
 /* CpuArch.c -- CPU specific code
 2010-10-26: Igor Pavlov : Public domain */
 
-#include "CpuArch.h"
+#include "7z/CpuArch.h"
 
 #ifdef MY_CPU_X86_OR_AMD64
 

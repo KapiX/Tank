@@ -1,8 +1,8 @@
 /* 7zCrc.c -- CRC32 calculation
 2009-11-23 : Igor Pavlov : Public domain */
 
-#include "7zCrc.h"
-#include "CpuArch.h"
+#include "7z/7zCrc.h"
+#include "7z/CpuArch.h"
 
 #define kCrcPoly 0xEDB88320
 

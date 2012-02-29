@@ -3,7 +3,7 @@
 Igor Pavlov
 Public domain */
 
-#include "7zBuf.h"
+#include "7z/7zBuf.h"
 
 void Buf_Init(CBuf *p)
 {

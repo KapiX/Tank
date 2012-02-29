@@ -3,9 +3,9 @@
 
 #include <string.h>
 
-#include "7z.h"
-#include "7zCrc.h"
-#include "CpuArch.h"
+#include "7z/7z.h"
+#include "7z/7zCrc.h"
+#include "7z/CpuArch.h"
 
 Byte k7zSignature[k7zSignatureSize] = {'7', 'z', 0xBC, 0xAF, 0x27, 0x1C};
 

@@ -20,6 +20,7 @@
 #ifndef _WINDOW_H_
 #define _WINDOW_H_
 
+#include "buildconfig.h"
 #include <SDL/SDL.h>
 #include "VideoDriver.h"
 #include "Singleton.h"
@@ -30,7 +31,9 @@
 enum VIDEO_DRIVER
 {
     VD_OPENGL = 1,
+#ifdef WITH_D3D8
     VD_DIRECT3D8,
+#endif
 
     VD_FORCE32 = 0xffffffff
 };

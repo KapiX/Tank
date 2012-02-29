@@ -519,11 +519,11 @@ void Game::UpdateLevelPackSelection(float fDelta)
         }
         else
         {
-            std::string szLevelPack;
-            szLevelPack = "levels/";
-            szLevelPack += m_pLevelPackMenu->GetItem(m_pLevelPackMenu->GetCurrentItem());
-            szLevelPack += ".tlp";
-            m_LP.Open(szLevelPack.c_str());
+            char szLevelPack[256] = "";
+            strcat(szLevelPack, "levels/");
+            strcat(szLevelPack, m_pLevelPackMenu->GetItem(m_pLevelPackMenu->GetCurrentItem()).c_str());
+            strcat(szLevelPack, ".tlp");
+            m_LP.Open(szLevelPack);
             m_LP.ResetCurrentLevel();
 
             // load level and start the game

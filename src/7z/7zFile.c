@@ -1,7 +1,7 @@
 /* 7zFile.c -- File IO
 2009-11-24 : Igor Pavlov : Public domain */
 
-#include "7zFile.h"
+#include "7z/7zFile.h"
 
 #ifndef USE_WINDOWS_FILE
 

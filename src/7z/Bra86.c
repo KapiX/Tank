@@ -1,7 +1,7 @@
 /* Bra86.c -- Converter for x86 code (BCJ)
 2008-10-04 : Igor Pavlov : Public domain */
 
-#include "Bra.h"
+#include "7z/Bra.h"
 
 #define Test86MSByte(b) ((b) == 0 || (b) == 0xFF)
 

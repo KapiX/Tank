@@ -1,7 +1,7 @@
 /* 7zCrcOpt.c -- CRC32 calculation : optimized version
 2009-11-23 : Igor Pavlov : Public domain */
 
-#include "CpuArch.h"
+#include "7z/CpuArch.h"
 
 #ifdef MY_CPU_LE
 

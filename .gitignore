@@ -51,3 +51,10 @@ tank.txt
 ###############################
 /bin/
 /obj/
+
+# KDE backup files
+*~
+# Dolphin folder view settings
+.directory
+
+/include/buildconfig.h

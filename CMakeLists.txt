@@ -27,15 +27,15 @@ add_custom_command(
   TARGET tank
   POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_SOURCE_DIR}/resources/graphics"
+    "${CMAKE_SOURCE_DIR}/data/graphics"
     "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/graphics"
   COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_SOURCE_DIR}/resources/levels"
+    "${CMAKE_SOURCE_DIR}/data/levels"
     "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/levels"
   COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_SOURCE_DIR}/resources/sounds"
+    "${CMAKE_SOURCE_DIR}/data/sounds"
     "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sounds"
   COMMAND ${CMAKE_COMMAND} -E copy
-    "${CMAKE_SOURCE_DIR}/resources/icon.bmp"
+    "${CMAKE_SOURCE_DIR}/data/icon.bmp"
     "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/icon.bmp"
 )

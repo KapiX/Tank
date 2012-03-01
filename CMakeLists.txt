@@ -5,23 +5,50 @@ cmake_minimum_required(VERSION 2.6)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+option(WITH_OPENGL "Enable OpenGL renderer" ON)
+if(WIN32 AND NOT CMAKE_CL_64)
+  option(WITH_D3D8 "Enable Direct3D 8 renderer" ON)
+endif(WIN32 AND NOT CMAKE_CL_64)
+
+# find packages
 find_package(SDL REQUIRED)
 find_package(SDL_image REQUIRED)
 find_package(SDL_mixer REQUIRED)
 find_package(GLEW REQUIRED)
+if(WITH_D3D8)
+  find_package(D3D8 REQUIRED)
+endif(WITH_D3D8)
 
-include_directories(include ${SDL_INCLUDE_DIR} ${GLEW_INCLUDE_PATH})
+# setup paths and link libraries
+list(APPEND INC_PATH
+  ${SDL_INCLUDE_DIR}
+  ${GLEW_INCLUDE_PATH}
+)
+list(APPEND LIBS
+  ${SDL_LIBRARY}
+  ${SDLIMAGE_LIBRARY}
+  ${SDLMIXER_LIBRARY}
+  ${GLEW_LIBRARY}
+)
+if(WITH_D3D8)
+  list(APPEND INC_PATH
+    ${D3D8_INCLUDE_PATH}
+    ${D3DX8_INCLUDE_PATH}
+  )
+  list(APPEND LIBS
+    ${D3D8_LIBRARY}
+    ${D3DX8_LIBRARY}
+  )
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:libci.lib")
+endif(WITH_D3D8)
+
+include_directories(include ${INC_PATH})
 add_subdirectory(src)
-
-option(WITH_OPENGL "Enable OpenGL renderer" ON)
-if(WIN32)
-  option(WITH_D3D8 "Enable Direct3D renderer" OFF)
-endif(WIN32)
   
 configure_file(${CMAKE_SOURCE_DIR}/include/buildconfig.h.cmake ${CMAKE_SOURCE_DIR}/include/buildconfig.h)
 
 add_executable(tank WIN32 ${TANK_SOURCES})
-target_link_libraries(tank ${SDL_LIBRARY} ${SDLIMAGE_LIBRARY} ${SDLMIXER_LIBRARY} ${GLEW_LIBRARY})
+target_link_libraries(tank ${LIBS})
 
 add_custom_command(
   TARGET tank

@@ -1,6 +1,6 @@
 project(Tank)
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -47,7 +47,11 @@ add_subdirectory(src)
   
 configure_file(${CMAKE_SOURCE_DIR}/include/buildconfig.h.cmake ${CMAKE_SOURCE_DIR}/include/buildconfig.h)
 
-add_executable(tank WIN32 ${TANK_SOURCES})
+if(WIN32)
+  add_executable(tank WIN32 ${TANK_SOURCES} src/resources.rc)
+else(WIN32)
+  add_executable(tank ${TANK_SOURCES})
+endif(WIN32)
 target_link_libraries(tank ${LIBS})
 
 add_custom_command(

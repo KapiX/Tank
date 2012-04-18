@@ -35,7 +35,7 @@ public:
     void Open(const char *strFilename);
     void Free();
 
-    void GetLevelData(int iLevel, Byte **data, unsigned int *size);
+    void GetLevelData(int iLevel, Byte **data, size_t *size);
     int GetCurrentLevel() { return m_iCurrentLevel; }
     int GetNextLevel() { return m_iCurrentLevel + 1; }
     int GetLevelCount() { return m_iLevelCount; }

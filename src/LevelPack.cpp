@@ -37,7 +37,7 @@ void LevelPack::Free()
     m_kArchive.Close();
 }
 
-void LevelPack::GetLevelData(int iLevel, Byte **data, unsigned int *size)
+void LevelPack::GetLevelData(int iLevel, Byte **data, size_t *size)
 {
     char *name = new char[16];
     sprintf(name, "%d", iLevel);

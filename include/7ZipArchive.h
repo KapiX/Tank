@@ -60,7 +60,7 @@ public:
 
     bool Exists(char *strFileName) { return GetFileIndex((uchar *) strFileName) != -1; }
     u32 Find(char *strFileName) { return GetFileIndex((uchar *) strFileName); }
-    bool Extract(char *strFileName, u8 **ppData, u32 *piSize);
+    bool Extract(char *strFileName, u8 **ppData, size_t *piSize);
 
     u32 GetFilesCount() const { return m_iFilesCount; }
 
@@ -75,11 +75,11 @@ protected:
         strFileName - file name
         piLength - file name length
     */
-    void GetFileName(u32 iIndex, uchar *strFileName, u32 *piLength);
+    void GetFileName(u32 iIndex, uchar *strFileName, size_t *piLength);
     u32 GetFileSize(u32 iIndex) { return (m_kDB.db.Files + iIndex)->Size; }
     u32 GetFileIndex(uchar *strFileName);
     bool IsDirectory(u32 iIndex) { return (m_kDB.db.Files + iIndex)->IsDir != 0; }
-    SRes GetFile(u32 iIndex, u32 &riOffset, u32 &riOutSizeProcessed);
+    SRes GetFile(u32 iIndex, size_t &riOffset, size_t &riOutSizeProcessed);
 };
 
 #endif // _7ZIPARCHIVE_H_

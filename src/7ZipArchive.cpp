@@ -77,9 +77,10 @@ void SevenZipArchive::Open(const char *strFilename)
     // Initialize array
     m_astrFiles = new uchar *[m_kDB.db.NumFiles];
     m_iFilesCount = m_kDB.db.NumFiles;
+    
     for(size_t i = 0; i < m_iFilesCount; i++)
     {
-        u32 iLen;
+        size_t iLen;
         GetFileName(i, NULL, &iLen);
 
         m_astrFiles[i] = new uchar[iLen];
@@ -125,7 +126,7 @@ void SevenZipArchive::Close()
     m_bOpened = false;
 }
 
-bool SevenZipArchive::Extract(char *strFileName, u8 **ppData, u32 *piSize)
+bool SevenZipArchive::Extract(char *strFileName, u8 **ppData, size_t *piSize)
 {
     if(!m_bOpened)
         return false;
@@ -136,7 +137,7 @@ bool SevenZipArchive::Extract(char *strFileName, u8 **ppData, u32 *piSize)
         return false;
     }
 
-    u32 iOffset = 0;
+    size_t iOffset = 0;
 
     SRes result = GetFile(iIndex, iOffset, *piSize);
     if(result != SZ_OK)
@@ -201,16 +202,16 @@ bool SevenZipArchive::Utf16ToUtf8(u8 *pDest, size_t *pDestLen, const u16 *pSrc, 
     return false;
 }
 
-void SevenZipArchive::GetFileName(u32 iIndex, uchar *strFileName, u32 *piLength)
+void SevenZipArchive::GetFileName(u32 iIndex, uchar *strFileName, size_t *piLength)
 {
     // Get name length
-    u32 iLen = SzArEx_GetFileNameUtf16(&m_kDB, iIndex, NULL);
+    size_t iLen = SzArEx_GetFileNameUtf16(&m_kDB, iIndex, NULL);
 
     // Alloc buffer
     u16 *strTmp = new u16[iLen];
     SzArEx_GetFileNameUtf16(&m_kDB, iIndex, strTmp);
 
-    SevenZipArchive::Utf16ToUtf8(strFileName, (size_t *) piLength, strTmp, (size_t) iLen);
+    SevenZipArchive::Utf16ToUtf8(strFileName, piLength, strTmp, iLen);
 
     delete [] strTmp;
 }
@@ -226,9 +227,9 @@ u32 SevenZipArchive::GetFileIndex(uchar *strFileName)
     return -1;
 }
 
-SRes SevenZipArchive::GetFile(u32 iIndex, u32 &riOffset, u32 &riOutSizeProcessed)
+SRes SevenZipArchive::GetFile(u32 iIndex, size_t &riOffset, size_t &riOutSizeProcessed)
 {
     return SzArEx_Extract(&m_kDB, &m_kLookStream.s, iIndex, &m_iBlockIndex,
-        &m_pOutBuffer, &m_iOutBufferSize, (size_t *) &riOffset,
-        (size_t *) &riOutSizeProcessed, &m_skAlloc, &m_skAlloc);
+        &m_pOutBuffer, &m_iOutBufferSize, &riOffset, &riOutSizeProcessed,
+        &m_skAlloc, &m_skAlloc);
 }

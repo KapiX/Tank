@@ -527,7 +527,7 @@ void Game::UpdateLevelPackSelection(float fDelta)
             m_LP.ResetCurrentLevel();
 
             // load level and start the game
-            u32 size = 0;
+            size_t size = 0;
             uchar *data = 0;
             m_LP.GetLevelData(1, &data, &size);
             m_pMap->LoadMap(data, size);
@@ -671,8 +671,8 @@ void Game::UpdateLevelCompleted(f32 fDelta)
             if(m_pMap->GetPlayer1()->IsAlive()) m_pMap->GetPlayer1()->AddLives(1);
             if(m_bPlayer2 && m_pMap->GetPlayer2()->IsAlive()) m_pMap->GetPlayer2()->AddLives(1);
 
-            unsigned int size = 0;
-            unsigned char *data = 0;
+            size_t size = 0;
+            uchar *data = 0;
             m_LP.GetLevelData(m_LP.NextLevel(), &data, &size);
             m_pMap->LoadMap(data, size);
             delete [] data;

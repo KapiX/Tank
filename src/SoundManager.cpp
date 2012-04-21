@@ -18,35 +18,55 @@
 */
 
 #include "SoundManager.h"
+#include "7ZipArchive.h"
 
 SoundManager::SoundManager()
 {
+    char *m_astrSoundNames[SND_COUNT] = {
+        "bonus.ogg",
+        "brickhit.ogg",
+        "eexplosion.ogg",
+        "fexplosion.ogg",
+        "gameover.ogg",
+        "ice.ogg",
+        "levelstarting.ogg",
+        "life.ogg",
+        "moving.ogg",
+        "nmoving.ogg",
+        "pause.ogg",
+        "shieldhit.ogg",
+        "shoot.ogg",
+        "steelhit.ogg",
+        "tbonushit.ogg"
+    };
+    
     Mix_OpenAudio(96000, MIX_DEFAULT_FORMAT, 1, 1024);
 
     Mix_AllocateChannels(5);
 
     Mix_Volume(CNL_MOVING, 64);
-
-    m_pSounds[SND_BONUS] = Mix_LoadWAV("sounds/bonus.ogg");
-    m_pSounds[SND_BRICKHIT] = Mix_LoadWAV("sounds/brickhit.ogg");
-    m_pSounds[SND_EEXPLOSION] = Mix_LoadWAV("sounds/eexplosion.ogg");
-    m_pSounds[SND_FEXPLOSION] = Mix_LoadWAV("sounds/fexplosion.ogg");
-    m_pSounds[SND_GAMEOVER] = Mix_LoadWAV("sounds/gameover.ogg");
-    m_pSounds[SND_ICE] = Mix_LoadWAV("sounds/ice.ogg");
-    m_pSounds[SND_LEVELSTARTING] = Mix_LoadWAV("sounds/levelstarting.ogg");
-    m_pSounds[SND_LIFE] = Mix_LoadWAV("sounds/life.ogg");
-    m_pSounds[SND_MOVING] = Mix_LoadWAV("sounds/moving.ogg");
-    m_pSounds[SND_NMOVING] = Mix_LoadWAV("sounds/nmoving.ogg");
-    m_pSounds[SND_PAUSE] = Mix_LoadWAV("sounds/pause.ogg");
-    m_pSounds[SND_SHIELDHIT] = Mix_LoadWAV("sounds/shieldhit.ogg");
-    m_pSounds[SND_SHOOT] = Mix_LoadWAV("sounds/shoot.ogg");
-    m_pSounds[SND_STEELHIT] = Mix_LoadWAV("sounds/steelhit.ogg");
-    m_pSounds[SND_TBONUSHIT] = Mix_LoadWAV("sounds/tbonushit.ogg");
+    
+    SevenZipArchive kSoundPack;
+    kSoundPack.Open("sounds/sounds.7z");
+    
+    u8 *pBuffer;
+    size_t iSoundSize;
+    SDL_RWops *pRW;
+    
+    // Load all the sounds into memory
+    for(u32 i = 0; i < SND_COUNT; i++)
+    {
+        kSoundPack.Extract(m_astrSoundNames[i], &pBuffer, &iSoundSize);
+        pRW = SDL_RWFromMem(pBuffer, iSoundSize);
+        m_pSounds[i] = Mix_LoadWAV_RW(pRW, 1);
+    }
+    
+    kSoundPack.Close();
 }
 
 void SoundManager::Free()
 {
-    for(int i = 1; i < SND_COUNT; i++)
+    for(u32 i = 0; i < SND_COUNT; i++)
     {
         Mix_FreeChunk(m_pSounds[i]);
         m_pSounds[i] = NULL;

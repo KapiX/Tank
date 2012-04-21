@@ -58,3 +58,4 @@ tank.txt
 .directory
 
 /include/buildconfig.h
+!sounds.7z

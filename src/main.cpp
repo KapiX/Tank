@@ -19,6 +19,7 @@
 
 #include "Config.h"
 #include "Game.h"
+#include "Texture.h"
 #include "VideoDriver.h"
 #include "Window.h"
 #include "SDL.h"

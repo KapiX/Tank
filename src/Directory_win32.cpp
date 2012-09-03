@@ -22,7 +22,6 @@
 u32 Directory::ListFiles(std::string strDir, std::vector<std::string> *pastrFileNames)
 {
     u32 iCount = 0;
-#if defined(WIN32)
     m_hFind = FindFirstFile((strDir + "\\*").c_str(), &m_kFindData);
     do
     {
@@ -40,30 +39,5 @@ u32 Directory::ListFiles(std::string strDir, std::vector<std::string> *pastrFile
     FindClose(m_hFind);
     
     return iCount;
-#elif defined(__unix)
-    m_pkDir = opendir((strDir + "/").c_str());
-    
-    if(m_pkDir != NULL)
-    {
-        while(m_pkFile = readdir(m_pkDir))
-        {
-            struct stat s;
-            stat((strDir + "/" + m_pkFile->d_name).c_str(), &s);
-            if(S_ISDIR(s.st_mode))
-            {
-                continue;
-            }
-            if(pastrFileNames != NULL)
-            {
-                pastrFileNames->push_back(m_pkFile->d_name);
-            }
-            iCount++;
-        }
-        closedir(m_pkDir);
-    }
-    return iCount;
-#else
-    #error This code does not support your platform.
-#endif
 }
 

@@ -216,7 +216,7 @@ void SevenZipArchive::GetFileName(u32 iIndex, uchar *strFileName, size_t *piLeng
     delete [] strTmp;
 }
 
-u32 SevenZipArchive::GetFileIndex(uchar *strFileName)
+s32 SevenZipArchive::GetFileIndex(uchar *strFileName)
 {
     for(u32 i = 0; i < m_iFilesCount; i++)
     {

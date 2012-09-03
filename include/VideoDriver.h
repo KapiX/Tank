@@ -20,10 +20,10 @@
 #ifndef _VIDEODRIVER_H_
 #define _VIDEODRIVER_H_
 
+#include "RenderList.h"
 #include "Types.h"
 
 class RenderList;
-enum RENDERLIST_TYPE;
 class Texture;
 
 class VideoDriver

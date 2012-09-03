@@ -6,7 +6,6 @@ list(APPEND SRC
   Animation.cpp
   Bonus.cpp
   Config.cpp
-  Directory.cpp
   Enemy.cpp
   Game.cpp
   LevelPack.cpp
@@ -19,6 +18,16 @@ list(APPEND SRC
   Timer.cpp
   Window.cpp
 )
+
+if(WIN32)
+  list(APPEND SRC
+    Directory_win32.cpp
+  )
+elseif(UNIX OR BEOS)
+  list(APPEND SRC
+    Directory_unix.cpp
+  )
+endif(WIN32)
 
 if(WITH_OPENGL)
   list(APPEND SRC
@@ -34,6 +43,12 @@ if(WITH_D3D8)
     D3D8VideoDriver.cpp
   )
 endif(WITH_D3D8)
+
+if(BEOS)
+  list(APPEND SRC
+    Tank.rdef
+  )
+endif(BEOS)
 
 foreach(F ${SRC})
   list(APPEND TANK_SOURCES src/${F})

@@ -82,7 +82,7 @@ protected:
     */
     void GetFileName(u32 iIndex, uchar *strFileName, size_t *piLength);
     u32 GetFileSize(u32 iIndex) { return (m_kDB.db.Files + iIndex)->Size; }
-    u32 GetFileIndex(uchar *strFileName);
+    s32 GetFileIndex(uchar *strFileName);
     bool IsDirectory(u32 iIndex) { return (m_kDB.db.Files + iIndex)->IsDir != 0; }
     SRes GetFile(u32 iIndex, size_t &riOffset, size_t &riOutSizeProcessed);
 };

@@ -17,38 +17,31 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _DIRECTORY_H_
-#define _DIRECTORY_H_
+#include "Directory.h"
 
-#include "Singleton.h"
-#include "Types.h"
-#include <string>
-#include <vector>
-#if defined(WIN32)
-#    include <Windows.h>
-#elif defined(__unix) || defined(__HAIKU__)
-#    include <dirent.h>
-#    include <sys/types.h>
-#    include <sys/stat.h>
-#endif
-
-class Directory :
-    public Singleton<Directory>
+u32 Directory::ListFiles(std::string strDir, std::vector<std::string> *pastrFileNames)
 {
-private:
-#if defined(WIN32)
-    WIN32_FIND_DATA m_kFindData;
-    HANDLE m_hFind;
-#elif defined(__unix) || defined(__HAIKU__)
-    DIR *m_pkDir;
-    struct dirent *m_pkFile;
-#else
-	#error "This code doesn't support your platform."
-#endif
-
-public:
-    u32 ListFiles(std::string strDir, std::vector<std::string> *pastrFiles);
-};
-
-#endif // _DIRECTORY_H_
+    u32 iCount = 0;
+    m_pkDir = opendir((strDir + "/").c_str());
+    
+    if(m_pkDir != NULL)
+    {
+        while(m_pkFile = readdir(m_pkDir))
+        {
+            struct stat s;
+            stat((strDir + "/" + m_pkFile->d_name).c_str(), &s);
+            if(S_ISDIR(s.st_mode))
+            {
+                continue;
+            }
+            if(pastrFileNames != NULL)
+            {
+                pastrFileNames->push_back(m_pkFile->d_name);
+            }
+            iCount++;
+        }
+        closedir(m_pkDir);
+    }
+    return iCount;
+}
 

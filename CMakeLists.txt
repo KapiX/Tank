@@ -8,6 +8,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(WITH_OPENGL "Enable OpenGL renderer" ON)
 if(WITH_OPENGL)
   option(WITH_GLEW "Enable GLEW library" ON)
+  if(BEOS)
+    set(WITH_GLEW OFF)
+  endif(BEOS)
 endif(WITH_OPENGL)
 if(WIN32 AND NOT CMAKE_CL_64)
   option(WITH_D3D8 "Enable Direct3D 8 renderer" ON)
@@ -26,6 +29,10 @@ endif(WITH_OPENGL)
 if(WITH_D3D8)
   find_package(D3D8 REQUIRED)
 endif(WITH_D3D8)
+
+if(BEOS)
+  include(UseHaiku)
+endif(BEOS)
 
 # setup paths and link libraries
 list(APPEND INC_PATH

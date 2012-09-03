@@ -24,9 +24,9 @@
 #include "Types.h"
 #include <string>
 #include <vector>
-#ifdef _WIN32
+#if defined(WIN32)
 #    include <Windows.h>
-#elif __unix
+#elif defined(__unix)
 #    include <dirent.h>
 #    include <sys/types.h>
 #    include <sys/stat.h>

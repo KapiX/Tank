@@ -34,7 +34,7 @@ Config::Config()
     m_kP1Controls.iDown = 274; // down arrow
     m_kP1Controls.iLeft = 276; // left arrow
     m_kP1Controls.iRight = 275; // right arrow
-    m_kP1Controls.iShoot = 305; // right ctrl
+    m_kP1Controls.iShoot = 303; // right shift
     m_kP2Controller = KEYBOARD;
     m_kP2Controls.iUp = 119; // w
     m_kP2Controls.iDown = 115; // s

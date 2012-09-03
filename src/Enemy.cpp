@@ -82,12 +82,12 @@ void Enemy::Shoot()
                 m_apkBullets[0]->m_iY = m_iY;
                 break;
             case DIR_RIGHT:
-                m_apkBullets[0]->m_iX = m_iX + ENEMY_WIDTH;
+                m_apkBullets[0]->m_iX = m_iX + ENEMY_WIDTH - BULLET_WIDTH;
                 m_apkBullets[0]->m_iY = m_iY + ENEMY_HEIGHT_DIV_2 - BULLET_HEIGHT_DIV_2;
                 break;
             case DIR_DOWN:
                 m_apkBullets[0]->m_iX = m_iX + ENEMY_WIDTH_DIV_2 - BULLET_WIDTH_DIV_2;
-                m_apkBullets[0]->m_iY = m_iY + ENEMY_HEIGHT;
+                m_apkBullets[0]->m_iY = m_iY + ENEMY_HEIGHT - BULLET_HEIGHT;
                 break;
             case DIR_LEFT:
                 m_apkBullets[0]->m_iX = m_iX;

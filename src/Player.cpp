@@ -72,12 +72,12 @@ void Player::Shoot()
                 m_apkBullets[0]->m_iY = m_iY;
                 break;
             case DIR_RIGHT:
-                m_apkBullets[0]->m_iX = m_iX + PLAYER_WIDTH;
+                m_apkBullets[0]->m_iX = m_iX + PLAYER_WIDTH - BULLET_WIDTH;
                 m_apkBullets[0]->m_iY = m_iY + PLAYER_HEIGHT_DIV_2 - BULLET_HEIGHT_DIV_2;
                 break;
             case DIR_DOWN:
                 m_apkBullets[0]->m_iX = m_iX + PLAYER_WIDTH_DIV_2 - BULLET_WIDTH_DIV_2;
-                m_apkBullets[0]->m_iY = m_iY + PLAYER_HEIGHT;
+                m_apkBullets[0]->m_iY = m_iY + PLAYER_HEIGHT - BULLET_HEIGHT;
                 break;
             case DIR_LEFT:
                 m_apkBullets[0]->m_iX = m_iX;
@@ -99,12 +99,12 @@ void Player::Shoot()
                 m_apkBullets[1]->m_iY = m_iY;
                 break;
             case DIR_RIGHT:
-                m_apkBullets[1]->m_iX = m_iX + PLAYER_WIDTH;
+                m_apkBullets[1]->m_iX = m_iX + PLAYER_WIDTH - BULLET_WIDTH;
                 m_apkBullets[1]->m_iY = m_iY + PLAYER_HEIGHT_DIV_2 - BULLET_HEIGHT_DIV_2;
                 break;
             case DIR_DOWN:
                 m_apkBullets[1]->m_iX = m_iX + PLAYER_WIDTH_DIV_2 - BULLET_WIDTH_DIV_2;
-                m_apkBullets[1]->m_iY = m_iY + PLAYER_HEIGHT;
+                m_apkBullets[1]->m_iY = m_iY + PLAYER_HEIGHT - BULLET_HEIGHT;
                 break;
             case DIR_LEFT:
                 m_apkBullets[1]->m_iX = m_iX;

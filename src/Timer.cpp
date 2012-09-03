@@ -18,13 +18,14 @@
 */
 
 #include "Timer.h"
+#include "SDL.h"
 
 Timer::Timer()
 {
-    m_iStartTicks	= 0;
-    m_iPausedTicks	= 0;
-    m_bPaused		= false;
-    m_bStarted		= false;
+    m_iStartTicks = 0;
+    m_iPausedTicks = 0;
+    m_bPaused = false;
+    m_bStarted = false;
 }
 
 void Timer::Start()
@@ -70,7 +71,7 @@ u32 Timer::GetTicks() const
         else
         {
             return SDL_GetTicks() - m_iStartTicks;
-        }    
+        }
     }
     return 0;
 }

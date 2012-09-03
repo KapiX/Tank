@@ -20,6 +20,7 @@
 #include "OGLVideoDriver.h"
 #include "OGLRenderList.h"
 #include "OGLTexture.h"
+#include "SDL_image.h"
 
 OGLVideoDriver::OGLVideoDriver(u32 iWidth, u32 iHeight)
 {
@@ -108,14 +109,9 @@ void OGLVideoDriver::PrintText(Texture *pFont, int iX, int iY, int iZ, const cha
 
 void OGLVideoDriver::DrawSprite(Texture *pSprite, int iX, int iY, int iZ, int iX2, int iY2, int iW, int iH, float fScale)
 {
-    if(iW == 0)
-    {
-        iW = pSprite->GetWidth();
-    }
-    if(iH == 0)
-    {
-        iH = pSprite->GetHeight();
-    }
+    if(iW == 0) iW = pSprite->GetWidth();
+    if(iH == 0) iH = pSprite->GetHeight();
+    
     glBindTexture(GL_TEXTURE_2D, pSprite->GetID());
     f32 iS1 = (f32) iX2 / pSprite->GetWidth();
     f32 iT1 = (f32) iY2 / pSprite->GetHeight();

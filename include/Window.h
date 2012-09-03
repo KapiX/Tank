@@ -21,13 +21,18 @@
 #define _WINDOW_H_
 
 #include "buildconfig.h"
-#include "SDL.h"
-#include "VideoDriver.h"
 #include "Singleton.h"
+#include "Types.h"
+#include "SDL.h"
+
+class VideoDriver;
 
 enum VIDEO_DRIVER
 {
-    VD_OPENGL = 1,
+    VD_NULL = 0,
+#ifdef WITH_OPENGL
+    VD_OPENGL,
+#endif
 #ifdef WITH_D3D8
     VD_DIRECT3D8,
 #endif
@@ -54,7 +59,7 @@ public:
     ~Window(void);
 
     void Init(u32 iWidth, u32 iHeight, bool bFullscreen = false,
-        VIDEO_DRIVER kVD = VD_OPENGL);
+        VIDEO_DRIVER kVD = VD_NULL);
     void Shutdown();
 
     void Loop();

@@ -17,12 +17,12 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "Config.h"
+#include "Game.h"
+#include "VideoDriver.h"
+#include "Window.h"
 #include "SDL.h"
 #include <cstdio>
-
-#include "Game.h"
-#include "Window.h"
-#include "Config.h"
 
 Texture *pFont;
 char temp[16];

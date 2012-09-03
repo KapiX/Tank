@@ -77,7 +77,7 @@ void SevenZipArchive::Open(const char *strFilename)
     // Initialize array
     m_astrFiles = new uchar *[m_kDB.db.NumFiles];
     m_iFilesCount = m_kDB.db.NumFiles;
-    
+
     for(size_t i = 0; i < m_iFilesCount; i++)
     {
         size_t iLen;

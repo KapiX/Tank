@@ -27,19 +27,19 @@
 #ifdef _WIN32
 #    include <Windows.h>
 #elif __unix
+#    include <dirent.h>
 #    include <sys/types.h>
 #    include <sys/stat.h>
-#    include <dirent.h>
 #endif
 
 class Directory :
     public Singleton<Directory>
 {
 private:
-#ifdef _WIN32
+#if defined(WIN32)
     WIN32_FIND_DATA m_kFindData;
     HANDLE m_hFind;
-#elif __unix
+#elif defined(__unix)
     DIR *m_pkDir;
     struct dirent *m_pkFile;
 #endif

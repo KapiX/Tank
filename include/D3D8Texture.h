@@ -21,9 +21,8 @@
 #define _D3D8TEXTURE_H_
 
 #include "Texture.h"
-
+#include "Types.h"
 #include <d3d8.h>
-#include <d3dx8.h>
 
 class D3D8Texture :
     public Texture

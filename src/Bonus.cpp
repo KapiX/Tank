@@ -17,7 +17,11 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "Animation.h"
 #include "Bonus.h"
+#include "Defines.h"
+#include "Texture.h"
+#include "VideoDriver.h"
 
 Texture *Bonus::m_pkBonusTexture = NULL;
 
@@ -58,8 +62,15 @@ void Bonus::Render(VideoDriver *pVD)
     if(m_bIsAlive)
     {
         u32 iX2, iY2;
-        iX2 = 960 + m_pkAnim->GetCurrentFrame() * 32;
-        iY2 = m_bt * 32;
-        pVD->DrawSprite(m_pkBonusTexture, m_iX, m_iY, 58.0f, iX2, iY2, 32, 32);
+        iX2 = BONUS_OFFSET_X + m_pkAnim->GetCurrentFrame() * BONUS_WIDTH;
+        iY2 = m_bt * BONUS_HEIGHT;
+        pVD->DrawSprite(
+            m_pkBonusTexture,
+            m_iX, m_iY,
+            BONUS_LAYER,
+            iX2, iY2,
+            BONUS_WIDTH,
+            BONUS_HEIGHT
+        );
     }
 }

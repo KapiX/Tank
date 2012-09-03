@@ -17,7 +17,17 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "Animation.h"
+#include "Bonus.h"
+#include "Config.h"
+#include "Enemy.h"
+#include "Keyboard.h"
 #include "Map.h"
+#include "Player.h"
+#include "RenderList.h"
+#include "SoundManager.h"
+#include "Texture.h"
+#include "VideoDriver.h"
 #include <cmath>
 
 Animation *Map::m_pAnimation = NULL;

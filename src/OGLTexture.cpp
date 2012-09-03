@@ -18,6 +18,8 @@
 */
 
 #include "OGLTexture.h"
+#include "SDL_image.h"
+#include "SDL_opengl.h"
 
 OGLTexture::OGLTexture(const char *szFilename)
     : Texture(szFilename)

@@ -21,10 +21,8 @@
 #define _D3D8RENDERLIST_H_
 
 #include "RenderList.h"
-#include "D3D8VideoDriver.h"
-
+#include "Types.h"
 #include <d3d8.h>
-#include <d3dx8.h>
 
 class D3D8RenderList :
     public RenderList

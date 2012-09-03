@@ -20,16 +20,13 @@
 #ifndef _D3D8VIDEODRIVER_H_
 #define _D3D8VIDEODRIVER_H_
 
-#include "VideoDriver.h"
 #include "Singleton.h"
-#include "RenderList.h"
-#include "Texture.h"
-
+#include "Types.h"
+#include "VideoDriver.h"
 #include <d3d8.h>
-#include <d3dx8.h>
 
-#pragma comment(lib, "d3d8.lib")
-#pragma comment(lib, "d3dx8.lib")
+class RenderList;
+class Texture;
 
 struct Vertex
 {

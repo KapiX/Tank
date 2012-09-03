@@ -21,8 +21,10 @@
 #define _VIDEODRIVER_H_
 
 #include "Types.h"
-#include "RenderList.h"
-#include "Texture.h"
+
+class RenderList;
+enum RENDERLIST_TYPE;
+class Texture;
 
 class VideoDriver
 {
@@ -39,10 +41,18 @@ public:
     virtual RenderList *CreateRenderList(RENDERLIST_TYPE rlt, u32 iElements) = 0;
     virtual Texture *CreateTexture(const char *szFilename) = 0;
 
+    // TODO colors to u8
     virtual void PrintText(Texture *pFont, int iX, int iY, int iZ, const char *szText, float fScale = 1.0f, int iR = 255, int iG = 255, int iB = 255, int iA = 255, int iCharW = 7, int iCharH = 13) = 0;
     virtual void DrawSprite(Texture *pSprite, int iX, int iY, int iZ, int iX2, int iY2, int iW = 0, int iH = 0, float fScale = 1.0f) = 0;
 
     virtual void DrawLine(int iX, int iY, int iX2, int iY2, int iZ, int iR = 255, int iG = 255, int iB = 255, int iA = 255) = 0;
+    virtual void DrawRectangle(int iX, int iY, int iW, int iH, int iZ, int iR = 255, int iG = 255, int iB = 255, int iA = 255)
+    {
+        DrawLine(iX, iY, iX + iW, iY, iZ, iR, iG, iB, iA);
+        DrawLine(iX + iW, iY, iX + iW, iY + iH, iZ, iR, iG, iB, iA);
+        DrawLine(iX + iW, iY + iH, iX, iY + iH, iZ, iR, iG, iB, iA);
+        DrawLine(iX, iY + iH, iX, iY, iZ, iR, iG, iB, iA);
+    }
     virtual void FillRectangle(int iX, int iY, int iW, int iH, int iZ, int iR = 255, int iG = 255, int iB = 255, int iA = 255) = 0;
 
 private:

@@ -20,11 +20,13 @@
 #ifndef _MENU_H_
 #define _MENU_H_
 
-#include "Animation.h"
-#include "VideoDriver.h"
-#include "Texture.h"
+#include "Types.h"
 #include <vector>
 #include <string>
+
+class Animation;
+class Texture;
+class VideoDriver;
 
 enum MENU_ORIENTATION
 {
@@ -51,6 +53,7 @@ public:
     Menu(VideoDriver *pVD, Texture *pFont, Texture *pPointer, u32 iPointerOffsetX = 0, u32 iPointerOffsetY = 0);
     ~Menu();
 
+    // TODO color to u8
     void Render(int iX, int iY, int iZ = 64, int iR = 255, int iG = 255, int iB = 255);
 
     void NextItem();

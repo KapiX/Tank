@@ -17,31 +17,42 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "7ZipArchive.h"
 #include "LevelPack.h"
-#include <cstring>
 #include <cstdio>
+#include <cstring>
+
+LevelPack::LevelPack()
+{
+    m_pkArchive = new SevenZipArchive();
+}
+
+LevelPack::~LevelPack()
+{
+    if(m_pkArchive != NULL)
+    {
+        m_pkArchive->Close();
+        delete m_pkArchive;
+        m_pkArchive = NULL;
+    }
+}
 
 void LevelPack::Open(const char *strFilename)
 {
     ResetCurrentLevel();
-    if(m_kArchive.Opened())
+    if(m_pkArchive->Opened())
     {
-        m_kArchive.Close();
+        m_pkArchive->Close();
     }
-    m_kArchive.Open(strFilename);
-    m_iLevelCount = m_kArchive.GetFilesCount();
+    m_pkArchive->Open(strFilename);
+    m_iLevelCount = m_pkArchive->GetFilesCount();
 }
 
-void LevelPack::Free()
-{
-    m_kArchive.Close();
-}
-
-void LevelPack::GetLevelData(int iLevel, Byte **data, size_t *size)
+void LevelPack::GetLevelData(u32 iLevel, u8 **data, size_t *size)
 {
     char *name = new char[16];
     sprintf(name, "%d", iLevel);
     name = strcat(name, ".tlv");
-    m_kArchive.Extract(name, data, size);
+    m_pkArchive->Extract(name, data, size);
     delete [] name;
 }

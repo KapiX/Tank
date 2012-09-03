@@ -17,7 +17,10 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "Animation.h"
+#include "Defines.h"
 #include "Menu.h"
+#include "VideoDriver.h"
 
 Menu::Menu(VideoDriver *pVD, Texture *pFont, Texture *pPointer, u32 iPointerOffsetX, u32 iPointerOffsetY)
 {
@@ -36,6 +39,7 @@ Menu::~Menu()
 {
 }
 
+// FIXME not really flexible (pointer must be exactly 13x13)
 void Menu::Render(int iX, int iY, int iZ, int iR, int iG, int iB)
 {
     if(m_Orient == MO_VERTICAL)
@@ -43,29 +47,31 @@ void Menu::Render(int iX, int iY, int iZ, int iR, int iG, int iB)
         u32 iYOff = 0;
         if(m_bDrawTitle)
         {
-            m_pVD->PrintText(m_pFont, iX + 13 + 3, iY + 1, iZ, m_szTitle.c_str(), 1.0f, iR, iG, iB);
-            m_pVD->DrawLine(iX + 13 + 3, iY + 13 + 1, iX + 13 + 3 + m_szTitle.length() * 8 - 1, iY + 13 + 1, iZ, iR, iG, iB);
-            iYOff = 13 + 1 + 3;
+            // draw the title
+            m_pVD->PrintText(m_pFont, iX + 13 + MENU_POINTER_SPACE, iY + 1, iZ, m_szTitle.c_str(), 1.0f, iR, iG, iB);
+            m_pVD->DrawLine(iX + 13 + MENU_POINTER_SPACE, iY + FONT_CHAR_HEIGHT_1, iX + 13 + MENU_POINTER_SPACE + m_szTitle.length() * FONT_CHAR_WIDTH_1 - 1, iY + FONT_CHAR_HEIGHT_1, iZ, iR, iG, iB);
+            iYOff = FONT_CHAR_HEIGHT_1 + MENU_TITLE_SPACE;
         }
-        m_pVD->DrawSprite(m_pPointer, iX, iY + (m_iCurrent * 13) + iYOff, iZ, m_iPointerOffsetX + (m_pPointerAnim == NULL ? 0 : m_pPointerAnim->GetCurrentFrame() * 13), m_iPointerOffsetY, 13, 13);
+        m_pVD->DrawSprite(m_pPointer, iX, iY + (m_iCurrent * FONT_CHAR_HEIGHT_1) + iYOff, iZ, m_iPointerOffsetX + (m_pPointerAnim == NULL ? 0 : m_pPointerAnim->GetCurrentFrame() * 13), m_iPointerOffsetY, 13, 13);
         for(int i = 0; i < m_Items.size(); i++)
         {
-            m_pVD->PrintText(m_pFont, iX + 13 + 3, iY + (i * 13) + 1 + iYOff, iZ, m_Items[i].c_str(), 1.0f, iR, iG, iB);
+            m_pVD->PrintText(m_pFont, iX + 13 + MENU_POINTER_SPACE, iY + (i * FONT_CHAR_HEIGHT_1) + iYOff, iZ, m_Items[i].c_str(), 1.0f, iR, iG, iB);
         }
     }
     else if(m_Orient == MO_HORIZONTAL)
     {
-        int x = iX + m_szTitle.length() * (7 + 1) + 3;
+        // draw the title
+        int x = iX + m_szTitle.length() * FONT_CHAR_WIDTH_1 + MENU_TITLE_SPACE;
         int shift = 0;
         m_pVD->PrintText(m_pFont, iX, iY, iZ, m_szTitle.c_str(), 1.0f, iR, iG, iB);
-        m_pVD->DrawLine(x, iY - 1, x, iY + 13 + 1, iZ, iR, iG, iB);
+        m_pVD->DrawLine(x, iY - 1, x, iY + FONT_CHAR_HEIGHT + 1, iZ, iR, iG, iB);
         for(int i = 0; i < m_Items.size(); i++)
         {
-            shift += 3 + (i == 0 ? 0 : m_Items[i - 1].length() * (7 + 1)) + 13 + 3;
+            shift += MENU_POINTER_SPACE + (i == 0 ? 0 : m_Items[i - 1].length() * FONT_CHAR_WIDTH_1) + 13 + MENU_POINTER_SPACE;
             m_pVD->PrintText(m_pFont, x + shift, iY, iZ, m_Items[i].c_str(), 1.0f, iR, iG, iB);
             if(m_iCurrent == i)
             {
-                m_pVD->DrawSprite(m_pPointer, x + shift - 13 - 3, iY, iZ, m_iPointerOffsetX + (m_pPointerAnim == NULL ? 0 : m_pPointerAnim->GetCurrentFrame() * 13), m_iPointerOffsetY, 13, 13);
+                m_pVD->DrawSprite(m_pPointer, x + shift - 13 - MENU_POINTER_SPACE, iY, iZ, m_iPointerOffsetX + (m_pPointerAnim == NULL ? 0 : m_pPointerAnim->GetCurrentFrame() * 13), m_iPointerOffsetY, 13, 13);
             }
         }
     }

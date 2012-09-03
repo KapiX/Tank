@@ -20,16 +20,12 @@
 #ifndef _OGLVIDEODRIVER_H_
 #define _OGLVIDEODRIVER_H_
 
-#include "SDL.h"
-#include "SDL_image.h"
-#include <GL/glew.h>
-#include <GL/glu.h>
-#include "VideoDriver.h"
 #include "Singleton.h"
-#include "RenderList.h"
+#include "Types.h"
+#include "VideoDriver.h"
 
-#pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "glu32.lib")
+class RenderList;
+class Texture;
 
 class OGLVideoDriver :
     public VideoDriver,
@@ -48,6 +44,7 @@ public:
     RenderList *CreateRenderList(RENDERLIST_TYPE rlt, u32 iElements);
     Texture *CreateTexture(const char *szFilename);
 
+    // TODO colors to u8
     void PrintText(Texture *pFont, int iX, int iY, int iZ, const char *szText, float fScale = 1.0f, int iR = 255, int iG = 255, int iB = 255, int iA = 255, int iCharW = 7, int iCharH = 13);
     void DrawSprite(Texture *pSprite, int iX, int iY, int iZ, int iX2, int iY2, int iW = 0, int iH = 0, float fScale = 1.0f);
 

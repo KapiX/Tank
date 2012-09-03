@@ -17,7 +17,10 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "Animation.h"
+#include "Defines.h"
 #include "Tank.h"
+#include "VideoDriver.h"
 
 Tank::Bullet::Bullet(VideoDriver *pVD, Texture *pTexture, TANKLEVEL kTL, DIRECTION kDir, f32 iSpeed)
 {
@@ -82,28 +85,34 @@ void Tank::Bullet::Render()
 {
     if(m_bIsAlive)
     {
-        u32 iX2, iY2;
-        iX2 = (m_kDir - 1) * 8 + 292;
-        iY2 = 288;
-        m_pVD->DrawSprite(m_pTexture, m_iX, m_iY, 4.0f, iX2, iY2, 8, 8);
+        u32 iX2 = BULLET_OFFSET_X + (m_kDir - 1) * BULLET_WIDTH;
+        u32 iY2 = BULLET_OFFSET_Y;
+        m_pVD->DrawSprite(
+            m_pTexture,
+            m_iX, m_iY,
+            BULLET_LAYER,
+            iX2, iY2,
+            BULLET_WIDTH,
+            BULLET_HEIGHT
+        );
     }
     else if(m_bExplode)
     {
-        u32 iX, iY, iW = 32, iH = 32;
-        iX = m_iX - 16;
-        iY = m_iY - 16;
+        u32 iX, iY, iW = EXPLOSION_ANIM_WIDTH, iH = EXPLOSION_ANIM_HEIGHT;
+        iX = m_iX - EXPLOSION_ANIM_WIDTH_DIV_2;
+        iY = m_iY - EXPLOSION_ANIM_HEIGHT_DIV_2;
         switch(m_kDir)
         {
         case DIR_UP:
         case DIR_DOWN:
-            iX += 4;
+            iX += BULLET_WIDTH_DIV_2;
             break;
         case DIR_RIGHT:
         case DIR_LEFT:
-            iY += 4;
+            iY += BULLET_HEIGHT_DIV_2;
             break;
         }
-        m_pVD->DrawSprite(m_pTexture, iX, iY, 44.0f, 228 + m_pkExplAnim->GetCurrentFrame() * 32, 256, iW, iH);
+        m_pVD->DrawSprite(m_pTexture, iX, iY, EXPLOSION_ANIM_LAYER, 228 + m_pkExplAnim->GetCurrentFrame() * 32, 256, iW, iH);
     }
 }
 
@@ -124,8 +133,8 @@ Tank::Tank(VideoDriver *pVD, Texture *pTexture, TANKLEVEL kTL, DIRECTION kDir, f
     m_iSpeed = iSpeed;
     m_pTexture = pTexture;
 
-    m_apkBullets[0] = new Bullet(pVD, pTexture, kTL, kDir, iSpeed * 3);
-    m_apkBullets[1] = new Bullet(pVD, pTexture, kTL, kDir, iSpeed * 3);
+    m_apkBullets[0] = new Bullet(pVD, pTexture, kTL, kDir, iSpeed * BULLET_SPEED_MULTIPLIER);
+    m_apkBullets[1] = new Bullet(pVD, pTexture, kTL, kDir, iSpeed * BULLET_SPEED_MULTIPLIER);
 
     m_pkAnim = new Animation();
     m_pkAnim->SetFrameRate(0.05f);
@@ -201,8 +210,8 @@ Tank::~Tank()
 
 void Tank::Spawn(DIRECTION kDir, TANKLEVEL kTL)
 {
-    m_iX = (f32) m_iSpawnX * 32;
-    m_iY = (f32) m_iSpawnY * 32 + 24;
+    m_iX = (f32) m_iSpawnX * PLAYER_WIDTH;
+    m_iY = (f32) m_iSpawnY * PLAYER_HEIGHT + HUD_TOP_HEIGHT;
     m_kDir = kDir;
     m_kTL = kTL;
     m_bIsAlive = false;
@@ -216,8 +225,8 @@ void Tank::Destroy()
     m_bExplode = true;
     m_pkExplAnim->SetPlaying(true);
     m_kTL = TL_1;
-    m_apkBullets[0]->m_iSpeed = m_iSpeed * 3;
-    m_apkBullets[1]->m_iSpeed = m_iSpeed * 3;
+    m_apkBullets[0]->m_iSpeed = m_iSpeed * BULLET_SPEED_MULTIPLIER;
+    m_apkBullets[1]->m_iSpeed = m_iSpeed * BULLET_SPEED_MULTIPLIER;
     m_apkBullets[0]->m_bDestroyJungle = false;
     m_apkBullets[1]->m_bDestroyJungle = false;
 }

@@ -17,7 +17,28 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "Animation.h"
+#include "Config.h"
+#include "Defines.h"
+#include "Directory.h"
+#include "Enemy.h"
 #include "Game.h"
+#include "Keyboard.h"
+#include "LevelPack.h"
+#include "Map.h"
+#include "Menu.h"
+#include "Player.h"
+#include "RenderList.h"
+#include "SoundManager.h"
+#include "Tank.h"
+#include "Texture.h"
+#include "Timer.h"
+#include "VideoDriver.h"
+#include "Window.h"
+#include "SDL.h"
+#include <string>
+#include <fstream>
+#include <vector>
 
 Game::Game(void)
 {
@@ -36,6 +57,8 @@ void Game::LoadResources(Texture *pFont)
     Map::SetTimer(&m_fTimer);
 
     SoundManager::GetInstance();
+    
+    m_pLP = new LevelPack();
 
     m_bPlayer2 = false;
 
@@ -168,8 +191,12 @@ void Game::FreeResources()
         delete m_pP2ControlsMenu;
         m_pP2ControlsMenu = NULL;
     }
-
-    m_LP.Free();
+    if(m_pLP != NULL)
+    {
+        delete m_pLP;
+        m_pLP = NULL;
+    }
+    
     SoundManager::GetInstance()->Free();
 }
 
@@ -318,7 +345,7 @@ void Game::UpdateMainMenu(float fDelta)
                 sprintf(item, "SHOOT:      %s", Keyboard::GetInstance()->GetKeyName((SDLKey) Config::GetInstance()->GetP1Controls()->iShoot));
                 m_pP1ControlsMenu->ChangeItem(CM_SHOOT, item);
             }
-            if(Config::GetInstance()->GetP2Controller() == KEYBOARD) 
+            if(Config::GetInstance()->GetP2Controller() == KEYBOARD)
             {
                 strcpy(controller2, "KEYBOARD");
                 sprintf(item, "UP:         %s", Keyboard::GetInstance()->GetKeyName((SDLKey) Config::GetInstance()->GetP2Controls()->iUp));
@@ -438,6 +465,8 @@ void Game::UpdateControlsWaiting(float fDelta)
     SDLKey key;
     while((key = Keyboard::GetInstance()->GetKey()) == SDLK_UNKNOWN);
     // set key to pressed state
+    // otherwise keypress will be caught also in menu
+    // (and we don't want that to happen)
     Keyboard::GetInstance()->KeyPressed(key);
 
     char item[64];
@@ -523,13 +552,13 @@ void Game::UpdateLevelPackSelection(float fDelta)
             strcat(szLevelPack, "levels/");
             strcat(szLevelPack, m_pLevelPackMenu->GetItem(m_pLevelPackMenu->GetCurrentItem()).c_str());
             strcat(szLevelPack, ".tlp");
-            m_LP.Open(szLevelPack);
-            m_LP.ResetCurrentLevel();
+            m_pLP->Open(szLevelPack);
+            m_pLP->ResetCurrentLevel();
 
             // load level and start the game
             size_t size = 0;
             uchar *data = 0;
-            m_LP.GetLevelData(1, &data, &size);
+            m_pLP->GetLevelData(1, &data, &size);
             m_pMap->LoadMap(data, size);
             delete [] data;
             m_pMap->UpdateBlocks();
@@ -629,7 +658,7 @@ void Game::UpdateLevelPause(float fDelta)
             m_iSplashLogoY = 80.0f;
             m_pMainMenu->SetCurrentItem(0);
             m_pMap->Reset();
-            m_LP.ResetCurrentLevel();
+            m_pLP->ResetCurrentLevel();
             m_pLevelPackMenu->RemoveAllItems();
             m_pLevelPackMenu->AddItem("BACK");
             m_GameState = GS_MAINMENU;
@@ -653,13 +682,13 @@ void Game::UpdateLevelCompleted(f32 fDelta)
 
     if(m_fTimer - m_fOldTimer > 3.0f)
     {
-        if(m_LP.GetNextLevel() > m_LP.GetLevelCount())
+        if(m_pLP->GetNextLevel() > m_pLP->GetLevelCount())
         {
             m_fTimer = 0;
             m_iSplashLogoY = 80.0f;
             m_pMainMenu->SetCurrentItem(0);
             m_pMap->Reset();
-            m_LP.ResetCurrentLevel();
+            m_pLP->ResetCurrentLevel();
             m_pLevelPackMenu->RemoveAllItems();
             m_pLevelPackMenu->AddItem("BACK");
             m_GameState = GS_MAINMENU;
@@ -673,7 +702,7 @@ void Game::UpdateLevelCompleted(f32 fDelta)
 
             size_t size = 0;
             uchar *data = 0;
-            m_LP.GetLevelData(m_LP.NextLevel(), &data, &size);
+            m_pLP->GetLevelData(m_pLP->NextLevel(), &data, &size);
             m_pMap->LoadMap(data, size);
             delete [] data;
             m_pMap->UpdateBlocks();
@@ -700,7 +729,7 @@ void Game::UpdateGameOver(f32 fDelta)
         {
             m_pMainMenu->SetCurrentItem(0);
             m_pMap->Reset();
-            m_LP.ResetCurrentLevel();
+            m_pLP->ResetCurrentLevel();
             m_pLevelPackMenu->RemoveAllItems();
             m_pLevelPackMenu->AddItem("BACK");
             m_GameState = GS_MAINMENU;
@@ -751,23 +780,23 @@ void Game::Render()
 void Game::RenderSplash()
 {
     VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
-    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, 64, 0, 256, 228, 204);
-    pVD->PrintText(m_pGameFont, 210, 261, 64, "                      TANK                       ", 1.0f, 255, 255, 255, m_iSplashAlpha);
-    pVD->PrintText(m_pGameFont, 210, 289, 64, "    ORIGINAL SOUNDS AND GRAPHICS - NAMCO, Ltd.   ", 1.0f, 255, 255, 255, m_iSplashAlpha);
-    pVD->PrintText(m_pGameFont, 210, 303, 64, "BINARIES AND SOURCE LICENSED UNDER GNU GPL VER. 3", 1.0f, 255, 255, 255, m_iSplashAlpha);
+    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, LOGO_LAYER, LOGO_OFFSET_X, LOGO_OFFSET_Y, 228, 204);
+    pVD->PrintText(m_pGameFont, 210, 261, TEXT_LAYER, "                      TANK                       ", 1.0f, 255, 255, 255, m_iSplashAlpha);
+    pVD->PrintText(m_pGameFont, 210, 289, TEXT_LAYER, "    ORIGINAL SOUNDS AND GRAPHICS - NAMCO, Ltd.   ", 1.0f, 255, 255, 255, m_iSplashAlpha);
+    pVD->PrintText(m_pGameFont, 210, 303, TEXT_LAYER, "BINARIES AND SOURCE LICENSED UNDER GNU GPL VER. 3", 1.0f, 255, 255, 255, m_iSplashAlpha);
 }
 
 void Game::RenderMainMenu()
 {
     VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
-    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, 64, 0, 256, 228, 204);
+    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, LOGO_LAYER, LOGO_OFFSET_X, LOGO_OFFSET_Y, 228, 204);
     m_pMainMenu->Render(350, 300);
 }
 
 void Game::RenderControlsMenu()
 {
     VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
-    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, 64, 0, 256, 228, 204);
+    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, LOGO_LAYER, LOGO_OFFSET_X, LOGO_OFFSET_Y, 228, 204);
     m_pPlayerSelectMenu->Render(350, 300);
 
     if(m_pPlayerSelectMenu->GetCurrentItem() == CPM_1P)
@@ -783,7 +812,7 @@ void Game::RenderControlsMenu()
 void Game::RenderControlsWaiting()
 {
     VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
-    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, 62, 0, 256, 228, 204);
+    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, LOGO_LAYER, LOGO_OFFSET_X, LOGO_OFFSET_Y, 228, 204);
     m_pPlayerSelectMenu->Render(350, 300, 62);
 
     if(m_pPlayerSelectMenu->GetCurrentItem() == CPM_1P)
@@ -796,17 +825,14 @@ void Game::RenderControlsWaiting()
     }
 
     pVD->FillRectangle(250, 250, 300, 100, 63, 0, 0, 0);
-    pVD->DrawLine(250, 250, 550, 250, 64);
-    pVD->DrawLine(550, 250, 550, 350, 64);
-    pVD->DrawLine(550, 350, 250, 350, 64);
-    pVD->DrawLine(250, 350, 250, 250, 64);
-    pVD->PrintText(m_pGameFont, 250 + 94, 250 + 43, 64, "PRESS A KEY...");
+    pVD->DrawRectangle(250, 250, 300, 100, 64);
+    pVD->PrintText(m_pGameFont, 250 + 94, 250 + 43, TEXT_LAYER, "PRESS A KEY...");
 }
 
 void Game::RenderLevelPackSelection()
 {
     VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
-    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, 62, 0, 256, 228, 204);
+    pVD->DrawSprite(m_pAtlasTexture, 286, m_iSplashLogoY, LOGO_LAYER, LOGO_OFFSET_X, LOGO_OFFSET_Y, 228, 204);
     m_pLevelPackMenu->Render(350, 300);
 }
 
@@ -891,29 +917,30 @@ void Game::RenderGameOver()
 void Game::RenderHUD()
 {
     VideoDriver *pVD = Window::GetInstance()->GetVideoDriver();
-    static char lifes1[4], score1[9], enemies[3];
+    static char lives1[4], score1[9], enemies[3];
 
-    pVD->FillRectangle(0, 568, 800, 32, 1, 255, 255, 255, 255);
+    pVD->FillRectangle(HUD_X, HUD_Y, HUD_WIDTH, HUD_HEIGHT, HUD_BACKGROUND_LAYER, 255, 255, 255, 255);
     // Player 1
-    sprintf(lifes1, "%d", m_pMap->GetPlayer1()->GetLives());
+    sprintf(lives1, "%02d", m_pMap->GetPlayer1()->GetLives());
     sprintf(score1, "%08d", m_pMap->GetPlayer1()->GetScore());
-    pVD->PrintText(m_pGameFont, 6, 572, 2, score1, 2.0f, 0, 0, 0);
-    pVD->DrawSprite(m_pAtlasTexture, 6 + (14 + 2) * 8 + 4 - 2, 568, 2, 640, 0, 32, 32, 1.0f);
-    pVD->PrintText(m_pGameFont, 6 + (14 + 2) * 8 + 4 + 32 + 4 - 2, 572, 2, lifes1, 2.0f, 0, 0, 0);
+    pVD->PrintText(m_pGameFont, HUD_P1_SCORE_X, HUD_P1_SCORE_Y, HUD_LAYER, score1, HUD_TEXT_SCALE, HUD_TEXT_COLOR);
+    pVD->DrawSprite(m_pAtlasTexture, HUD_P1_ICON_X, HUD_P1_ICON_Y, HUD_LAYER, PLAYER_OFFSET_X, PLAYER_OFFSET_Y, HUD_ICON_WIDTH, HUD_ICON_HEIGHT);
+    pVD->PrintText(m_pGameFont, HUD_P1_LIVES_X, HUD_P1_LIVES_Y, HUD_LAYER, lives1, HUD_TEXT_SCALE, HUD_TEXT_COLOR);
     // Player 2
     if(m_bPlayer2)
     {
-        static char lifes2[4], score2[9];
-        sprintf(lifes2, "%d", m_pMap->GetPlayer2()->GetLives());
+        static char lives2[4], score2[9];
+        sprintf(lives2, "%02d", m_pMap->GetPlayer2()->GetLives());
         sprintf(score2, "%08d", m_pMap->GetPlayer2()->GetScore());
-        pVD->PrintText(m_pGameFont, 800 - 6 - (14 + 2) * 8, 572, 2, score2, 2.0f, 0, 0, 0);
-        pVD->DrawSprite(m_pAtlasTexture, 800 - (6 + (14 + 2) * 8 + 4) - 32, 568, 2, 768, 0, 32, 32, 1.0f);
-        pVD->PrintText(m_pGameFont, 800 - (6 + (14 + 2) * 8 + 4 + 32 + 4) - 14, 572, 2, lifes2, 2.0f, 0, 0, 0);
+        pVD->PrintText(m_pGameFont, HUD_P2_SCORE_X, HUD_P2_SCORE_Y, HUD_LAYER, score2, HUD_TEXT_SCALE, HUD_TEXT_COLOR);
+        pVD->DrawSprite(m_pAtlasTexture, HUD_P2_ICON_X, HUD_P2_ICON_Y, HUD_LAYER, PLAYER_OFFSET_X + TANK_TYPE_WIDTH, PLAYER_OFFSET_Y, HUD_ICON_WIDTH, HUD_ICON_HEIGHT);
+        pVD->PrintText(m_pGameFont, HUD_P2_LIVES_X, HUD_P2_LIVES_Y, HUD_LAYER, lives2, HUD_TEXT_SCALE, HUD_TEXT_COLOR);
     }
     // Enemies count
-    sprintf(enemies, "%d", Enemy::GetEnemiesLeft());
-    pVD->PrintText(m_pGameFont, 400 - (strlen(enemies) / 2 * (14 + 2)), 572, 2, enemies, 2.0f, 0, 0, 0);
-    pVD->DrawSprite(m_pAtlasTexture, 400 - (strlen(enemies) / 2 * (14 + 2)) - 32, 568, 2, 128, 0, 32, 32, 1.0f);
+    sprintf(enemies, "%02d", Enemy::GetEnemiesLeft());
+    pVD->DrawSprite(m_pAtlasTexture, HUD_ENEMIES_ICON_X, HUD_ENEMIES_ICON_Y, HUD_LAYER, TANK_TYPE_WIDTH, 0, HUD_ICON_WIDTH, HUD_ICON_HEIGHT);
+        // TODO Should show next enemy's type
+    pVD->PrintText(m_pGameFont, HUD_ENEMIES_COUNT_X, HUD_ENEMIES_COUNT_Y, HUD_LAYER, enemies, HUD_TEXT_SCALE, HUD_TEXT_COLOR);
 }
 
 void Game::Pause()

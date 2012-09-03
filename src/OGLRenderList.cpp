@@ -18,9 +18,11 @@
 */
 
 #include "OGLRenderList.h"
+#include "OGLTexture.h"
+#include <cstdlib>
 
 OGLRenderList::OGLRenderList(RENDERLIST_TYPE rlt, u32 iElements) :
-RenderList(rlt, iElements),
+    RenderList(rlt, iElements),
     m_iCount(0),
     m_bUseColors(false),
     m_aColors(NULL)
@@ -31,9 +33,9 @@ RenderList(rlt, iElements),
     m_aTexCoords = new float[m_iElements * 2 * iVertsPerSprite];
 }
 
-
 OGLRenderList::~OGLRenderList(void)
 {
+#ifdef WITH_GLEW
     if(GLEW_ARB_vertex_buffer_object)
     {
         glDeleteBuffersARB(1, &m_iVBOVCID);
@@ -43,6 +45,7 @@ OGLRenderList::~OGLRenderList(void)
             glDeleteBuffersARB(1, &m_iVBOCID);
         }
     }
+#endif
     delete [] m_aVerts;
     delete [] m_aTexCoords;
     if(m_bUseColors)
@@ -156,6 +159,7 @@ void OGLRenderList::AddElement(Sprite *pSprite, Color *pColor)
 
 void OGLRenderList::FillBuffer()
 {
+#ifdef WITH_GLEW
     int iVertsPerSprite = (m_kRLT == RLT_LINKED ? 4 : 6);
     if(GLEW_ARB_vertex_buffer_object)
     {
@@ -174,6 +178,7 @@ void OGLRenderList::FillBuffer()
             glBufferDataARB(GL_ARRAY_BUFFER_ARB, m_iElements * 4 * iVertsPerSprite * sizeof(float), m_aColors, GL_STREAM_DRAW_ARB);
         }
     }
+#endif
 }
 
 void OGLRenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData, Color *pUpdateColor)
@@ -316,6 +321,8 @@ void OGLRenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData, Color *pUp
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 10] = aUpdateData[i].iS2 / m_pTexture->GetWidth();
             m_aTexCoords[aUpdateData[i].iNum * 2 * iVertsPerSprite + 11] = aUpdateData[i].iT1 / m_pTexture->GetHeight();
         }
+        
+#ifdef WITH_GLEW
         if(GLEW_ARB_vertex_buffer_object)
         {
             glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_iVBOVCID);
@@ -328,6 +335,7 @@ void OGLRenderList::UpdateBuffer(u32 iCount, UpdateData *aUpdateData, Color *pUp
                 glBufferSubDataARB(GL_ARRAY_BUFFER_ARB, aUpdateData[i].iNum * 4 * iVertsPerSprite * sizeof(float), 4 * iVertsPerSprite * sizeof(float), &m_aColors[aUpdateData[i].iNum * 4 * iVertsPerSprite]);
             }
         }
+#endif
     }
 }
 
@@ -335,6 +343,7 @@ void OGLRenderList::Render()
 {
     glBindTexture(GL_TEXTURE_2D, m_pTexture->GetID());
 
+#ifdef WITH_GLEW
     if(GLEW_ARB_vertex_buffer_object)
     {
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_iVBOTCID);
@@ -369,6 +378,7 @@ void OGLRenderList::Render()
     }
     else
     {
+#endif
         if(m_kRLT == RLT_LINKED)
         {
             glBegin(GL_TRIANGLE_STRIP);
@@ -421,5 +431,7 @@ void OGLRenderList::Render()
             }
             glEnd();
         }
+#ifdef WITH_GLEW
     }
+#endif
 }

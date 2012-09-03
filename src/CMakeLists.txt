@@ -13,9 +13,6 @@ list(APPEND SRC
   main.cpp
   Map.cpp
   Menu.cpp
-  OGLRenderList.cpp
-  OGLTexture.cpp
-  OGLVideoDriver.cpp
   Player.cpp
   SoundManager.cpp
   Tank.cpp
@@ -23,6 +20,13 @@ list(APPEND SRC
   Window.cpp
 )
 
+if(WITH_OPENGL)
+  list(APPEND SRC
+    OGLRenderList.cpp
+    OGLTexture.cpp
+    OGLVideoDriver.cpp
+  )
+endif(WITH_OPENGL)
 if(WITH_D3D8)
   list(APPEND SRC
     D3D8RenderList.cpp

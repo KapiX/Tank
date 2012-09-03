@@ -17,9 +17,10 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "D3D8VideoDriver.h"
 #include "D3D8RenderList.h"
 #include "D3D8Texture.h"
+#include "D3D8VideoDriver.h"
+#include <d3dx8.h>
 
 D3D8VideoDriver::D3D8VideoDriver(u32 iWidth, u32 iHeight, void *hWnd)
 {

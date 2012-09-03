@@ -20,13 +20,14 @@
 #ifndef _BONUS_H_
 #define _BONUS_H_
 
-#include "Types.h"
 #include "Singleton.h"
-#include "Animation.h"
-#include "VideoDriver.h"
-#include "Texture.h"
+#include "Types.h"
 #include <cmath>
 #include <ctime>
+
+class Animation;
+class Texture;
+class VideoDriver;
 
 enum BONUS_TYPE
 {

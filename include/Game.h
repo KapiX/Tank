@@ -20,23 +20,14 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "SDL.h"
-#include <string>
-#include <fstream>
-#include <vector>
-#include "Config.h"
-#include "Directory.h"
-#include "Map.h"
-#include "RenderList.h"
 #include "Singleton.h"
-#include "Timer.h"
-#include "Window.h"
-#include "Texture.h"
-#include "Menu.h"
-#include "Keyboard.h"
-#include "Tank.h"
-#include "LevelPack.h"
-#include "SoundManager.h"
+#include "Types.h"
+
+class Animation;
+class LevelPack;
+class Map;
+class Menu;
+class Texture;
 
 const u16 g_ciMaxLevels = 1024;
 
@@ -116,7 +107,7 @@ private:
 
     GAMESTATE m_GameState;
 
-    LevelPack m_LP;
+    LevelPack *m_pLP;
 
     bool m_bPlayer2;
 

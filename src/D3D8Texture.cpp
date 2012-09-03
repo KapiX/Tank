@@ -18,6 +18,7 @@
 */
 
 #include "D3D8Texture.h"
+#include <d3dx8.h>
 
 D3D8Texture::D3D8Texture(const char *szFilename, LPDIRECT3DDEVICE8 pD3DDevice)
     : Texture(szFilename)

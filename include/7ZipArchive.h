@@ -52,9 +52,14 @@ private:
 public:
     static void Init();
 
-    SevenZipArchive() : m_bOpened(false), m_iBlockIndex(0xFFFFFFFF), m_pOutBuffer(NULL), m_iOutBufferSize(0) {}
+    SevenZipArchive() :
+        m_bOpened(false),
+        m_iBlockIndex(0xFFFFFFFF),
+        m_pOutBuffer(NULL),
+        m_iOutBufferSize(0)
+    {}
     ~SevenZipArchive() {}
-    
+
     void Open(const char *strFilename);
     void Close();
 

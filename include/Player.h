@@ -21,7 +21,7 @@
 #define _PLAYER_H_
 
 #include "Tank.h"
-#include "SoundManager.h"
+#include "Types.h"
 
 class Player :
     public Tank
@@ -43,7 +43,7 @@ private:
     DIRECTION m_kSlidingDir;
 
 public:
-    Player(VideoDriver *pVD, u8 iNum, Texture *pTexture, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 85.0f);
+    Player(VideoDriver *pVD, u8 iNum, Texture *pTexture, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = PLAYER_SPEED);
     ~Player();
 
     void Spawn();

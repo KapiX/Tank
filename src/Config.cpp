@@ -17,9 +17,9 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "Config.h"
 #include <cstdlib>
 #include <cstring>
-#include "Config.h"
 
 using namespace std;
 
@@ -27,6 +27,7 @@ Config::Config()
 {
     // Default values
     m_bFullscreen = false;
+    // TODO CMake option
     m_iVideoDriver = 1; // OpenGL
     m_kP1Controller = KEYBOARD;
     m_kP1Controls.iUp = 273; // up arrow
@@ -41,6 +42,8 @@ Config::Config()
     m_kP2Controls.iRight = 100; // d
     m_kP2Controls.iShoot = 113; // q
 
+    // workaround
+    // You can't initialize members in class declaration
     ConfigItem akItems[] = {
         { "fullscreen",         &m_bFullscreen,         CIT_BOOL },
         { "videodriver",        &m_iVideoDriver,        CIT_INT },
@@ -87,20 +90,28 @@ void Config::ReadFromFile(const char *strFilename)
             // Line parsing
             char identifier[64] = "";
             char value[64] = "";
+            // FIXME types: on 64bit it can be problematic
             int pos;
             int len;
 
+            // get the identifier and value
             len = strlen(line);
             pos = (long) strchr(line, '=');
             if(pos != NULL)
+                // '=' found, process the line, otherwise its a comment
             {
                 pos = pos - (long) line + 1;
+                    // strchr returns pointer, we need length
+                    // since char is 1 byte long, we can substract pointer
+                    // addresses and it will give us identifier length
+                    // without + 1 it would also count '='
                 strncpy(identifier, line, pos - 1);
                 identifier[pos - 1] = 0;
                 strncpy(value, &line[pos], len - pos);
                 value[len - pos] = 0;
             }
 
+            // put value in array
             for(int i = 0; i < m_iItemCount; i++)
             {
                 if(strcmp(identifier, m_akItems[i].strIdentifier) == 0)

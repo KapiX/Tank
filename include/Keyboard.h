@@ -20,9 +20,9 @@
 #ifndef _KEYBOARD_H_
 #define _KEYBOARD_H_
 
-#include "SDL.h"
 #include "Singleton.h"
 #include "Types.h"
+#include "SDL.h"
 
 class Keyboard :
     public Singleton<Keyboard>

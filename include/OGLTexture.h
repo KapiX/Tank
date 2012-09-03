@@ -21,10 +21,8 @@
 #define _OGLTEXTURE_H_
 
 #include "Texture.h"
-
+#include "Types.h"
 #include "SDL.h"
-#include "SDL_image.h"
-#include <GL/glew.h>
 
 class OGLTexture :
     public Texture

@@ -17,12 +17,13 @@
     along with Tank.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "SoundManager.h"
 #include "7ZipArchive.h"
+#include "SoundManager.h"
+#include "Types.h"
 
 SoundManager::SoundManager()
 {
-    char *m_astrSoundNames[SND_COUNT] = {
+    char *astrSoundNames[SND_COUNT] = {
         "bonus.ogg",
         "brickhit.ogg",
         "eexplosion.ogg",
@@ -56,7 +57,7 @@ SoundManager::SoundManager()
     // Load all the sounds into memory
     for(u32 i = 0; i < SND_COUNT; i++)
     {
-        kSoundPack.Extract(m_astrSoundNames[i], &pBuffer, &iSoundSize);
+        kSoundPack.Extract(astrSoundNames[i], &pBuffer, &iSoundSize);
         pRW = SDL_RWFromMem(pBuffer, iSoundSize);
         m_pSounds[i] = Mix_LoadWAV_RW(pRW, 1);
     }

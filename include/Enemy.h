@@ -20,7 +20,9 @@
 #ifndef _ENEMY_H_
 #define _ENEMY_H_
 
+#include "Defines.h"
 #include "Tank.h"
+#include "Types.h"
 
 enum SHIELDLEVEL
 {
@@ -41,11 +43,11 @@ private:
     f32 m_fStopTime;
     bool m_bStopped;
 
-    static int m_iEnemiesLeft;
-    static int m_iBonusesLeft;
+    static u8 m_iEnemiesLeft;
+    static u8 m_iBonusesLeft;
 
 public:
-    Enemy(VideoDriver *pVD, Texture *pTexture, bool bHasBonus, SHIELDLEVEL kSL, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 50.0f);
+    Enemy(VideoDriver *pVD, Texture *pTexture, bool bHasBonus, SHIELDLEVEL kSL, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = ENEMY_SPEED);
     ~Enemy();
 
     void Stop();
@@ -59,8 +61,8 @@ public:
 
     void OnExplode();
 
-    static void SetEnemiesLeft(int i) { m_iEnemiesLeft = i; }
-    static void SetBonusesLeft(int i) { m_iBonusesLeft = i; }
+    static void SetEnemiesLeft(u8 i) { m_iEnemiesLeft = i; }
+    static void SetBonusesLeft(u8 i) { m_iBonusesLeft = i; }
 
     void SetShieldLevel(SHIELDLEVEL kSL) { m_kSL = kSL; }
     void SetHasBonus(bool bHasBonus) { m_bHasBonus = bHasBonus; m_pkBonusAnim->SetPlaying(bHasBonus); }
@@ -71,8 +73,8 @@ public:
     bool GetIsSpawning() const { return m_bSpawn; }
     bool GetStopped() const { return m_bStopped; }
 
-    static int GetEnemiesLeft() { return m_iEnemiesLeft; }
-    static int GetBonusesLeft() { return m_iBonusesLeft; }
+    static u8 GetEnemiesLeft() { return m_iEnemiesLeft; }
+    static u8 GetBonusesLeft() { return m_iBonusesLeft; }
 };
 
 #endif // _ENEMY_H_

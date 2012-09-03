@@ -20,20 +20,17 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
-#include "Animation.h"
-#include "Config.h"
-#include "RenderList.h"
-#include "Keyboard.h"
-#include "Player.h"
-#include "Enemy.h"
 #include "Singleton.h"
-#include "Texture.h"
 #include "Types.h"
-#include "VideoDriver.h"
-#include "Bonus.h"
-#include "SoundManager.h"
 #include "SDL.h"
 #include <ctime>
+
+class Animation;
+class Enemy;
+class Player;
+class RenderList;
+class Texture;
+class VideoDriver;
 
 const u8 g_ciMapWidth = 25;
 const u8 g_ciMapHeight = 17;

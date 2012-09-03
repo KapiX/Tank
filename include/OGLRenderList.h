@@ -20,10 +20,14 @@
 #ifndef _OGLRENDERLIST_H_
 #define _OGLRENDERLIST_H_
 
+#include "buildconfig.h"
 #include "RenderList.h"
-#include "SDL.h"
-#include "SDL_image.h"
-#include <GL/glew.h>
+#include "Types.h"
+#ifdef WITH_GLEW
+#    include <GL/glew.h>
+#else
+#    include "SDL_opengl.h"
+#endif
 
 class OGLRenderList :
     public RenderList

@@ -20,10 +20,12 @@
 #ifndef _TANK_H_
 #define _TANK_H_
 
-#include "Animation.h"
-#include "Texture.h"
+#include "Defines.h"
 #include "Types.h"
-#include "VideoDriver.h"
+
+class Animation;
+class Texture;
+class VideoDriver;
 
 enum DIRECTION
 {
@@ -109,7 +111,7 @@ protected:
     VideoDriver *m_pVD;
 
 public:
-    Tank(VideoDriver *pVD, Texture *pTexture, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = 85.0f);
+    Tank(VideoDriver *pVD, Texture *pTexture, TANKLEVEL kTL = TL_1, DIRECTION kDir = DIR_UP, f32 iSpeed = PLAYER_SPEED);
     virtual ~Tank();
 
     void Spawn(DIRECTION kDir = DIR_UP, TANKLEVEL kTL = TL_1);
@@ -165,14 +167,14 @@ public:
         case DIR_UP:
         case DIR_DOWN:
             // round
-            mult = (int) (m_iX + 8) / 16;
-            m_iX = mult * 16;
+            mult = (int) (m_iX + PLAYER_WIDTH_DIV_4) / PLAYER_WIDTH_DIV_2;
+            m_iX = mult * PLAYER_WIDTH_DIV_2;
             break;
         case DIR_RIGHT:
         case DIR_LEFT:
             // round
-            mult = (int) (m_iY + 8 - 24) / 16;
-            m_iY = mult * 16 + 24;
+            mult = (int) (m_iY + PLAYER_HEIGHT_DIV_4 - HUD_TOP_HEIGHT) / PLAYER_HEIGHT_DIV_2;
+            m_iY = mult * PLAYER_HEIGHT_DIV_2 + HUD_TOP_HEIGHT;
             break;
         }
         m_kDir = Dir;
@@ -197,7 +199,15 @@ public:
     Animation *GetAnimation() const { return m_pkAnim; }
     bool GetExplode() const { return m_bExplode; }
     Bullet *GetBullet(int i) const { i = (i > 0) ? 1 : 0; return m_apkBullets[i]; }
-    bool IsOnSpawn() const { return ((m_iX < m_iSpawnX * 32 + 32) && (m_iX + 32 > m_iSpawnX * 32) && (m_iY < m_iSpawnY * 32 + 32) && (m_iY + 32 > m_iSpawnY * 32)); }
+    bool IsOnSpawn() const
+    {
+        return (
+            (m_iX < m_iSpawnX * PLAYER_WIDTH + PLAYER_WIDTH) &&
+            (m_iX + PLAYER_WIDTH > m_iSpawnX * PLAYER_WIDTH) &&
+            (m_iY < m_iSpawnY * PLAYER_HEIGHT + PLAYER_HEIGHT) &&
+            (m_iY + PLAYER_HEIGHT > m_iSpawnY * PLAYER_HEIGHT)
+        );
+    }
 
     static void SetTimer(f32 *pfTimer) { m_pfTimer = pfTimer; }
 };

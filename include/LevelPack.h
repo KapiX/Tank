@@ -20,26 +20,28 @@
 #ifndef _LEVELPACK_H_
 #define _LEVELPACK_H_
 
-#include "7ZipArchive.h"
+#include "Types.h"
+
+class SevenZipArchive;
 
 class LevelPack
 {
 private:
-    int m_iCurrentLevel;
-    int m_iLevelCount;
-    SevenZipArchive m_kArchive;
+    u32 m_iCurrentLevel;
+    u32 m_iLevelCount;
+    SevenZipArchive *m_pkArchive;
 
 public:
-    LevelPack()	{}
+    LevelPack();
+    ~LevelPack();
 
     void Open(const char *strFilename);
-    void Free();
 
-    void GetLevelData(int iLevel, Byte **data, size_t *size);
-    int GetCurrentLevel() { return m_iCurrentLevel; }
-    int GetNextLevel() { return m_iCurrentLevel + 1; }
-    int GetLevelCount() { return m_iLevelCount; }
-    int NextLevel() { m_iCurrentLevel += 1; return m_iCurrentLevel; }
+    void GetLevelData(u32 iLevel, u8 **data, size_t *size);
+    u32 GetCurrentLevel() { return m_iCurrentLevel; }
+    u32 GetNextLevel() { return m_iCurrentLevel + 1; }
+    u32 GetLevelCount() { return m_iLevelCount; }
+    u32 NextLevel() { m_iCurrentLevel += 1; return m_iCurrentLevel; }
     void ResetCurrentLevel() { m_iCurrentLevel = 1; }
 };
 

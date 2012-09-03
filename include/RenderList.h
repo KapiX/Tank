@@ -21,7 +21,8 @@
 #define _RENDERLIST_H_
 
 #include "Types.h"
-#include "Texture.h"
+
+class Texture;
 
 struct Sprite
 {
@@ -32,6 +33,7 @@ struct Sprite
 
 struct Color
 {
+    // TODO to u8
     u32 iR, iG, iB, iA;
 };
 

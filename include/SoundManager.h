@@ -20,9 +20,9 @@
 #ifndef _SOUNDMANAGER_H_
 #define _SOUNDMANAGER_H_
 
+#include "Singleton.h"
 #include "SDL.h"
 #include "SDL_mixer.h"
-#include "Singleton.h"
 
 enum SOUND
 {
@@ -52,6 +52,8 @@ enum CHANNEL
     CNL_MOVING,
     CNL_PAUSE,
     CNL_EFFECTS,
+    
+    // TODO additional channels
 };
 
 class SoundManager :

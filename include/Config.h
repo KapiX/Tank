@@ -20,9 +20,9 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
-#include <fstream>
 #include "Singleton.h"
 #include "Types.h"
+#include <fstream>
 
 /*
 In case of more than one gamepad/joystick use these values as follows:

@@ -19,8 +19,13 @@
 
 #include "Keyboard.h"
 #include "Window.h"
-#include "OGLVideoDriver.h"
 #include <algorithm>
+#ifdef WITH_OPENGL
+#    include "OGLVideoDriver.h"
+#    ifdef WITH_GLEW
+#        include <GL/glew.h>
+#    endif // WITH_GLEW
+#endif // WITH_OPENGL
 #ifdef WIN32
 #    ifdef WITH_D3D8
 #        include "D3D8VideoDriver.h"
@@ -49,22 +54,26 @@ void Window::Init(u32 iWidth, u32 iHeight, bool bFullscreen, VIDEO_DRIVER kVD)
     if(bFullscreen) flags |= SDL_FULLSCREEN;
 
 #ifndef WIN32
+    // on Windows Tank uses .ico icon
     SDL_WM_SetIcon(SDL_LoadBMP("icon.bmp"), NULL);
 #endif
 
     m_pScreen = SDL_SetVideoMode(iWidth, iHeight, 24, flags);
 
-    if(kVD == VD_OPENGL)
+    if(kVD == VD_NULL)
     {
+        SDL_WM_SetCaption("Tank [NULL]", NULL);
+    }
+#if defined(WITH_OPENGL)
+    else if(kVD == VD_OPENGL)
+    {
+#if defined(WITH_GLEW)
         glewInit();
+#endif
 
         SDL_WM_SetCaption("Tank [OpenGL]", NULL);
-
-        if(GLEW_ARB_vertex_buffer_object)
-        {
-            SDL_WM_SetCaption("Tank [OpenGL, using VBO]", NULL);
-        }
     }
+#endif
 #if defined(WIN32) && defined(WITH_D3D8)
     else if(kVD == VD_DIRECT3D8)
     {
@@ -76,16 +85,21 @@ void Window::Init(u32 iWidth, u32 iHeight, bool bFullscreen, VIDEO_DRIVER kVD)
 
     switch(kVD)
     {
+    case VD_NULL:
+        //m_pVD = new NullVideoDriver(iWidth, iHeight);
+        break;
+#if defined(WITH_OPENGL)
     case VD_OPENGL:
         m_pVD = new OGLVideoDriver(iWidth, iHeight);
         break;
+#endif
 #if defined(WIN32) && defined(WITH_D3D8)
     case VD_DIRECT3D8:
         m_pVD = new D3D8VideoDriver(iWidth, iHeight, GetHwnd());
         break;
 #endif
     default:
-        return;
+        break;
     }
 
     m_fMaxAccumulatedTime = 1.0f;

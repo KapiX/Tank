@@ -1,15 +1,5 @@
-In order to make this project work, you need to:
-- put directories graphics, levels and sounds, and icon.bmp (which are located
-  in resources) in directory where your executable file is located
-- (on Windows) put dlls from libs/bin in directory where your executable file
-  is located
+Build instructions:
+http://sourceforge.net/p/tank1990/home/Building%20the%20source%20code/
 
-*.tlp files are just 7z archives and you can modify them using any software
-that supports 7z format.
-
-Compiling/running on linux:
-Needed libs:
-- libSDL-1.2.14
-- libSDL_image-1.2.10
-- libSDL_mixer-1.2.8
-- libGLEW-1.5
+Creating levels/level packs:
+http://sourceforge.net/p/tank1990/home/Creating%20level%20packs/

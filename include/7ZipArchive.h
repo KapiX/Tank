@@ -46,7 +46,7 @@ private:
 
     bool m_bOpened;
 
-    uchar **m_astrFiles;
+    uc8 **m_astrFiles;
     u32 m_iFilesCount;
 
 public:
@@ -63,8 +63,8 @@ public:
     void Open(const char *strFilename);
     void Close();
 
-    bool Exists(char *strFileName) { return GetFileIndex((uchar *) strFileName) != -1; }
-    u32 Find(char *strFileName) { return GetFileIndex((uchar *) strFileName); }
+    bool Exists(char *strFileName) { return GetFileIndex((uc8 *) strFileName) != -1; }
+    u32 Find(char *strFileName) { return GetFileIndex((uc8 *) strFileName); }
     bool Extract(char *strFileName, u8 **ppData, size_t *piSize);
 
     u32 GetFilesCount() const { return m_iFilesCount; }
@@ -75,14 +75,14 @@ protected:
     static bool Utf16ToUtf8(u8 *pDest, size_t *pDestLen, const u16 *pSrc, size_t iSrcLen);
 
     /*
-    GetFileName(u32, uchar *, u32 *)
+    GetFileName(u32, uc8 *, u32 *)
     Returns:
         strFileName - file name
         piLength - file name length
     */
-    void GetFileName(u32 iIndex, uchar *strFileName, size_t *piLength);
+    void GetFileName(u32 iIndex, uc8 *strFileName, size_t *piLength);
     u32 GetFileSize(u32 iIndex) { return (m_kDB.db.Files + iIndex)->Size; }
-    s32 GetFileIndex(uchar *strFileName);
+    s32 GetFileIndex(uc8 *strFileName);
     bool IsDirectory(u32 iIndex) { return (m_kDB.db.Files + iIndex)->IsDir != 0; }
     SRes GetFile(u32 iIndex, size_t &riOffset, size_t &riOutSizeProcessed);
 };

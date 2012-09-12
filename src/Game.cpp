@@ -557,7 +557,7 @@ void Game::UpdateLevelPackSelection(float fDelta)
 
             // load level and start the game
             size_t size = 0;
-            uchar *data = 0;
+            uc8 *data = 0;
             m_pLP->GetLevelData(1, &data, &size);
             m_pMap->LoadMap(data, size);
             delete [] data;
@@ -701,7 +701,7 @@ void Game::UpdateLevelCompleted(f32 fDelta)
             if(m_bPlayer2 && m_pMap->GetPlayer2()->IsAlive()) m_pMap->GetPlayer2()->AddLives(1);
 
             size_t size = 0;
-            uchar *data = 0;
+            uc8 *data = 0;
             m_pLP->GetLevelData(m_pLP->NextLevel(), &data, &size);
             m_pMap->LoadMap(data, size);
             delete [] data;

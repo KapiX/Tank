@@ -1839,7 +1839,12 @@ void Map::Update(f32 fDelta, bool bGetInput)
         {
             SoundManager::GetInstance()->Play(SND_MOVING);
         }
-    } // bGetInput
+    }
+    else
+    {
+        m_pkPlayer1->SetIsMoving(false);
+        m_pkPlayer2->SetIsMoving(false);
+    }
 
     Bonus::GetInstance()->Update();
 

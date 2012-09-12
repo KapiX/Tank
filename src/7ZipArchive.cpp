@@ -75,7 +75,7 @@ void SevenZipArchive::Open(const char *strFilename)
 
     // Prepare list containing file names
     // Initialize array
-    m_astrFiles = new uchar *[m_kDB.db.NumFiles];
+    m_astrFiles = new uc8 *[m_kDB.db.NumFiles];
     m_iFilesCount = m_kDB.db.NumFiles;
 
     for(size_t i = 0; i < m_iFilesCount; i++)
@@ -83,7 +83,7 @@ void SevenZipArchive::Open(const char *strFilename)
         size_t iLen;
         GetFileName(i, NULL, &iLen);
 
-        m_astrFiles[i] = new uchar[iLen];
+        m_astrFiles[i] = new uc8[iLen];
         GetFileName(i, m_astrFiles[i], &iLen);
     }
 
@@ -131,7 +131,7 @@ bool SevenZipArchive::Extract(char *strFileName, u8 **ppData, size_t *piSize)
     if(!m_bOpened)
         return false;
 
-    u32 iIndex = GetFileIndex((uchar *) strFileName);
+    u32 iIndex = GetFileIndex((uc8 *) strFileName);
     if(iIndex == -1)
     {
         return false;
@@ -202,7 +202,7 @@ bool SevenZipArchive::Utf16ToUtf8(u8 *pDest, size_t *pDestLen, const u16 *pSrc, 
     return false;
 }
 
-void SevenZipArchive::GetFileName(u32 iIndex, uchar *strFileName, size_t *piLength)
+void SevenZipArchive::GetFileName(u32 iIndex, uc8 *strFileName, size_t *piLength)
 {
     // Get name length
     size_t iLen = SzArEx_GetFileNameUtf16(&m_kDB, iIndex, NULL);
@@ -216,7 +216,7 @@ void SevenZipArchive::GetFileName(u32 iIndex, uchar *strFileName, size_t *piLeng
     delete [] strTmp;
 }
 
-s32 SevenZipArchive::GetFileIndex(uchar *strFileName)
+s32 SevenZipArchive::GetFileIndex(uc8 *strFileName)
 {
     for(u32 i = 0; i < m_iFilesCount; i++)
     {

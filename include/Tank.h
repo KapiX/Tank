@@ -79,6 +79,8 @@ protected:
         void Destroy(bool bExplode = true);
 
         void SetSpeed(f32 iSpeed) { m_iSpeed = iSpeed; }
+        
+        void Reset() { m_bIsAlive = false; }
 
         f32 GetX() const { return m_iX; }
         f32 GetY() const { return m_iY; }
@@ -130,8 +132,12 @@ public:
         m_pkAnim->Reset();
         m_pkSpawnAnim->Reset();
         m_pkExplAnim->Reset();
-        if(m_apkBullets[0] != NULL) m_apkBullets[0]->m_pkExplAnim->Reset();
-        if(m_apkBullets[1] != NULL) m_apkBullets[1]->m_pkExplAnim->Reset();
+    }
+    
+    void ResetBullets()
+    {
+        if(m_apkBullets[0] != NULL) m_apkBullets[0]->Reset();
+        if(m_apkBullets[1] != NULL) m_apkBullets[1]->Reset();
     }
 
     void SetX(f32 iX) { m_iX = iX; }

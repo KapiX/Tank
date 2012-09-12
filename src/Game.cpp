@@ -540,6 +540,7 @@ void Game::UpdateLevelPackSelection(float fDelta)
     }
     if(Keyboard::GetInstance()->KeyPressed(SDLK_RETURN))
     {
+        m_fTimer = 0;
         if(m_pLevelPackMenu->GetCurrentItem() == m_pLevelPackMenu->ItemCount() - 1)
         {
             m_pLevelPackMenu->RemoveAllItems();

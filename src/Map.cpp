@@ -166,6 +166,9 @@ bool Map::LoadMap(unsigned char *data, unsigned int size)
 
     m_pkPlayer1->ResetAnimations();
     m_pkPlayer2->ResetAnimations();
+    
+    m_pkPlayer1->ResetBullets();
+    m_pkPlayer2->ResetBullets();
 
     Bonus::GetInstance()->SetBonusType(BONUS_NONE);
     Bonus::GetInstance()->GetAnimation()->Reset();

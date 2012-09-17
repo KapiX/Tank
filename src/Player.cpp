@@ -135,43 +135,53 @@ void Player::Update(f32 fDelta)
 
     if(m_bIsAlive)
     {
-        if(m_bIsMoving)
+        if(m_bCanMove)
         {
-            m_pkAnim->Animate();
-            switch(m_kDir)
+            if(m_bIsMoving)
             {
-            case DIR_LEFT:
-                m_iX -= m_iSpeed * fDelta;
-                break;
-            case DIR_RIGHT:
-                m_iX += m_iSpeed * fDelta;
-                break;
-            case DIR_UP:
-                m_iY -= m_iSpeed * fDelta;
-                break;
-            case DIR_DOWN:
-                m_iY += m_iSpeed * fDelta;
-                break;
+                m_pkAnim->Animate();
+                switch(m_kDir)
+                {
+                case DIR_LEFT:
+                    m_iX -= m_iSpeed * fDelta;
+                    break;
+                case DIR_RIGHT:
+                    m_iX += m_iSpeed * fDelta;
+                    break;
+                case DIR_UP:
+                    m_iY -= m_iSpeed * fDelta;
+                    break;
+                case DIR_DOWN:
+                    m_iY += m_iSpeed * fDelta;
+                    break;
+                }
+            }
+            if(m_bSliding && !m_bIsMoving)
+            {
+                m_pkAnim->Animate();
+                m_fSlide -= m_iSpeed * fDelta;
+                switch(m_kSlidingDir)
+                {
+                case DIR_LEFT:
+                    m_iX -= m_iSpeed * fDelta;
+                    break;
+                case DIR_RIGHT:
+                    m_iX += m_iSpeed * fDelta;
+                    break;
+                case DIR_UP:
+                    m_iY -= m_iSpeed * fDelta;
+                    break;
+                case DIR_DOWN:
+                    m_iY += m_iSpeed * fDelta;
+                    break;
+                }
             }
         }
-        if(m_bSliding && !m_bIsMoving)
+        else
         {
-            m_pkAnim->Animate();
-            m_fSlide -= m_iSpeed * fDelta;
-            switch(m_kSlidingDir)
+            if(m_bIsMoving || m_bSliding)
             {
-            case DIR_LEFT:
-                m_iX -= m_iSpeed * fDelta;
-                break;
-            case DIR_RIGHT:
-                m_iX += m_iSpeed * fDelta;
-                break;
-            case DIR_UP:
-                m_iY -= m_iSpeed * fDelta;
-                break;
-            case DIR_DOWN:
-                m_iY += m_iSpeed * fDelta;
-                break;
+                m_pkAnim->Animate();
             }
         }
 
@@ -179,7 +189,9 @@ void Player::Update(f32 fDelta)
         {
             m_pkShieldAnim->Animate();
         }
+        m_bCanMove = true;
     }
+    
     if(m_bSpawn && m_pkSpawnAnim->GetFrameIterator() == 14)
     {
         ActivateShield(SPAWN_SHIELD_TIME);
@@ -294,6 +306,69 @@ void Player::OnExplode()
         m_apkBullets[0]->m_bDestroyJungle = false;
         m_apkBullets[1]->m_bDestroyJungle = false;
     }
+}
+
+void Player::OnCollideBlock(DIRECTION kDir, BLOCK_TYPE *b1, BLOCK_TYPE *b2)
+{
+    if((*b1 != BT_EMPTY && *b1 != BT_ICE && *b1 != BT_JUNGLE) ||
+       (*b2 != BT_EMPTY && *b2 != BT_ICE && *b2 != BT_JUNGLE))
+    {
+        if((*b1 == BT_EMPTY ||
+            *b1 == BT_ICE || 
+            *b1 == BT_JUNGLE || 
+            *b1 == BT_SEA)
+        && (*b2 == BT_SEA ||
+            *b2 == BT_EMPTY ||
+            *b2 == BT_ICE ||
+            *b2 == BT_JUNGLE)
+        && GetBoat()) ;
+        else
+        {
+            m_bCanMove = false;
+        }
+        Slide(0.0f);
+    }
+    
+    BLOCK_TYPE *bIce1, *bIce2;
+    switch(kDir)
+    {
+        case DIR_UP:
+            // [x][y + 1]
+            bIce1 = b1 + 1;
+            bIce2 = b2 + 1;
+            break;
+        case DIR_DOWN:
+            // [x][y - 1]
+            bIce1 = b1 - 1;
+            bIce2 = b2 - 1;
+            break;
+        case DIR_LEFT:
+            // [x + 1][y]
+            bIce1 = b1 + MAP_HEIGHT;
+            bIce2 = b2 + MAP_HEIGHT;
+            break;
+        case DIR_RIGHT:
+            // [x - 1][y]
+            bIce1 = b1 - MAP_HEIGHT;
+            bIce2 = b2 - MAP_HEIGHT;
+            break;
+    }
+    if(m_bIsMoving && *bIce1 == BT_ICE && *bIce2 == BT_ICE) Slide(32.0f);
+    else if(m_bSliding &&
+            (*bIce1 == BT_EMPTY || *bIce2 == BT_EMPTY ||
+             *bIce1 == BT_JUNGLE || *bIce2 == BT_JUNGLE ||
+             ((*bIce1 == BT_SEA || *bIce2 == BT_SEA) && GetBoat())
+            )
+    )
+    {
+        Slide(0.0f);
+            // stop if we're off the ice
+    }
+}
+
+void Player::OnCollideTank()
+{
+    m_bCanMove = false;
 }
 
 void Player::ActivateShield(f32 iTime)

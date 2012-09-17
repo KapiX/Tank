@@ -54,6 +54,8 @@ public:
     void Render();
 
     void OnExplode();
+    void OnCollideBlock(DIRECTION kDir, BLOCK_TYPE *b1, BLOCK_TYPE *b2);
+    void OnCollideTank();
 
     void ActivateShield(f32 iTime);
     void Slide(f32 fSlide);

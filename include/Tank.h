@@ -27,22 +27,6 @@ class Animation;
 class Texture;
 class VideoDriver;
 
-enum DIRECTION
-{
-    DIR_UP = 1,
-    DIR_RIGHT,
-    DIR_DOWN,
-    DIR_LEFT,
-};
-
-enum TANKLEVEL
-{
-    TL_1 = 1,
-    TL_2,
-    TL_3,
-    TL_4,
-};
-
 class Tank
 {
 protected:
@@ -107,6 +91,7 @@ protected:
     bool m_bExplode;
     bool m_bIsMoving;
     bool m_bIsAlive;
+    bool m_bCanMove;
 
     static f32 *m_pfTimer;
 
@@ -126,6 +111,8 @@ public:
     virtual void Render() = 0;
 
     virtual void OnExplode() = 0;
+    virtual void OnCollideBlock(DIRECTION kDir, BLOCK_TYPE *b1, BLOCK_TYPE *b2) = 0;
+    virtual void OnCollideTank() = 0;
 
     void ResetAnimations()
     {
@@ -167,6 +154,7 @@ public:
     }
     void SetDirection(DIRECTION Dir)
     {
+        // FIXME Tanks blocking each other when changing direction
         int mult;
         switch(Dir)
         {

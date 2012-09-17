@@ -21,6 +21,19 @@
 #define _DEFINES_H_
 
 // Game objects' metrics
+#define TANK_WIDTH                  32
+#define TANK_HEIGHT                 32
+#define TANK_WIDTH_DIV_2            16
+#define TANK_HEIGHT_DIV_2           16
+#define TANK_WIDTH_DIV_4            8
+#define TANK_HEIGHT_DIV_4           8
+
+// 'block' here is one fourth of normal block 
+#define BLOCK_WIDTH                 16
+#define BLOCK_HEIGHT                16
+#define BLOCK_WIDTH_DIV_2           8
+#define BLOCK_HEIGHT_DIV_2          8
+
 #define BOAT_WIDTH                  32
 #define BOAT_HEIGHT                 32
 #define BONUS_WIDTH                 32
@@ -29,10 +42,10 @@
 #define BULLET_HEIGHT               8
 #define BULLET_WIDTH_DIV_2          4
 #define BULLET_HEIGHT_DIV_2         4
-#define ENEMY_WIDTH                 32
-#define ENEMY_HEIGHT                32
-#define ENEMY_WIDTH_DIV_2           16
-#define ENEMY_HEIGHT_DIV_2          16
+#define ENEMY_WIDTH                 TANK_WIDTH
+#define ENEMY_HEIGHT                TANK_HEIGHT
+#define ENEMY_WIDTH_DIV_2           TANK_WIDTH_DIV_2 
+#define ENEMY_HEIGHT_DIV_2          TANK_HEIGHT_DIV_2
 #define EXPLOSION_ANIM_WIDTH        32
 #define EXPLOSION_ANIM_HEIGHT       32
 #define EXPLOSION_ANIM_WIDTH_DIV_2  16
@@ -41,12 +54,12 @@
 #define EXPLOSION_ANIM_HEIGHT_2     64
 #define SPAWN_ANIM_WIDTH            32
 #define SPAWN_ANIM_HEIGHT           32
-#define PLAYER_WIDTH                32
-#define PLAYER_HEIGHT               32
-#define PLAYER_WIDTH_DIV_2          16
-#define PLAYER_HEIGHT_DIV_2         16
-#define PLAYER_WIDTH_DIV_4          8
-#define PLAYER_HEIGHT_DIV_4         8
+#define PLAYER_WIDTH                TANK_WIDTH
+#define PLAYER_HEIGHT               TANK_HEIGHT
+#define PLAYER_WIDTH_DIV_2          TANK_WIDTH_DIV_2 
+#define PLAYER_HEIGHT_DIV_2         TANK_HEIGHT_DIV_2
+#define PLAYER_WIDTH_DIV_4          TANK_WIDTH_DIV_4 
+#define PLAYER_HEIGHT_DIV_4         TANK_HEIGHT_DIV_4
 #define SHIELD_WIDTH                32
 #define SHIELD_HEIGHT               32
 
@@ -140,6 +153,10 @@
 #define ENEMY_BULLET_SPEED          150 // speed * 3
 #define ENEMY_LVL2_SPEED            100 // speed * 2
 #define ENEMY_LVL3_BULLET_SPEED     300 // bulletspeed * 2
+#define MAP_WIDTH                   50
+    // in blocks
+#define MAP_HEIGHT                  34
+    // in blocks
 #define RES_WIDTH                   800
 #define RES_HEIGHT                  600
 #define MENU_POINTER_SPACE          3 // space between pointer and menu options

@@ -56,6 +56,14 @@ void Render(VideoDriver *pVD)
     pVD->EndScene();
 }
 
+void Cleanup()
+{
+    Game::GetInstance()->FreeResources();
+    delete pFont;
+    
+    Window::GetInstance()->Shutdown();
+}
+
 int main(int argc, char *argv[])
 {
     Config::GetInstance()->ReadFromFile("config.cfg");
@@ -70,11 +78,8 @@ int main(int argc, char *argv[])
     Game::GetInstance()->LoadResources(pFont);
 
     Window::GetInstance()->Loop();
-
-    Game::GetInstance()->FreeResources();
-    delete pFont;
-
-    Window::GetInstance()->Shutdown();
+    
+    ::Cleanup();
 
     Config::GetInstance()->SaveToFile("config.cfg");
 

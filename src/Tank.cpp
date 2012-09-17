@@ -163,7 +163,7 @@ Tank::Tank(VideoDriver *pVD, Texture *pTexture, TANKLEVEL kTL, DIRECTION kDir, f
     m_pkSpawnAnim = new Animation();
     m_pkSpawnAnim->SetFrames(frames);
     m_pkSpawnAnim->SetFrameRate(0.07f);
-    m_pkSpawnAnim->SetMaxFrames(15 + 1); // needed for checking whether animation is over
+    m_pkSpawnAnim->SetMaxFrames(15 + 1); // + 1 needed for checking whether animation is over
     m_pkSpawnAnim->SetOscillate(false);
     m_pkSpawnAnim->SetPlaying(false);
 
@@ -177,6 +177,7 @@ Tank::Tank(VideoDriver *pVD, Texture *pTexture, TANKLEVEL kTL, DIRECTION kDir, f
     m_bSpawn = false;
     m_bIsMoving = false;
     m_bIsAlive = false;
+    m_bCanMove = false;
 }
 
 Tank::~Tank()

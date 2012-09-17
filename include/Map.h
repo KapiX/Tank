@@ -29,72 +29,13 @@ class Animation;
 class Enemy;
 class Player;
 class RenderList;
+class Tank;
 class Texture;
 class VideoDriver;
 
 const u8 g_ciMapWidth = 25;
 const u8 g_ciMapHeight = 17;
 const f32 g_cfSpawnInterval = 1;
-
-struct BonusArea
-{
-    u16 iX;
-    u16 iY;
-    u16 iW;
-    u16 iH;
-};
-
-struct SpawnPoint
-{
-    u8 iX;
-    u8 iY;
-};
-
-struct MapInfo
-{
-    char id[4];
-    u8 iNameSize;
-    char *strName;
-    BonusArea bonusArea;
-    SpawnPoint p1Spawn;
-    SpawnPoint p2Spawn;
-    SpawnPoint e1Spawn;
-    SpawnPoint e2Spawn;
-    SpawnPoint e3Spawn;
-    SpawnPoint eagle;
-};
-
-// first byte - x, next one - y
-enum BLOCK_TYPE
-{
-    BT_EMPTY = 48,
-    BT_BRICK = 0,
-    BT_BRICK_HBOT = 2048,
-    BT_BRICK_HTOP = 2056,
-    BT_BRICK_VLEFT = 4096,
-    BT_BRICK_VRIGHT = 4104,
-    BT_BRICK_LBOT = 6144,
-    BT_BRICK_RTOP = 6152,
-    BT_BRICK_RBOT = 6160,
-    BT_BRICK_LTOP = 6168,
-    BT_STEEL = 8,
-    BT_SEA = 16,
-    BT_JUNGLE = 2064,
-    BT_ICE = 2072,
-    BT_EAGLE = 32,
-    BT_EAGLELTOP = 32,
-    BT_EAGLELBOT = 40,
-    BT_EAGLERTOP = 2080,
-    BT_EAGLERBOT = 2088,
-    BT_DEADEAGLE = 4128,
-    BT_DEADEAGLELTOP = 4128,
-    BT_DEADEAGLELBOT = 4136,
-    BT_DEADEAGLERTOP = 6176,
-    BT_DEADEAGLERBOT = 6184,
-    BT_EDGE = 4112,
-    BT_DUMMY = 49 // totally random, needed to clear BT_EMPTY space
-};
-
 
 class Map :
     public Singleton<Map>
@@ -134,6 +75,7 @@ public:
     void CalculateDamageRight(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy = false);
     void CalculateDamageDown(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy = false);
     void CalculateDamageLeft(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy = false);
+    void CanMove(Tank *pTank, f32 fDelta);
     void HandleCollisions(f32 fDelta);
     void DestroyEagle();
 

@@ -24,14 +24,6 @@
 #include "Tank.h"
 #include "Types.h"
 
-enum SHIELDLEVEL
-{
-    SL_1 = 1,
-    SL_2,
-    SL_3,
-    SL_4,
-};
-
 class Enemy :
     public Tank
 {
@@ -60,6 +52,8 @@ public:
     void Render();
 
     void OnExplode();
+    void OnCollideBlock(DIRECTION kDir, BLOCK_TYPE *b1, BLOCK_TYPE *b2);
+    void OnCollideTank();
 
     static void SetEnemiesLeft(u8 i) { m_iEnemiesLeft = i; }
     static void SetBonusesLeft(u8 i) { m_iBonusesLeft = i; }

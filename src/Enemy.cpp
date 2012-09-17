@@ -108,7 +108,7 @@ void Enemy::Update(f32 fDelta)
     if(*m_pfTimer - m_fStopTime > BONUS_STOP_TIME)
         m_bStopped = false;
 
-    if(m_bIsAlive && m_bIsMoving && !m_bStopped)
+    if(m_bIsAlive && m_bCanMove && m_bIsMoving && !m_bStopped)
     {
         switch(m_kDir)
         {
@@ -126,6 +126,7 @@ void Enemy::Update(f32 fDelta)
             break;
         }
     }
+    m_bCanMove = true;
 
     m_pkBonusAnim->Animate();
 
@@ -234,6 +235,22 @@ void Enemy::OnExplode()
         m_bExplode = false;
         m_pkExplAnim->SetPlaying(false);
     }
+}
+
+void Enemy::OnCollideBlock(DIRECTION kDir, BLOCK_TYPE *b1, BLOCK_TYPE *b2)
+{
+    if((*b1 != BT_EMPTY && *b1 != BT_ICE && *b1 != BT_JUNGLE) ||
+       (*b2 != BT_EMPTY && *b2 != BT_ICE && *b2 != BT_JUNGLE))
+    {
+        SetDirection((DIRECTION) (rand() % 4 + 1));
+        m_bCanMove = false;
+    }
+}
+
+void Enemy::OnCollideTank()
+{
+    SetDirection((DIRECTION) (rand() % 4 + 1));
+    m_bCanMove = false;
 }
 
 void Enemy::SetTankLevel(TANKLEVEL tl)

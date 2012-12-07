@@ -155,20 +155,20 @@ public:
     void SetDirection(DIRECTION Dir)
     {
         // FIXME Tanks blocking each other when changing direction
-        int mult;
+        u32 mult;
         switch(Dir)
         {
         case DIR_UP:
         case DIR_DOWN:
             // round
-            mult = (int) (m_iX + PLAYER_WIDTH_DIV_4) / PLAYER_WIDTH_DIV_2;
-            m_iX = mult * PLAYER_WIDTH_DIV_2;
+            mult = static_cast<u32>((m_iX + PLAYER_WIDTH_DIV_4) / PLAYER_WIDTH_DIV_2);
+            m_iX = static_cast<f32>(mult * PLAYER_WIDTH_DIV_2);
             break;
         case DIR_RIGHT:
         case DIR_LEFT:
             // round
-            mult = (int) (m_iY + PLAYER_HEIGHT_DIV_4 - HUD_TOP_HEIGHT) / PLAYER_HEIGHT_DIV_2;
-            m_iY = mult * PLAYER_HEIGHT_DIV_2 + HUD_TOP_HEIGHT;
+            mult = static_cast<u32>((m_iY + PLAYER_HEIGHT_DIV_4 - HUD_TOP_HEIGHT) / PLAYER_HEIGHT_DIV_2);
+            m_iY = static_cast<f32>(mult * PLAYER_HEIGHT_DIV_2 + HUD_TOP_HEIGHT);
             break;
         }
         m_kDir = Dir;

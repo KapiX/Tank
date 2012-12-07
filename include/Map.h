@@ -71,10 +71,10 @@ public:
 
     bool LoadMap(unsigned char *data, unsigned int size);
 
-    void CalculateDamageUp(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy = false);
-    void CalculateDamageRight(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy = false);
-    void CalculateDamageDown(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy = false);
-    void CalculateDamageLeft(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy = false);
+    SOUND CalculateDamageUp(BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2);
+    SOUND CalculateDamageRight(BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2);
+    SOUND CalculateDamageDown(BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2);
+    SOUND CalculateDamageLeft(BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2);
     void CanMove(Tank *pTank, f32 fDelta);
     void HandleCollisions(f32 fDelta);
     void DestroyEagle();

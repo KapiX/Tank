@@ -64,7 +64,7 @@ Map::Map(VideoDriver *pVD, Texture *pAtlasTexture)
     m_afKillTime[0] = -g_cfSpawnInterval;
     m_afKillTime[1] = -g_cfSpawnInterval;
     m_afKillTime[2] = -g_cfSpawnInterval;
-    m_afKillTime[3] = g_cfSpawnInterval * 1.5;
+    m_afKillTime[3] = g_cfSpawnInterval * 1.5f;
     m_fLastKill = 0;
 
     Sprite *spr = new Sprite;
@@ -152,10 +152,15 @@ bool Map::LoadMap(unsigned char *data, unsigned int size)
     }
     SDL_RWclose(file);
 
-    m_aOldBlocks[m_pMapInfo->eagle.iX * 2][m_pMapInfo->eagle.iY * 2] = m_aBlocks[m_pMapInfo->eagle.iX * 2][m_pMapInfo->eagle.iY * 2] = BT_EAGLELTOP;
-    m_aOldBlocks[m_pMapInfo->eagle.iX * 2 + 1][m_pMapInfo->eagle.iY * 2] = m_aBlocks[m_pMapInfo->eagle.iX * 2 + 1][m_pMapInfo->eagle.iY * 2] = BT_EAGLERTOP;
-    m_aOldBlocks[m_pMapInfo->eagle.iX * 2][m_pMapInfo->eagle.iY * 2 + 1] = m_aBlocks[m_pMapInfo->eagle.iX * 2][m_pMapInfo->eagle.iY * 2 + 1] = BT_EAGLELBOT;
-    m_aOldBlocks[m_pMapInfo->eagle.iX * 2 + 1][m_pMapInfo->eagle.iY * 2 + 1] = m_aBlocks[m_pMapInfo->eagle.iX * 2 + 1][m_pMapInfo->eagle.iY * 2 + 1] = BT_EAGLERBOT;
+    u32 x1 = m_pMapInfo->eagle.iX * 2;
+    u32 y1 = m_pMapInfo->eagle.iY * 2;
+    u32 x2 = m_pMapInfo->eagle.iX * 2 + 1; 
+    u32 y2 = m_pMapInfo->eagle.iY * 2 + 1;
+    
+    m_aOldBlocks[x1][y1] = m_aBlocks[x1][y1] = BT_EAGLELTOP;
+    m_aOldBlocks[x2][y1] = m_aBlocks[x2][y1] = BT_EAGLERTOP;
+    m_aOldBlocks[x1][y2] = m_aBlocks[x1][y2] = BT_EAGLELBOT;
+    m_aOldBlocks[x2][y2] = m_aBlocks[x2][y2] = BT_EAGLERBOT;
 
     m_pkPlayer1->SetSpawnPoint(m_pMapInfo->p1Spawn.iX, m_pMapInfo->p1Spawn.iY);
     m_pkPlayer2->SetSpawnPoint(m_pMapInfo->p2Spawn.iX, m_pMapInfo->p2Spawn.iY);
@@ -189,7 +194,7 @@ bool Map::LoadMap(unsigned char *data, unsigned int size)
     m_afKillTime[0] = -g_cfSpawnInterval;
     m_afKillTime[1] = -g_cfSpawnInterval;
     m_afKillTime[2] = -g_cfSpawnInterval;
-    m_afKillTime[3] = g_cfSpawnInterval * 1.5;
+    m_afKillTime[3] = g_cfSpawnInterval * 1.5f;
 
     m_bEagleDestroyed = false;
 
@@ -199,73 +204,63 @@ bool Map::LoadMap(unsigned char *data, unsigned int size)
     return true;
 }
 
-void Map::CalculateDamageUp(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy)
+SOUND Map::CalculateDamageUp(BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2)
 {
     BLOCK_TYPE tmp1, tmp2;
     tmp1 = *pkBlock1;
     tmp2 = *pkBlock2;
+    SOUND ret = SND_BRICKHIT;
 
     switch(*pkBlock1)
     {
     case BT_BRICK:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        else
-            tmp1 = BT_BRICK_HTOP;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp1 = BT_BRICK_HTOP;
         break;
     case BT_BRICK_HTOP:
     case BT_BRICK_LTOP:
     case BT_BRICK_RTOP:
-        if(*pkBlock2 == BT_BRICK_LTOP || *pkBlock2 == BT_BRICK_RTOP || *pkBlock2 == BT_BRICK_HTOP || *pkBlock2 == BT_EMPTY || *pkBlock2 == BT_JUNGLE || *pkBlock2 == BT_ICE || *pkBlock2 == BT_SEA || (kTL == TL_4 && !bEnemy))
+        if(*pkBlock2 == BT_BRICK_LTOP
+        || *pkBlock2 == BT_BRICK_RTOP
+        || *pkBlock2 == BT_BRICK_HTOP
+        || *pkBlock2 == BT_EMPTY
+        || *pkBlock2 == BT_JUNGLE
+        || *pkBlock2 == BT_ICE
+        || *pkBlock2 == BT_SEA)
             tmp1 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_BRICK_HBOT:
     case BT_BRICK_LBOT:
     case BT_BRICK_RBOT:
         tmp1 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_BRICK_VRIGHT:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        else
-            tmp1 = BT_BRICK_RTOP;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp1 = BT_BRICK_RTOP;
         break;
     case BT_BRICK_VLEFT:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        else
-            tmp1 = BT_BRICK_LTOP;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp1 = BT_BRICK_LTOP;
         break;
     case BT_STEEL:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
-        break;
     case BT_EDGE:
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
+        ret = SND_STEELHIT;
         break;
     }
 
     switch(*pkBlock2)
     {
     case BT_BRICK:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        else
-            tmp2 = BT_BRICK_HTOP;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp2 = BT_BRICK_HTOP;
         break;
     case BT_BRICK_HTOP:
     case BT_BRICK_LTOP:
     case BT_BRICK_RTOP:
-        if(*pkBlock1 == BT_BRICK_LTOP || *pkBlock1 == BT_BRICK_RTOP || *pkBlock1 == BT_BRICK_HTOP || *pkBlock1 == BT_EMPTY || *pkBlock1 == BT_JUNGLE || *pkBlock1 == BT_ICE || *pkBlock1 == BT_SEA || (kTL == TL_4 && !bEnemy))
+        if(*pkBlock1 == BT_BRICK_LTOP
+        || *pkBlock1 == BT_BRICK_RTOP
+        || *pkBlock1 == BT_BRICK_HTOP
+        || *pkBlock1 == BT_EMPTY
+        || *pkBlock1 == BT_JUNGLE
+        || *pkBlock1 == BT_ICE
+        || *pkBlock1 == BT_SEA)
             tmp2 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_BRICK_HBOT:
     case BT_BRICK_LBOT:
@@ -273,335 +268,260 @@ void Map::CalculateDamageUp(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkB
         tmp2 = BT_EMPTY;
         break;
     case BT_BRICK_VRIGHT:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        else
-            tmp2 = BT_BRICK_RTOP;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp2 = BT_BRICK_RTOP;
         break;
     case BT_BRICK_VLEFT:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        else
-            tmp2 = BT_BRICK_LTOP;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp2 = BT_BRICK_LTOP;
         break;
     case BT_STEEL:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
-        break;
     case BT_EDGE:
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
+        ret = SND_STEELHIT;
         break;
     }
 
     *pkBlock1 = tmp1;
     *pkBlock2 = tmp2;
+    return ret;
 }
 
-void Map::CalculateDamageRight(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy)
+SOUND Map::CalculateDamageRight(BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2)
 {
     BLOCK_TYPE tmp1, tmp2;
     tmp1 = *pkBlock1;
     tmp2 = *pkBlock2;
+    SOUND ret = SND_BRICKHIT;
 
     switch(*pkBlock1)
     {
     case BT_BRICK:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        else
-            tmp1 = BT_BRICK_VRIGHT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp1 = BT_BRICK_VRIGHT;
         break;
     case BT_BRICK_HTOP:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        else
-            tmp1 = BT_BRICK_RTOP;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp1 = BT_BRICK_RTOP;
         break;
     case BT_BRICK_HBOT:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        else
-            tmp1 = BT_BRICK_RBOT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp1 = BT_BRICK_RBOT;
         break;
     case BT_BRICK_VRIGHT:
     case BT_BRICK_RBOT:
     case BT_BRICK_RTOP:
-        if(*pkBlock2 == BT_BRICK_VRIGHT || *pkBlock2 == BT_BRICK_RBOT || *pkBlock2 == BT_BRICK_RTOP || *pkBlock2 == BT_EMPTY || *pkBlock2 == BT_JUNGLE || *pkBlock2 == BT_ICE || *pkBlock2 == BT_SEA || (kTL == TL_4 && !bEnemy))
+        if(*pkBlock2 == BT_BRICK_VRIGHT
+        || *pkBlock2 == BT_BRICK_RBOT
+        || *pkBlock2 == BT_BRICK_RTOP
+        || *pkBlock2 == BT_EMPTY
+        || *pkBlock2 == BT_JUNGLE
+        || *pkBlock2 == BT_ICE
+        || *pkBlock2 == BT_SEA)
             tmp1 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_BRICK_VLEFT:
     case BT_BRICK_LBOT:
     case BT_BRICK_LTOP:
         tmp1 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_STEEL:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
-        break;
     case BT_EDGE:
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
+        ret = SND_STEELHIT;
         break;
     }
+    
     switch(*pkBlock2)
     {
     case BT_BRICK:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        else
-            tmp2 = BT_BRICK_VRIGHT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp2 = BT_BRICK_VRIGHT;
         break;
     case BT_BRICK_HTOP:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        else
-            tmp2 = BT_BRICK_RTOP;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp2 = BT_BRICK_RTOP;
         break;
     case BT_BRICK_HBOT:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        else
-            tmp2 = BT_BRICK_RBOT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp2 = BT_BRICK_RBOT;
         break;
     case BT_BRICK_VRIGHT:
     case BT_BRICK_RBOT:
     case BT_BRICK_RTOP:
-        if(*pkBlock1 == BT_BRICK_VRIGHT || *pkBlock1 == BT_BRICK_RBOT || *pkBlock1 == BT_BRICK_RTOP || *pkBlock1 == BT_EMPTY || *pkBlock1 == BT_JUNGLE || *pkBlock1 == BT_ICE || *pkBlock1 == BT_SEA || (kTL == TL_4 && !bEnemy))
+        if(*pkBlock1 == BT_BRICK_VRIGHT
+        || *pkBlock1 == BT_BRICK_RBOT
+        || *pkBlock1 == BT_BRICK_RTOP
+        || *pkBlock1 == BT_EMPTY
+        || *pkBlock1 == BT_JUNGLE
+        || *pkBlock1 == BT_ICE
+        || *pkBlock1 == BT_SEA)
             tmp2 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_BRICK_VLEFT:
     case BT_BRICK_LBOT:
     case BT_BRICK_LTOP:
         tmp2 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_STEEL:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
-        break;
     case BT_EDGE:
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
+        ret = SND_STEELHIT;
         break;
     }
 
     *pkBlock1 = tmp1;
     *pkBlock2 = tmp2;
+    return ret;
 }
 
-void Map::CalculateDamageDown(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy)
+SOUND Map::CalculateDamageDown(BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2)
 {
     BLOCK_TYPE tmp1, tmp2;
     tmp1 = *pkBlock1;
     tmp2 = *pkBlock2;
+    SOUND ret = SND_BRICKHIT;
 
     switch(*pkBlock1)
     {
     case BT_BRICK:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        else
-            tmp1 = BT_BRICK_HBOT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp1 = BT_BRICK_HBOT;
         break;
     case BT_BRICK_HBOT:
     case BT_BRICK_LBOT:
     case BT_BRICK_RBOT:
-        if(*pkBlock2 == BT_BRICK_LBOT || *pkBlock2 == BT_BRICK_RBOT || *pkBlock2 == BT_BRICK_HBOT || *pkBlock2 == BT_EMPTY || *pkBlock2 == BT_JUNGLE || *pkBlock2 == BT_ICE || *pkBlock2 == BT_SEA || (kTL == TL_4 && !bEnemy))
+        if(*pkBlock2 == BT_BRICK_LBOT
+        || *pkBlock2 == BT_BRICK_RBOT
+        || *pkBlock2 == BT_BRICK_HBOT
+        || *pkBlock2 == BT_EMPTY
+        || *pkBlock2 == BT_JUNGLE
+        || *pkBlock2 == BT_ICE
+        || *pkBlock2 == BT_SEA)
             tmp1 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_BRICK_HTOP:
     case BT_BRICK_LTOP:
     case BT_BRICK_RTOP:
         tmp1 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_BRICK_VRIGHT:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        else
-            tmp1 = BT_BRICK_RBOT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp1 = BT_BRICK_RBOT;
         break;
     case BT_BRICK_VLEFT:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        else
-            tmp1 = BT_BRICK_LBOT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp1 = BT_BRICK_LBOT;
         break;
     case BT_STEEL:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
-        break;
     case BT_EDGE:
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
+        ret = SND_STEELHIT;
         break;
     }
 
     switch(*pkBlock2)
     {
     case BT_BRICK:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        else
-            tmp2 = BT_BRICK_HBOT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp2 = BT_BRICK_HBOT;
         break;
     case BT_BRICK_HBOT:
     case BT_BRICK_LBOT:
     case BT_BRICK_RBOT:
-        if(*pkBlock1 == BT_BRICK_LBOT || *pkBlock1 == BT_BRICK_RBOT || *pkBlock1 == BT_BRICK_HBOT || *pkBlock1 == BT_EMPTY || *pkBlock1 == BT_JUNGLE || *pkBlock1 == BT_ICE || *pkBlock1 == BT_SEA || (kTL == TL_4  && !bEnemy))
+        if(*pkBlock1 == BT_BRICK_LBOT
+        || *pkBlock1 == BT_BRICK_RBOT
+        || *pkBlock1 == BT_BRICK_HBOT
+        || *pkBlock1 == BT_EMPTY
+        || *pkBlock1 == BT_JUNGLE
+        || *pkBlock1 == BT_ICE
+        || *pkBlock1 == BT_SEA)
             tmp2 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_BRICK_HTOP:
     case BT_BRICK_LTOP:
     case BT_BRICK_RTOP:
         tmp2 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_BRICK_VRIGHT:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        else
-            tmp2 = BT_BRICK_RBOT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp2 = BT_BRICK_RBOT;
         break;
     case BT_BRICK_VLEFT:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        else
-            tmp2 = BT_BRICK_LBOT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp2 = BT_BRICK_LBOT;
         break;
     case BT_STEEL:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
-        break;
     case BT_EDGE:
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
+        ret = SND_STEELHIT;
         break;
     }
 
     *pkBlock1 = tmp1;
     *pkBlock2 = tmp2;
+    return ret;
 }
 
-void Map::CalculateDamageLeft(TANKLEVEL kTL, BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2, bool bEnemy)
+SOUND Map::CalculateDamageLeft(BLOCK_TYPE *pkBlock1, BLOCK_TYPE *pkBlock2)
 {
     BLOCK_TYPE tmp1, tmp2;
     tmp1 = *pkBlock1;
     tmp2 = *pkBlock2;
+    SOUND ret = SND_BRICKHIT;
 
     switch(*pkBlock1)
     {
     case BT_BRICK:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        else
-            tmp1 = BT_BRICK_VLEFT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp1 = BT_BRICK_VLEFT;
         break;
     case BT_BRICK_HTOP:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        else
-            tmp1 = BT_BRICK_LTOP;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp1 = BT_BRICK_LTOP;
         break;
     case BT_BRICK_HBOT:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        else
-            tmp1 = BT_BRICK_LBOT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp1 = BT_BRICK_LBOT;
         break;
     case BT_BRICK_VLEFT:
     case BT_BRICK_LBOT:
     case BT_BRICK_LTOP:
-        if(*pkBlock2 == BT_BRICK_VLEFT || *pkBlock2 == BT_BRICK_LBOT || *pkBlock2 == BT_BRICK_LTOP || *pkBlock2 == BT_EMPTY || *pkBlock2 == BT_JUNGLE || *pkBlock2 == BT_ICE || *pkBlock2 == BT_SEA || (kTL == TL_4 && !bEnemy))
+        if(*pkBlock2 == BT_BRICK_VLEFT
+        || *pkBlock2 == BT_BRICK_LBOT
+        || *pkBlock2 == BT_BRICK_LTOP
+        || *pkBlock2 == BT_EMPTY
+        || *pkBlock2 == BT_JUNGLE
+        || *pkBlock2 == BT_ICE
+        || *pkBlock2 == BT_SEA)
             tmp1 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_BRICK_VRIGHT:
     case BT_BRICK_RBOT:
     case BT_BRICK_RTOP:
         tmp1 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_STEEL:
-        if(kTL == TL_4 && !bEnemy)
-            tmp1 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
-        break;
     case BT_EDGE:
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
+        ret = SND_STEELHIT;
         break;
     }
+    
     switch(*pkBlock2)
     {
     case BT_BRICK:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        else
-            tmp2 = BT_BRICK_VLEFT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp2 = BT_BRICK_VLEFT;
         break;
     case BT_BRICK_HTOP:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        else
-            tmp2 = BT_BRICK_LTOP;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp2 = BT_BRICK_LTOP;
         break;
     case BT_BRICK_HBOT:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        else
-            tmp2 = BT_BRICK_LBOT;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
+        tmp2 = BT_BRICK_LBOT;
         break;
     case BT_BRICK_VLEFT:
     case BT_BRICK_LBOT:
     case BT_BRICK_LTOP:
-        if(*pkBlock1 == BT_BRICK_VLEFT || *pkBlock1 == BT_BRICK_LBOT || *pkBlock1 == BT_BRICK_LTOP || *pkBlock1 == BT_EMPTY || *pkBlock1 == BT_JUNGLE || *pkBlock1 == BT_ICE || *pkBlock1 == BT_SEA || (kTL == TL_4 && !bEnemy))
+        if(*pkBlock1 == BT_BRICK_VLEFT
+        || *pkBlock1 == BT_BRICK_LBOT
+        || *pkBlock1 == BT_BRICK_LTOP
+        || *pkBlock1 == BT_EMPTY
+        || *pkBlock1 == BT_JUNGLE
+        || *pkBlock1 == BT_ICE
+        || *pkBlock1 == BT_SEA)
             tmp2 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_BRICK_VRIGHT:
     case BT_BRICK_RBOT:
     case BT_BRICK_RTOP:
         tmp2 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_BRICKHIT);
         break;
     case BT_STEEL:
-        if(kTL == TL_4 && !bEnemy)
-            tmp2 = BT_EMPTY;
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
-        break;
     case BT_EDGE:
-        if(!bEnemy) SoundManager::GetInstance()->Play(SND_STEELHIT);
+        ret = SND_STEELHIT;
         break;
     }
 
     *pkBlock1 = tmp1;
     *pkBlock2 = tmp2;
+    return ret;
 }
 
 /*
@@ -622,7 +542,7 @@ void Map::CanMove(Tank *pTank, f32 fDelta)
         if(!pTank->IsOnSpawn())
         {
             Tank *pChecked = NULL;
-            for(u32 i = 0; i < 6; i++)
+            for(u8 i = 0; i < 6; i++)
             {
                 if(i == 1 && !m_b2PlayerMode) continue;
                     // if player 2 is not playing, don't check
@@ -639,7 +559,11 @@ void Map::CanMove(Tank *pTank, f32 fDelta)
                     break;
                 }
                 
-                if(pChecked != NULL && pTank != pChecked && pTank->IsMoving() && pChecked->IsAlive() && !pChecked->IsOnSpawn())
+                if(pChecked != NULL
+                && pTank != pChecked
+                && pTank->IsMoving()
+                && pChecked->IsAlive()
+                && !pChecked->IsOnSpawn())
                 {
                     top1 = pTank->GetY();
                     bottom2 = pChecked->GetY() + TANK_HEIGHT;
@@ -652,13 +576,16 @@ void Map::CanMove(Tank *pTank, f32 fDelta)
                     
                     switch(pTank->GetDirection())
                     {
-                        case DIR_UP: top1 -= pTank->GetSpeed() * fDelta; break;
-                        case DIR_DOWN: bottom1 += pTank->GetSpeed() * fDelta; break;
-                        case DIR_LEFT: left1 -= pTank->GetSpeed() * fDelta; break;
-                        case DIR_RIGHT: right1 += pTank->GetSpeed() * fDelta; break;
+                    case DIR_UP: top1 -= pTank->GetSpeed() * fDelta; break;
+                    case DIR_DOWN: bottom1 += pTank->GetSpeed() * fDelta; break;
+                    case DIR_LEFT: left1 -= pTank->GetSpeed() * fDelta; break;
+                    case DIR_RIGHT: right1 += pTank->GetSpeed() * fDelta; break;
                     }
                     
-                    if ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2))
+                    if((top1 < bottom2)
+                    && (bottom1 > top2)
+                    && (right1 > left2)
+                    && (left1 < right2))
                     {
                         pTank->OnCollideTank();
                     }
@@ -674,38 +601,46 @@ void Map::CanMove(Tank *pTank, f32 fDelta)
         
         switch(pTank->GetDirection())
         {
-            case DIR_UP:
-                top1 = pTank->GetY() - pTank->GetSpeed() * fDelta;
-                bottom2 = j * BLOCK_HEIGHT + HUD_TOP_HEIGHT;
-                if(top1 < bottom2)
-                {
-                    pTank->OnCollideBlock(DIR_UP, &m_aBlocks[i][j - 1], &m_aBlocks[i + 1][j - 1]);
-                }
-                break;
-            case DIR_DOWN:
-                bottom1 = pTank->GetY() + TANK_HEIGHT + pTank->GetSpeed() * fDelta;
-                top2 = (j + 2) * BLOCK_HEIGHT + HUD_TOP_HEIGHT;
-                if(bottom1 > top2)
-                {
-                    pTank->OnCollideBlock(DIR_DOWN, &m_aBlocks[i][j + 2], &m_aBlocks[i + 1][j + 2]);
-                }
-                break;
-            case DIR_RIGHT:
-                right1 = pTank->GetX() + TANK_WIDTH + pTank->GetSpeed() * fDelta;
-                left2 = (i + 2) * BLOCK_WIDTH;
-                if(right1 > left2)
-                {
-                    pTank->OnCollideBlock(DIR_RIGHT, &m_aBlocks[i + 2][j], &m_aBlocks[i + 2][j + 1]);
-                }
-                break;
-            case DIR_LEFT:
-                left1 = pTank->GetX() - pTank->GetSpeed() * fDelta;
-                right2 = i * BLOCK_WIDTH;
-                if(left1 < right2)
-                {
-                    pTank->OnCollideBlock(DIR_LEFT, &m_aBlocks[i - 1][j], &m_aBlocks[i - 1][j + 1]);
-                }
-                break;
+        case DIR_UP:
+            top1 = pTank->GetY() - pTank->GetSpeed() * fDelta;
+            bottom2 = j * BLOCK_HEIGHT + HUD_TOP_HEIGHT;
+            if(top1 < bottom2)
+            {
+                pTank->OnCollideBlock(
+                    DIR_UP, &m_aBlocks[i][j - 1], &m_aBlocks[i + 1][j - 1]
+                );
+            }
+            break;
+        case DIR_DOWN:
+            bottom1 = pTank->GetY() + TANK_HEIGHT + pTank->GetSpeed() * fDelta;
+            top2 = (j + 2) * BLOCK_HEIGHT + HUD_TOP_HEIGHT;
+            if(bottom1 > top2)
+            {
+                pTank->OnCollideBlock(
+                    DIR_DOWN, &m_aBlocks[i][j + 2], &m_aBlocks[i + 1][j + 2]
+                );
+            }
+            break;
+        case DIR_RIGHT:
+            right1 = pTank->GetX() + TANK_WIDTH + pTank->GetSpeed() * fDelta;
+            left2 = (i + 2) * BLOCK_WIDTH;
+            if(right1 > left2)
+            {
+                pTank->OnCollideBlock(
+                    DIR_RIGHT, &m_aBlocks[i + 2][j], &m_aBlocks[i + 2][j + 1]
+                );
+            }
+            break;
+        case DIR_LEFT:
+            left1 = pTank->GetX() - pTank->GetSpeed() * fDelta;
+            right2 = i * BLOCK_WIDTH;
+            if(left1 < right2)
+            {
+                pTank->OnCollideBlock(
+                    DIR_LEFT, &m_aBlocks[i - 1][j], &m_aBlocks[i - 1][j + 1]
+                );
+            }
+            break;
         }
     }
 }
@@ -1080,7 +1015,27 @@ void Map::HandleCollisions(f32 fDelta)
                             }
                             else
                             {
-                                CalculateDamageUp(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i + 1][j]);
+                                if(pkPlayer->GetBullet(b)->GetTankLevel() == TL_4)
+                                {
+                                    if((b1 & b2) != BT_EDGE)
+                                    {
+                                        m_aBlocks[i][j] = BT_EMPTY;
+                                        m_aBlocks[i + 1][j] = BT_EMPTY;
+                                        
+                                        if(b1 == BT_STEEL || b2 == BT_STEEL)
+                                            SoundManager::GetInstance()->Play(SND_STEELHIT);
+                                        else
+                                            SoundManager::GetInstance()->Play(SND_BRICKHIT);
+                                    }
+                                    else
+                                    {
+                                        SoundManager::GetInstance()->Play(SND_STEELHIT);
+                                    }
+                                }
+                                else
+                                {
+                                    SoundManager::GetInstance()->Play(CalculateDamageUp(&m_aBlocks[i][j], &m_aBlocks[i + 1][j]));
+                                }
                             }
                             pkPlayer->GetBullet(b)->Destroy();
                         }
@@ -1116,7 +1071,27 @@ void Map::HandleCollisions(f32 fDelta)
                             }
                             else
                             {
-                                CalculateDamageDown(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i + 1][j]);
+                                if(pkPlayer->GetBullet(b)->GetTankLevel() == TL_4)
+                                {
+                                    if((b1 & b2) != BT_EDGE)
+                                    {
+                                        m_aBlocks[i][j] = BT_EMPTY;
+                                        m_aBlocks[i + 1][j] = BT_EMPTY;
+
+                                        if(b1 == BT_STEEL || b2 == BT_STEEL)
+                                            SoundManager::GetInstance()->Play(SND_STEELHIT);
+                                        else
+                                            SoundManager::GetInstance()->Play(SND_BRICKHIT);
+                                    }
+                                    else
+                                    {
+                                        SoundManager::GetInstance()->Play(SND_STEELHIT);
+                                    }
+                                }
+                                else
+                                {
+                                    SoundManager::GetInstance()->Play(CalculateDamageDown(&m_aBlocks[i][j], &m_aBlocks[i + 1][j]));
+                                }
                             }
                             pkPlayer->GetBullet(b)->Destroy();
                         }
@@ -1152,7 +1127,27 @@ void Map::HandleCollisions(f32 fDelta)
                             }
                             else
                             {
-                                CalculateDamageRight(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i][j + 1]);
+                                if(pkPlayer->GetBullet(b)->GetTankLevel() == TL_4)
+                                {
+                                    if((b1 & b2) != BT_EDGE)
+                                    {
+                                        m_aBlocks[i][j] = BT_EMPTY;
+                                        m_aBlocks[i][j + 1] = BT_EMPTY;
+
+                                        if(b1 == BT_STEEL || b2 == BT_STEEL)
+                                            SoundManager::GetInstance()->Play(SND_STEELHIT);
+                                        else
+                                            SoundManager::GetInstance()->Play(SND_BRICKHIT);
+                                    }
+                                    else
+                                    {
+                                        SoundManager::GetInstance()->Play(SND_STEELHIT);
+                                    }
+                                }
+                                else
+                                {
+                                    SoundManager::GetInstance()->Play(CalculateDamageRight(&m_aBlocks[i][j], &m_aBlocks[i][j + 1]));
+                                }
                             }
                             pkPlayer->GetBullet(b)->Destroy();
                         }
@@ -1188,7 +1183,27 @@ void Map::HandleCollisions(f32 fDelta)
                             }
                             else
                             {
-                                CalculateDamageLeft(pkPlayer->GetBullet(b)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i][j + 1]);
+                                if(pkPlayer->GetBullet(b)->GetTankLevel() == TL_4)
+                                {
+                                    if((b1 & b2) != BT_EDGE)
+                                    {
+                                        m_aBlocks[i][j] = BT_EMPTY;
+                                        m_aBlocks[i][j + 1] = BT_EMPTY;
+
+                                        if(b1 == BT_STEEL || b2 == BT_STEEL)
+                                            SoundManager::GetInstance()->Play(SND_STEELHIT);
+                                        else
+                                            SoundManager::GetInstance()->Play(SND_BRICKHIT);
+                                    }
+                                    else
+                                    {
+                                        SoundManager::GetInstance()->Play(SND_STEELHIT);
+                                    }
+                                }
+                                else
+                                {
+                                    SoundManager::GetInstance()->Play(CalculateDamageLeft(&m_aBlocks[i][j], &m_aBlocks[i][j + 1]));
+                                }
                             }
                             pkPlayer->GetBullet(b)->Destroy();
                         }
@@ -1211,9 +1226,7 @@ void Map::HandleCollisions(f32 fDelta)
             }
         }
     }
-
     
-
     // ENEMIES
     for(int e = 0; e < 4; e++)
     {
@@ -1244,7 +1257,7 @@ void Map::HandleCollisions(f32 fDelta)
                             }
                             else
                             {
-                                CalculateDamageUp(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i + 1][j], true);
+                                CalculateDamageUp(&m_aBlocks[i][j], &m_aBlocks[i + 1][j]);
                             }
                             m_apkEnemy[e]->GetBullet(0)->Destroy();
                         }
@@ -1267,7 +1280,7 @@ void Map::HandleCollisions(f32 fDelta)
                             }
                             else
                             {
-                                CalculateDamageDown(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i + 1][j], true);
+                                CalculateDamageDown(&m_aBlocks[i][j], &m_aBlocks[i + 1][j]);
                             }
                             m_apkEnemy[e]->GetBullet(0)->Destroy();
                         }
@@ -1290,7 +1303,7 @@ void Map::HandleCollisions(f32 fDelta)
                             }
                             else
                             {
-                                CalculateDamageRight(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i][j + 1], true);
+                                CalculateDamageRight(&m_aBlocks[i][j], &m_aBlocks[i][j + 1]);
                             }
                             m_apkEnemy[e]->GetBullet(0)->Destroy();
                         }
@@ -1313,7 +1326,7 @@ void Map::HandleCollisions(f32 fDelta)
                             }
                             else
                             {
-                                CalculateDamageLeft(m_apkEnemy[e]->GetBullet(0)->GetTankLevel(), &m_aBlocks[i][j], &m_aBlocks[i][j + 1], true);
+                                CalculateDamageLeft(&m_aBlocks[i][j], &m_aBlocks[i][j + 1]);
                             }
                             m_apkEnemy[e]->GetBullet(0)->Destroy();
                         }
@@ -1733,30 +1746,16 @@ bool Map::ReadBlockPart(SDL_RWops *pHandle, int iX, int iY)
 
     switch(val)
     {
-    case 0:
-        type = BT_EMPTY;
-        break;
-    case 1:
-        type = BT_BRICK;
-        break;
-    case 2:
-        type = BT_STEEL;
-        break;
-    case 3:
-        type = BT_SEA;
-        break;
-    case 4:
-        type = BT_JUNGLE;
-        break;
-    case 5:
-        type = BT_ICE;
-        break;
-    case 6:
-        type = BT_EDGE;
-        break;
+    case 0: type = BT_EMPTY; break;
+    case 1: type = BT_BRICK; break;
+    case 2: type = BT_STEEL; break;
+    case 3: type = BT_SEA; break;
+    case 4: type = BT_JUNGLE; break;
+    case 5: type = BT_ICE; break;
+    case 6: type = BT_EDGE; break;
     }
 
-    m_aBlocks[iX][iY] = m_aOldBlocks[iX][iY] = (BLOCK_TYPE) type;
+    m_aBlocks[iX][iY] = m_aOldBlocks[iX][iY] = static_cast<BLOCK_TYPE>(type);
 
     return true;
 }

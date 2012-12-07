@@ -21,40 +21,9 @@
 #define _SOUNDMANAGER_H_
 
 #include "Singleton.h"
+#include "Types.h"
 #include "SDL.h"
 #include "SDL_mixer.h"
-
-enum SOUND
-{
-    SND_BONUS = 0,
-    SND_BRICKHIT,
-    SND_EEXPLOSION,
-    SND_FEXPLOSION,
-    SND_GAMEOVER,
-    SND_ICE,
-    SND_LEVELSTARTING,
-    SND_LIFE,
-    SND_MOVING,
-    SND_NMOVING,
-    SND_PAUSE,
-    SND_SHIELDHIT,
-    SND_SHOOT,
-    SND_STEELHIT,
-    SND_TBONUSHIT,
-
-    SND_COUNT,
-};
-
-enum CHANNEL
-{
-    CNL_LEVELSTARTING = 0,
-    CNL_EXPLOSIONS,
-    CNL_MOVING,
-    CNL_PAUSE,
-    CNL_EFFECTS,
-    
-    // TODO additional channels
-};
 
 class SoundManager :
     public Singleton<SoundManager>

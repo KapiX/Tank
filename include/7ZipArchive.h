@@ -1,5 +1,5 @@
 /*
-    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
+    Copyright 2011-2013 Kacper Kasper <kacperkasper@gmail.com>
 
     This file is part of Tank.
 
@@ -65,7 +65,7 @@ public:
 
     bool Exists(char *strFileName) { return GetFileIndex((uc8 *) strFileName) != -1; }
     u32 Find(char *strFileName) { return GetFileIndex((uc8 *) strFileName); }
-    bool Extract(char *strFileName, u8 **ppData, size_t *piSize);
+    bool Extract(const char *strFileName, u8 **ppData, size_t *piSize);
 
     u32 GetFilesCount() const { return m_iFilesCount; }
 

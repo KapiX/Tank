@@ -1,5 +1,5 @@
 /*
-    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
+    Copyright 2011-2013 Kacper Kasper <kacperkasper@gmail.com>
 
     This file is part of Tank.
 
@@ -21,9 +21,8 @@
 #include "SoundManager.h"
 #include "Types.h"
 
-SoundManager::SoundManager()
-{
-    char *astrSoundNames[SND_COUNT] = {
+SoundManager::SoundManager() {
+    const char *astrSoundNames[SND_COUNT] = {
         "bonus.ogg",
         "brickhit.ogg",
         "eexplosion.ogg",
@@ -47,8 +46,9 @@ SoundManager::SoundManager()
 
     Mix_Volume(CNL_MOVING, 64);
     
-    SevenZipArchive kSoundPack;
-    kSoundPack.Open("sounds/sounds.7z");
+    SevenZipArchive *pkSoundPack;
+    pkSoundPack = new SevenZipArchive();
+    pkSoundPack->Open("sounds/sounds.7z");
     
     u8 *pBuffer;
     size_t iSoundSize;
@@ -57,12 +57,13 @@ SoundManager::SoundManager()
     // Load all the sounds into memory
     for(u32 i = 0; i < SND_COUNT; i++)
     {
-        kSoundPack.Extract(astrSoundNames[i], &pBuffer, &iSoundSize);
+        pkSoundPack->Extract(astrSoundNames[i], &pBuffer, &iSoundSize);
         pRW = SDL_RWFromMem(pBuffer, iSoundSize);
         m_pSounds[i] = Mix_LoadWAV_RW(pRW, 1);
     }
     
-    kSoundPack.Close();
+    pkSoundPack->Close();
+    delete pkSoundPack;
 }
 
 void SoundManager::Free()

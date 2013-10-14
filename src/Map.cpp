@@ -1433,6 +1433,7 @@ void Map::Update(f32 fDelta, bool bGetInput)
 
     srand(std::time(NULL) % 100 + std::time(NULL) % 10 + std::time(NULL) * 2);
 
+    // FIXME no allocations
     if(m_apkEnemy[0] == NULL)
         m_apkEnemy[0] = new Enemy(m_pVD, m_pAtlasTexture, (bool) (rand() % 2), (SHIELDLEVEL) (rand() % 4 + 1), (TANKLEVEL) (rand() % 4 + 1));
     if(m_apkEnemy[1] == NULL)
@@ -1737,15 +1738,14 @@ bool Map::ReadHeader(SDL_RWops *pHandle)
     return true;
 }
 
-bool Map::ReadBlockPart(SDL_RWops *pHandle, int iX, int iY)
-{
+bool Map::ReadBlockPart(SDL_RWops *pHandle, int iX, int iY) {
     u8 val;
     u16 type;
     if(!Read(pHandle, &val, 1, 1))
         return false;
 
-    switch(val)
-    {
+    switch(val) {
+    default:
     case 0: type = BT_EMPTY; break;
     case 1: type = BT_BRICK; break;
     case 2: type = BT_STEEL; break;

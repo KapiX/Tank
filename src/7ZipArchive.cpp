@@ -1,5 +1,5 @@
 /*
-    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
+    Copyright 2011-2013 Kacper Kasper <kacperkasper@gmail.com>
 
     This file is part of Tank.
 
@@ -126,7 +126,7 @@ void SevenZipArchive::Close()
     m_bOpened = false;
 }
 
-bool SevenZipArchive::Extract(char *strFileName, u8 **ppData, size_t *piSize)
+bool SevenZipArchive::Extract(const char *strFileName, u8 **ppData, size_t *piSize)
 {
     if(!m_bOpened)
         return false;

@@ -1,5 +1,5 @@
 /*
-    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
+    Copyright 2011-2014 Kacper Kasper <kacperkasper@gmail.com>
 
     This file is part of Tank.
 
@@ -73,4 +73,18 @@ void Bonus::Render(VideoDriver *pVD)
             BONUS_HEIGHT
         );
     }
+}
+
+bool Bonus::IsColliding(u32 iX, u32 iY, u32 iW, u32 iH)
+{
+    u32 top1, top2, bottom1, bottom2, left1, left2, right1, right2;
+    top1 = m_iY;
+    bottom2 = iY + iH;
+    left1 = m_iX;
+    right2 = iX + iW;
+    bottom1 = m_iY + BONUS_HEIGHT;
+    top2 = iY;
+    right1 = m_iX + BONUS_WIDTH;
+    left2 = iX;
+    return ((top1 < bottom2) && (bottom1 > top2) && (right1 > left2) && (left1 < right2));
 }

@@ -1,5 +1,5 @@
 /*
-    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
+    Copyright 2011-2014 Kacper Kasper <kacperkasper@gmail.com>
 
     This file is part of Tank.
 
@@ -759,7 +759,7 @@ void Map::HandleCollisions(f32 fDelta)
                     break;
                 }
                 Bonus::GetInstance()->SetIsAlive(false);
-                pkPlayer->AddScore(500);
+                pkPlayer->AddScore(BONUS_POINTS);
                 if(Bonus::GetInstance()->GetBonusType() == BONUS_LIFE)
                 {
                     SoundManager::GetInstance()->Play(SND_LIFE);
@@ -837,7 +837,13 @@ void Map::HandleCollisions(f32 fDelta)
                                     m_apkEnemy[e]->SetShieldLevel((SHIELDLEVEL) (m_apkEnemy[e]->GetShieldLevel() - 1));
                                     if(m_apkEnemy[e]->GetHasBonus())
                                     {
-                                        Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+                                        do {
+                                            Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+                                        }
+                                        while (
+                                            Bonus::GetInstance()->IsColliding(m_pkPlayer1->GetX(), m_pkPlayer1->GetY(), PLAYER_WIDTH, PLAYER_HEIGHT) ||
+                                            Bonus::GetInstance()->IsColliding(m_pkPlayer2->GetX(), m_pkPlayer2->GetY(), PLAYER_WIDTH, PLAYER_HEIGHT)
+                                        );
                                         SoundManager::GetInstance()->Play(SND_TBONUSHIT);
                                     }
                                 }
@@ -846,7 +852,12 @@ void Map::HandleCollisions(f32 fDelta)
                                     if(m_apkEnemy[e]->GetHasBonus())
                                     {
                                         m_apkEnemy[e]->SetHasBonus(false);
-                                        Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+                                        do {
+                                            Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+                                        } while (
+                                            Bonus::GetInstance()->IsColliding(m_pkPlayer1->GetX(), m_pkPlayer1->GetY(), PLAYER_WIDTH, PLAYER_HEIGHT) ||
+                                            Bonus::GetInstance()->IsColliding(m_pkPlayer2->GetX(), m_pkPlayer2->GetY(), PLAYER_WIDTH, PLAYER_HEIGHT)
+                                        );
                                         SoundManager::GetInstance()->Play(SND_TBONUSHIT);
                                     }
                                     else
@@ -862,13 +873,18 @@ void Map::HandleCollisions(f32 fDelta)
                                 if(m_apkEnemy[e]->GetHasBonus())
                                 {
                                     m_apkEnemy[e]->SetHasBonus(false);
-                                    Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+                                    do {
+                                        Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+                                    } while (
+                                        Bonus::GetInstance()->IsColliding(m_pkPlayer1->GetX(), m_pkPlayer1->GetY(), PLAYER_WIDTH, PLAYER_HEIGHT) ||
+                                        Bonus::GetInstance()->IsColliding(m_pkPlayer2->GetX(), m_pkPlayer2->GetY(), PLAYER_WIDTH, PLAYER_HEIGHT)
+                                    );
                                     pkPlayer->GetBullet(0)->Destroy();
                                     SoundManager::GetInstance()->Play(SND_TBONUSHIT);
                                 }
                                 else
                                 {
-                                    pkPlayer->AddScore(m_apkEnemy[e]->GetTankLevel() * 100);
+                                    pkPlayer->AddScore(m_apkEnemy[e]->GetTankLevel() * ENEMY_BASE_POINTS);
                                     m_apkEnemy[e]->Destroy();
                                     m_afKillTime[e] = *m_pfTimer;
                                     m_fLastKill = *m_pfTimer;
@@ -897,7 +913,12 @@ void Map::HandleCollisions(f32 fDelta)
                                     m_apkEnemy[e]->SetShieldLevel((SHIELDLEVEL) (m_apkEnemy[e]->GetShieldLevel() - 1));
                                     if(m_apkEnemy[e]->GetHasBonus())
                                     {
-                                        Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+                                        do {
+                                            Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+                                        } while (
+                                            Bonus::GetInstance()->IsColliding(m_pkPlayer1->GetX(), m_pkPlayer1->GetY(), PLAYER_WIDTH, PLAYER_HEIGHT) ||
+                                            Bonus::GetInstance()->IsColliding(m_pkPlayer2->GetX(), m_pkPlayer2->GetY(), PLAYER_WIDTH, PLAYER_HEIGHT)
+                                        );
                                         SoundManager::GetInstance()->Play(SND_TBONUSHIT);
                                     }
                                 }
@@ -906,7 +927,12 @@ void Map::HandleCollisions(f32 fDelta)
                                     if(m_apkEnemy[e]->GetHasBonus())
                                     {
                                         m_apkEnemy[e]->SetHasBonus(false);
-                                        Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+                                        do {
+                                            Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+                                        } while (
+                                            Bonus::GetInstance()->IsColliding(m_pkPlayer1->GetX(), m_pkPlayer1->GetY(), PLAYER_WIDTH, PLAYER_HEIGHT) ||
+                                            Bonus::GetInstance()->IsColliding(m_pkPlayer2->GetX(), m_pkPlayer2->GetY(), PLAYER_WIDTH, PLAYER_HEIGHT)
+                                        );
                                         SoundManager::GetInstance()->Play(SND_TBONUSHIT);
                                     }
                                     else
@@ -922,13 +948,18 @@ void Map::HandleCollisions(f32 fDelta)
                                 if(m_apkEnemy[e]->GetHasBonus())
                                 {
                                     m_apkEnemy[e]->SetHasBonus(false);
-                                    Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+                                    do {
+                                        Bonus::GetInstance()->Randomize(m_pMapInfo->bonusArea.iX, m_pMapInfo->bonusArea.iY, m_pMapInfo->bonusArea.iW, m_pMapInfo->bonusArea.iH);
+                                    } while (
+                                        Bonus::GetInstance()->IsColliding(m_pkPlayer1->GetX(), m_pkPlayer1->GetY(), PLAYER_WIDTH, PLAYER_HEIGHT) ||
+                                        Bonus::GetInstance()->IsColliding(m_pkPlayer2->GetX(), m_pkPlayer2->GetY(), PLAYER_WIDTH, PLAYER_HEIGHT)
+                                    );
                                     pkPlayer->GetBullet(1)->Destroy();
                                     SoundManager::GetInstance()->Play(SND_TBONUSHIT);
                                 }
                                 else
                                 {
-                                    pkPlayer->AddScore(m_apkEnemy[e]->GetTankLevel() * 100);
+                                    pkPlayer->AddScore(m_apkEnemy[e]->GetTankLevel() * ENEMY_BASE_POINTS);
                                     m_apkEnemy[e]->Destroy();
                                     pkPlayer->GetBullet(1)->Destroy(false);
                                     SoundManager::GetInstance()->Play(SND_EEXPLOSION);

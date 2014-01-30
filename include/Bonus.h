@@ -1,5 +1,5 @@
 /*
-    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
+    Copyright 2011-2014 Kacper Kasper <kacperkasper@gmail.com>
 
     This file is part of Tank.
 
@@ -66,6 +66,8 @@ public:
     void SetIsAlive(bool bIsAlive) { m_bIsAlive = bIsAlive; }
 
     static void SetTexture(Texture *pTexture) { m_pkBonusTexture = pTexture; }
+
+    bool IsColliding(u32 iX, u32 iY, u32 iW, u32 iH);
 
     BONUS_TYPE GetBonusType() const { return m_bt; }
     int GetX() const { return m_iX; }

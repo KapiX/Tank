@@ -1,5 +1,5 @@
 /*
-    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
+    Copyright 2011-2014 Kacper Kasper <kacperkasper@gmail.com>
 
     This file is part of Tank.
 
@@ -77,6 +77,7 @@ void Tank::Bullet::Update(f32 fDelta)
         {
             m_bExplode = false;
             m_pkExplAnim->SetPlaying(false);
+            m_pkExplAnim->Reset();
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
-    Copyright 2011, 2012 Kacper Kasper <kacperkasper@gmail.com>
+    Copyright 2011-2014 Kacper Kasper <kacperkasper@gmail.com>
 
     This file is part of Tank.
 
@@ -163,5 +163,9 @@
 #define MENU_TITLE_SPACE            3 // space between menu title and options
 #define PLAYER_SPEED                85
 #define PLAYER_BULLET_SPEED         255 // speed * 3
+
+// Scores
+#define ENEMY_BASE_POINTS           100
+#define BONUS_POINTS                500
 
 #endif // _DEFINES_H_

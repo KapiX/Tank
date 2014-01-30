@@ -29,8 +29,7 @@ Config::Config()
 {
     // Default values
     m_bFullscreen = false;
-    // TODO CMake option
-    m_iVideoDriver = 1; // OpenGL
+    m_iVideoDriver = 1;
     m_kP1Controller = KEYBOARD;
     m_kP1Controls.iUp = 273; // up arrow
     m_kP1Controls.iDown = 274; // down arrow
@@ -109,7 +108,7 @@ void Config::ReadFromFile(const char *strFilename)
                     // without + 1 it would also count '='
                 strncpy(identifier, line, id_len - 1);
                 identifier[id_len - 1] = 0;
-                strncpy(value, pos, line_len - id_len);
+                strncpy(value, pos + 1, line_len - id_len);
                 value[line_len - id_len] = 0;
             }
 

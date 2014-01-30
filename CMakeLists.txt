@@ -82,7 +82,11 @@ if(MSVC)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif(MSVC)
 
+source_group(7z REGULAR_EXPRESSION "src/7z/.*")
+
 if(WIN32)
+  #string(REGEX REPLACE "/EH[a-z]+" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}) # Disable C++ exceptions 
+  string(REGEX REPLACE "/GR" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}) # Disable RTTI
   add_executable(tank WIN32 ${TANK_SOURCES} src/resources.rc)
 else(WIN32)
   add_executable(tank ${TANK_SOURCES})

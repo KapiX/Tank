@@ -29,7 +29,11 @@ class VideoDriver;
 
 enum VIDEO_DRIVER
 {
+#if defined(WITH_OPENGL) || defined(WITH_D3D8)
     VD_NULL = 0,
+#else
+    VD_NULL = 1,
+#endif
 #ifdef WITH_OPENGL
     VD_OPENGL,
 #endif

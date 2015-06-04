@@ -8,13 +8,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(WITH_OPENGL "Enable OpenGL renderer" ON)
 if(WITH_OPENGL)
   option(WITH_GLEW "Enable GLEW library" ON)
-  if(BEOS)
+  if(HAIKU)
     set(WITH_GLEW OFF)
-  endif(BEOS)
+  endif(HAIKU)
 endif(WITH_OPENGL)
-if(WIN32 AND NOT CMAKE_CL_64)
-  option(WITH_D3D8 "Enable Direct3D 8 renderer" ON)
-endif(WIN32 AND NOT CMAKE_CL_64)
 
 # find packages
 find_package(SDL REQUIRED)
@@ -26,13 +23,10 @@ if(WITH_OPENGL)
     find_package(GLEW REQUIRED)
   endif(WITH_GLEW)
 endif(WITH_OPENGL)
-if(WITH_D3D8)
-  find_package(D3D8 REQUIRED)
-endif(WITH_D3D8)
 
-if(BEOS)
+if(HAIKU)
   include(UseHaiku)
-endif(BEOS)
+endif(HAIKU)
 
 # setup paths and link libraries
 list(APPEND INC_PATH
@@ -59,17 +53,6 @@ if(WITH_OPENGL)
     )
   endif(WITH_GLEW)
 endif(WITH_OPENGL)
-if(WITH_D3D8)
-  list(APPEND INC_PATH
-    ${D3D8_INCLUDE_PATH}
-    ${D3DX8_INCLUDE_PATH}
-  )
-  list(APPEND LIBS
-    ${D3D8_LIBRARY}
-    ${D3DX8_LIBRARY}
-  )
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:libci.lib")
-endif(WITH_D3D8)
 
 include_directories(include ${INC_PATH})
 add_subdirectory(src)

@@ -36,19 +36,12 @@ if(WITH_OPENGL)
     OGLVideoDriver.cpp
   )
 endif(WITH_OPENGL)
-if(WITH_D3D8)
-  list(APPEND SRC
-    D3D8RenderList.cpp
-    D3D8Texture.cpp
-    D3D8VideoDriver.cpp
-  )
-endif(WITH_D3D8)
 
-if(BEOS)
+if(HAIKU)
   list(APPEND SRC
     Tank.rdef
   )
-endif(BEOS)
+endif(HAIKU)
 
 foreach(F ${SRC})
   list(APPEND TANK_SOURCES src/${F})

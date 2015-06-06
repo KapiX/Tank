@@ -1,6 +1,7 @@
 #
 # - Haiku module for CMake
 #
+cmake_policy(SET CMP0026 OLD)
 
 #
 # Override the default add_executable() command and add our own.
@@ -118,7 +119,7 @@ function(HAIKU_ADD_RESOURCES_INTERNAL TARGET)
 		# and doesn't need this hack
 		add_custom_target(
 			${rsrcfile}_check
-			COMMAND "/bin/sh" "-c" \"if [ \"${rsrc}\" -nt \"${TARGET_PATH}\" ]\\;then rm -f \"${TARGET_PATH}\"\\;fi\")
+			COMMAND "/bin/sh" "-c" \"if \\[ \"${rsrc}\" -nt \"${TARGET_PATH}\" \\]\\;then rm -f \"${TARGET_PATH}\"\\;fi\")
 	
 		# Need this so that rsrcfile target is built before _check target
 		add_dependencies(${rsrcfile}_check ${rsrcfile})
